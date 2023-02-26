@@ -266,6 +266,9 @@ const conDispMap = Array(
     "DRight",
 );
 
+// Define user-preferred colors for highlighting buttons
+let out_btn_highlight = "rgba(0,128,0,1)";
+let in_btn_highlight = "rgba(0,128,0,1)";
 /**
  * Update the display of the virtual controller to reflect the state of the connected gamepad.
  * @param {boolean[]} inBtns - An array of boolean values indicating the state of each input button.
@@ -273,10 +276,6 @@ const conDispMap = Array(
  * @param {number[]} stickPos - An array of four values representing the position of the two sticks on the gamepad.
  */
 function updateConDisplay(inBtns, outBtns, stickPos) {
-    // Define user-preferred colors for highlighting buttons
-    let out_btn_highlight = "rgba(0,128,0,1)";
-    let in_btn_highlight = "rgba(0,128,0,1)";
-
     // Do not update the display if a gamepad is not connected
     if (!gamepad_connected) { return; }
 
