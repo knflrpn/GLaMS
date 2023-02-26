@@ -53,6 +53,10 @@
             document.getElementById("SwiCC-disp").setAttribute("stroke", newvalue);
             setCookie("stroke-col-sel" + "-color", newvalue);
 
+            newvalue = document.getElementById("accent-col-sel").value;
+            document.getElementById("accents").setAttribute("stroke", newvalue);
+            setCookie("accent-col-sel" + "-color", newvalue);
+
         }
 
         document.addEventListener("DOMContentLoaded", function () {
@@ -83,12 +87,19 @@
                 strokeColSel.value = strokeColSelColor;
             }
 
+            const accentColSel = document.getElementById("accent-col-sel");
+            const accentColSelColor = getCookie("accent-col-sel-color");
+            if (accentColSelColor) {
+                accentColSel.value = accentColSelColor;
+            }
+
             // Add event listeners to options
             document.getElementById("bg-col-sel").addEventListener("input", changeColors, false);
             document.getElementById("box-col-sel").addEventListener("input", changeColors, false);
             document.getElementById("active-in-col-sel").addEventListener("input", changeColors, false);
             document.getElementById("active-out-col-sel").addEventListener("input", changeColors, false);
             document.getElementById("stroke-col-sel").addEventListener("input", changeColors, false);
+            document.getElementById("accent-col-sel").addEventListener("input", changeColors, false);
             // Update colors once at load
             changeColors();
 
@@ -117,18 +128,23 @@
                         <rect id="ConBGBox" x="15" y="25" width="330" height="260" rx="30" fill="rgba(255,255,255,1)"
                             stroke-width="3" />
 
+                        <g id="accents" stroke="rgb(100,100,100)">
                         <circle id="LStickOutline" cx="130" cy="225" r="40" stroke-width="3"
-                            stroke="rgba(203, 203, 203, 1)" fill="rgba(0,0,0,0)" />
+                            fill="rgba(0,0,0,0)" />
+                            <circle id="RStickOutline" cx="230" cy="225" r="40" stroke-width="3"
+                            fill="rgba(0,0,0,0)" />
+                            <circle id="DOutline" cx="80" cy="150" r="40" stroke-width="3"
+                            fill="rgba(0,0,0,0)" />
+                            <circle id="BOutline" cx="280" cy="150" r="40" stroke-width="3"
+                            fill="rgba(0,0,0,0)" />
+                            </g>
+
                         <circle id="LeftStick" cx="130" cy="225" r="20" transform="translate(0, 0)" stroke-width="3"
                             stroke="rgba(0,0,0,1)" fill="rgba(255,255,255,1)" />
 
-                        <circle id="RStickOutline" cx="230" cy="225" r="40" stroke-width="3"
-                            stroke="rgba(203, 203, 203, 1)" fill="rgba(0,0,0,0)" />
                         <circle id="RightStick" cx="230" cy="225" r="20" transform="translate(0, 0)" stroke-width="3"
                          fill="rgba(255,255,255,1)" />
 
-                        <circle id="DOutline" cx="80" cy="150" r="40" stroke-width="3" stroke="rgba(203, 203, 203, 1)"
-                            fill="rgba(0,0,0,0)" />
                         <mask id="mask-button-left" fill="white" stroke="white">
                             <circle cx="80" cy="150" r="10" stroke-width="3" />
                         </mask>
@@ -145,8 +161,6 @@
                             fill="rgba(255,255,255,0)" stroke-width="3"
                             mask="url(#mask-button-left)" />
 
-                        <circle id="BOutline" cx="280" cy="150" r="40" stroke-width="3" stroke="rgba(203, 203, 203, 1)"
-                            fill="rgba(0,0,0,0)" />
                         <mask id="mask-button-right" fill="white" stroke="white">
                             <circle cx="280" cy="150" r="12" stroke-width="0" />
                         </mask>
@@ -219,6 +233,8 @@
                 <input type="color" id="active-out-col-sel" name="active-out-col-sel" value="#008000">
                 <label for="stroke-col-sel">Stroke color</label>
                 <input type="color" id="stroke-col-sel" name="stroke-col-sel" value="#000000">
+                <label for="accent-col-sel">Accent color</label>
+                <input type="color" id="accent-col-sel" name="accent-col-sel" value="#202020">
             </div>
         </div>
     </main>
