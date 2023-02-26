@@ -1,6 +1,19 @@
 import pyperclip
 import numpy as np
 from PIL import Image
+from collections import Counter
+
+IMAGE_PATH = 'ToadFace_62m.gif'
+# If enabled, will find the most common color and pre-fill the image with that color.
+ENABLE_PREFILL = True
+# Manually set a prefill color (0-16) if desired. -1 to ignore.
+FORCE_PREFILL = -1
+# Uses this many frames for each button press.  Must be at least 2 unless you have frame-perfect capabilities.
+SLOWDOWN = 2
+
+# The size of block of pixels to parse at a time.  Larger reduces runtime to an extent, but quickly increases calculation time.  8x18 is recommended.
+BLOCK_SIZE_X = 8
+BLOCK_SIZE_Y = 18
 
 def getColorDist(current, desired):
     err = desired - current
@@ -83,15 +96,15 @@ def getColorChangeCommands(current_color, goal_color, prev_cmd):
 def mergeLists(list1, list2):
     return [" ".join(pair) for pair in zip(list1, list2)] + list1[len(list2):] + list2[len(list1):]
 
-def processBlock(block, current_x, current_y, current_color, prev_cmd, direction):
+def processBlock(block, current_x, current_y, current_color, prev_cmd, direction, bg_color=16):
     
     new_commands = []
 
     completed = []
-    # White pixels are already done
+    # Background pixels are already done
     for x in range(block.shape[1]):
         for y in range(block.shape[0]):
-            if block[y,x] == 16:
+            if block[y,x] == bg_color:
                 completed.append((x,y))
     
     while len(completed) < (block.shape[0]*block.shape[1]):
@@ -154,11 +167,23 @@ def processBlock(block, current_x, current_y, current_color, prev_cmd, direction
     # Return resulting moves
     return current_x, current_y, current_color, new_commands
 
-    
+
 def main():
     # Load the image
-    im = Image.open('BuilderMario.gif')
+    im = Image.open(IMAGE_PATH)
     pix = im.getdata();
+
+    bg_col = 16
+    if ENABLE_PREFILL:
+        if FORCE_PREFILL >= 0:
+            bg_col = FORCE_PREFILL
+            print("Using user-specified prefill color of ", FORCE_PREFILL)
+        else:
+            counter = Counter(pix)
+            most_common = counter.most_common(1)[0][0]
+            print(f"Prefilling image with color {most_common}")
+            bg_col = most_common
+    
     image = np.array(pix).reshape(180, 320)
 
     # Initialize position and color
@@ -169,13 +194,16 @@ def main():
 
     # Get the dimensions of the image
     columns = 320
-    step_x = 16
+    step_x = columns // (columns // BLOCK_SIZE_X)
+    print("Using X block size ", step_x)
     rows = 180
-    step_y = 18
+    step_y = rows // (rows // BLOCK_SIZE_Y)
+    print("Using Y block size ", step_y)
 
     totalPix = columns*rows
     perBlockPix = step_x*step_y
     donePix = 0
+    lastPrint = 0
 
     going_left = False;
     # Loop over the blocks of pixels
@@ -184,7 +212,7 @@ def main():
             if going_left:
                 column_start = columns - step_x - column_start
             block = image[row_start:row_start + step_y, column_start:column_start + step_x]
-            current_x, current_y, current_color, newcmd = processBlock(block, current_x, current_y, current_color, prev_cmd, going_left)
+            current_x, current_y, current_color, newcmd = processBlock(block, current_x, current_y, current_color, prev_cmd, going_left, bg_col)
             cmds.extend(newcmd)
             if len(newcmd) > 0:
                 prev_cmd = newcmd[-1]
@@ -194,7 +222,9 @@ def main():
             else:
                 current_x += step_x
             donePix += perBlockPix
-            print(str(round(100*donePix/totalPix,2))+"%")
+            if donePix - lastPrint >= totalPix / 20:
+                lastPrint = donePix
+                print(str(round(100*donePix/totalPix,2))+"%")
 
         # Next row; update Y position into next coordinate space
         current_y -= step_y
@@ -205,10 +235,46 @@ def main():
             current_x += step_x
         going_left = not going_left
 
-    print(len(cmds))
-    outstr = ""
+    framecount = 0
+    if ENABLE_PREFILL and (bg_col != 16):
+        framecount = 3800
+    framecount += len(cmds) * SLOWDOWN
+    print(str(round(framecount/60/60,1)) + " minutes")
+
+    outstr = "{}\n"
+    if ENABLE_PREFILL and (bg_col != 16):
+        # Set bg color and large cursor
+        for _ in range(bg_col % 16):
+            outstr += "{R2} "+str(SLOWDOWN)+"\n"
+            outstr += "{} "+str(SLOWDOWN)+"\n"
+        for _ in range(3):
+            outstr += "{D} "+str(SLOWDOWN)+"\n"
+            outstr += "{R1} "+str(SLOWDOWN)+"\n"
+        # Fill
+        outstr += "{A} 2\n"
+        for _ in range(11):
+            outstr += "{A} 160 255\n"
+            for _ in range(8):
+                outstr += "{A D} "+str(SLOWDOWN)+"\n"
+                outstr += "{A} "+str(SLOWDOWN)+"\n"
+            outstr += "{A} 160 1\n"
+            for _ in range(8):
+                outstr += "{A D} "+str(SLOWDOWN)+"\n"
+                outstr += "{A} "+str(SLOWDOWN)+"\n"
+        outstr += "{A} 160 255\n"
+        # Reset color and cursor
+        for _ in range(bg_col % 16):
+            outstr += "{L2} "+str(SLOWDOWN)+"\n"
+            outstr += "{} "+str(SLOWDOWN)+"\n"
+        for _ in range(3):
+            outstr += "{L1} "+str(SLOWDOWN)+"\n"
+            outstr += "{} "+str(SLOWDOWN)+"\n"
+        # Return home
+        outstr += "{} 160 1 1\n"
+        outstr += "{} 60 1\n"
+            
     for cmd in cmds:
-        outstr += "{"+cmd+"} 2\n"
+        outstr += "{"+cmd+"} "+str(SLOWDOWN)+"\n"
     pyperclip.copy(outstr)
 
 
