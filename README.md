@@ -20,7 +20,7 @@ Once you have your SwiCC device set up and the GLaMS site hosted somewhere (or s
 ## Files
 
 - index.html: The main HTML file for GLaMS.
-- inOutCon.html: A customizable input display page.  The main page must be open and visible for the input display to receive controller state.
+- inoutCon.html: A customizable input (and output) display page.  The main page must be open and visible for the input display to receive controller state.
 - TAS.html: A rudimentary input playback system, mainly tailored to drawing comments in the Mario Maker 2 comment system.
 
 ## Compatibility
