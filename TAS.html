@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GLaMS</title>
+    <link rel="stylesheet" href="./style.css?1" />
+    <script src="https://cdn.jsdelivr.net/gh/makeabilitylab/p5js/_libraries/serial.js"></script>
+    <script src="./SwiCC_comms.js?2"></script>
+    <script src="./page_funcs.js?2"></script>
+    <script src="./TAS_page_funcs.js?2"></script>
+    <script>
+        function mainLoop() {
+            setTimeout(mainLoop, 16);
+
+            checkGamepads();
+            readGamepad(gamepad_num);
+
+            if (!queue_playing) {
+                packSwitchCon(true);
+                sendConToSwiCC();
+            }
+
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            loadCommandsFromCookie();
+            getExamples();
+            mainLoop();
+        });
+
+    </script>
+
+</head>
+
+<body>
+    <main>
+        <div id="main-content" class="stack-of-things"> <!-- Main center column -->
+            <div class="row-of-things">
+                <div id="control-status" class="stack-of-things">
+                    <div id="comms-box" class="content-box">
+                        <div class="status-div" id="status-gamepad">- Gamepad -<br />Use gamepad to connect.</div>
+                        <div class="status-div" id="status-serial" onclick="connectToSerialDevice()">- Comm Port
+                            -</br>Click
+                            here to connect.</div>
+                        <div class="status-div" id="status-swicc">- SwiCC -<br />Not detected.</div>
+                    </div>
+                    <div id="examples-box" class="content-box">
+                        <div class="stack-of-things">
+                            <p>Select from pre-computed image paths:</p>
+                            <select id="filename-select"></select>
+                            <div class="btny-div" id="view-contents-btn">Load Image</div>
+                            <div id="image-container"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-box">
+                    <div class="stack-of-things">
+                        <p>Place cursor in top-left corner and select color red before running.</p>
+                        <div class="btny-div" id="run-btn" onclick="runTAS()">Run</div>
+                        <textarea id="commands"></textarea>
+                    </div>
+                </div>
+            </div>
+    </main>
+</body>
+
+</html>

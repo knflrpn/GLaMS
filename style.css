@@ -1,0 +1,143 @@
+html {
+    box-sizing: border-box;
+    font-size: 1em;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: inherit;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+body {
+    background-color: #001d32;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.stack-of-things {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.row-of-things {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+#control-status {
+    max-width: 30rem;
+}
+
+#comms-box {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.content-box {
+    background-color: #fff6e6;
+    padding: 1rem;
+    border-radius: 1rem;
+    display: flex;
+    justify-content: center;
+}
+
+.status-div {
+    margin: 3px;
+    padding: 0.5rem 1rem;
+    border-radius: 0.4rem;
+    border: 1px solid black;
+    background-color: #fafafa;
+    text-align: center;
+}
+
+.indicator-active {
+    background-color: green;
+}
+
+.table-container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.tablerow {
+    display: flex;
+}
+
+.tablecell {
+    width: 1.5rem;
+    height: 1.5rem;
+    border: 1px solid black;
+    background-color: white;
+}
+
+.tablecell-label {
+    width: 1.5rem;
+    height: 1.5rem;
+    border: 1px solid grey;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+}
+
+.tablecell-invisible {
+    width: 1.5rem;
+    height: 1.5rem;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.tablecell-highlight {
+    background-color: rgb(84, 195, 255);
+}
+
+.tablecell-active {
+    background-color: green;
+}
+
+.btny-div {
+    user-select: none;
+    height: 2rem;
+    width: 100%;
+    padding: 0 1rem;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    border: 1px solid black;
+    border-radius: 0.6rem;
+    line-height: 2rem;
+    box-shadow: inset 0 -0.6rem 1rem -1rem black;
+    background-color: white;
+}
+
+.btny-div:hover {
+    box-shadow: inset 0 -0.6rem 0.6rem -0.6rem black;
+}
+
+input {
+    padding: 0.2rem 0.6rem;
+    text-align: center;
+}
+
+textarea {
+    padding: 0.2rem 0.6rem;
+    height: 70rem;
+    width: 50ch;
+}
+
+select {
+    padding: 0.5rem 2rem;
+}
