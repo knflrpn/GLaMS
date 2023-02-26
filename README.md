@@ -2,10 +2,9 @@
 
 GLaMS is a browser-based system that allows you to use a gamepad to control and manipulate inputs sent to a Nintendo Switch console. It was designed to work with SwiCC, a hardware device that allows you to connect your computer to the Switch and send controller inputs to it.  You can find more information about how to set up and use SwiCC at https://github.com/knflrpn/SwiCC_RP2040.
 
-GLaMS provides a mapping system that allows you to map gamepad inputs to different controller buttons and sticks, and a randomization feature that can add variability to your inputs. It also includes a delay feature that allows you to add a delay to your inputs, and an auto-jump feature that spams the A button to make Mario jump automatically.
-Usage
+## Usage
 
-Once you have your SwiCC device set up,
+Once you have your SwiCC device set up and the GLaMS site hosted somewhere (or served locally),
 
 - open the GLaMS website,
 - use your gamepad to confirm that the webpage can see it, and
