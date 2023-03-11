@@ -560,6 +560,7 @@ function runTAS() {
         updateRunButtonLabel("Run");
     } else {
         saveCommandsToCookie();
+        saveCommandsToLocalStorage();
 
         const inputText = document.getElementById("commands").value;
 

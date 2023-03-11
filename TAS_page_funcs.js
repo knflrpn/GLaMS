@@ -15,6 +15,14 @@ function getExamples() {
         optionEl.textContent = filenames[i];
         selectEl.appendChild(optionEl);
       }
+      // Check if the "filename" GET parameter is set
+      var urlParams = new URLSearchParams(window.location.search);
+      var filenameParam = urlParams.get('filename');
+      if (filenameParam) {
+        // Set the currently-selected item in the select box to the filenameParam value
+        selectEl.value = filenameParam;
+        document.getElementById("view-contents-btn").click();
+      }
     }
     else {
       console.log('Request failed.  Returned status of ' + xhr.status);
@@ -22,8 +30,9 @@ function getExamples() {
   };
   xhr.send();
 
-  // Add a click event listener to the "View Contents" button
-  document.getElementById('view-contents-btn').addEventListener('click', function () {
+}
+
+function retrieveExample() {
     // Get the selected filename from the select element
     var selectedFilename = document.getElementById('filename-select').value;
 
@@ -36,7 +45,7 @@ function getExamples() {
         document.getElementById('commands').value = xhr.responseText;
         // Load the image with the same filename as the selected file
         var imageEl = document.createElement('img');
-        imageEl.src = './imageExamples/' + selectedFilename.replace('.txt', '.gif');
+        imageEl.src = './imageExamples/' + selectedFilename.split('_')[0] + '.gif';
         const imageholder = document.getElementById('image-container');
         while (imageholder.firstChild) {
           imageholder.removeChild(imageholder.firstChild);
@@ -48,30 +57,28 @@ function getExamples() {
       }
     };
     xhr.send();
-  });
+}
+
+function saveCommandsToLocalStorage() {
+  var text = encodeURIComponent(document.getElementById("commands").value);
+  if (text.length > 500) { return; }
+  localStorage.setItem("savedCommands", text);
 }
 
 function saveCommandsToCookie() {
-  var text = encodeURIComponent(document.getElementById("commands").value);
+  var text = "a";
   if (text.length > 500) { return; }
   var d = new Date();
-  d.setTime(d.getTime() + (30 * 24 * 60 * 60 * 1000));
+  d.setTime(d.getTime() - (30));
   var expires = "expires=" + d.toUTCString();
   document.cookie = "savedCommands=" + text + ";" + expires + ";SameSite=Strict;path=/";
 }
 
-function loadCommandsFromCookie() {
-  var name = "savedCommands=";
-  var decodedCookie = decodeURIComponent(document.cookie);
-  var ca = decodedCookie.split(';');
-  for (var i = 0; i < ca.length; i++) {
-    var c = ca[i];
-    while (c.charAt(0) == ' ') {
-      c = c.substring(1);
-    }
-    if (c.indexOf(name) == 0) {
-      document.getElementById("commands").value = c.substring(name.length, c.length);
-    }
+function loadCommandsFromLocalStorage() {
+  var savedCommands = localStorage.getItem("savedCommands");
+  if (savedCommands) {
+    document.getElementById("commands").value = decodeURIComponent(savedCommands);
   }
 }
+
 

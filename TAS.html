@@ -7,9 +7,9 @@
     <title>GLaMS</title>
     <link rel="stylesheet" href="./style.css?1" />
     <script src="https://cdn.jsdelivr.net/gh/makeabilitylab/p5js/_libraries/serial.js"></script>
-    <script src="./SwiCC_comms.js?2"></script>
-    <script src="./page_funcs.js?2"></script>
-    <script src="./TAS_page_funcs.js?2"></script>
+    <script src="./SwiCC_comms.js?3"></script>
+    <script src="./page_funcs.js?3"></script>
+    <script src="./TAS_page_funcs.js?5"></script>
     <script>
         function mainLoop() {
             setTimeout(mainLoop, 16);
@@ -25,7 +25,7 @@
         }
 
         document.addEventListener("DOMContentLoaded", function () {
-            loadCommandsFromCookie();
+            loadCommandsFromLocalStorage();
             getExamples();
             mainLoop();
         });
@@ -42,15 +42,16 @@
                     <div id="comms-box" class="content-box">
                         <div class="status-div" id="status-gamepad">- Gamepad -<br />Use gamepad to connect.</div>
                         <div class="status-div" id="status-serial" onclick="connectToSerialDevice()">- Comm Port
-                            -</br>Click
+                            -<br/>Click
                             here to connect.</div>
                         <div class="status-div" id="status-swicc">- SwiCC -<br />Not detected.</div>
                     </div>
                     <div id="examples-box" class="content-box">
                         <div class="stack-of-things">
-                            <p>Select from pre-computed image paths:</p>
+                            <p>Select from pre-computed image paths.</p>
+                            <p><a href="https://knflrpn.com/GLaMS/image_list.html">You can see the images here.</a></p>
                             <select id="filename-select"></select>
-                            <div class="btny-div" id="view-contents-btn">Load Image</div>
+                            <div class="btny-div" id="view-contents-btn" onclick="retrieveExample()">Load Image</div>
                             <div id="image-container"></div>
                         </div>
                     </div>

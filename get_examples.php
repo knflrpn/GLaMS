@@ -5,7 +5,7 @@ $dir = './imageExamples';
 // Open the directory
 if ($handle = opendir($dir)) {
 
-    // Initialize an array to hold the filenames
+    // Initialize an array to hold the filenames and their corresponding "12m" values
     $files = array();
 
     // Loop through the directory
@@ -16,14 +16,25 @@ if ($handle = opendir($dir)) {
             continue;
         }
 
-        // Add the filename to the array
-        $files[] = $entry;
+        // Extract the "12m" value from the filename
+        preg_match('/^[^_]+_([0-9]+)m_/', $entry, $matches);
+        $value = isset($matches[1]) ? (int)$matches[1] : 0;
+
+        // Add the filename and value to the array
+        $files[] = array('filename' => $entry, 'value' => $value);
     }
 
-    // Close the directory
-    closedir($handle);
+    // Sort the array by the "12m" value
+    usort($files, function($a, $b) {
+        return $a['value'] - $b['value'];
+    });
+
+    // Get an array of just the filenames
+    $filenames = array_map(function($file) {
+        return $file['filename'];
+    }, $files);
 
     // Send the list of filenames as a JSON-encoded string
-    echo json_encode($files);
+    echo json_encode($filenames);
 }
 ?>
