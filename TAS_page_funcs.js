@@ -32,6 +32,41 @@ function getExamples() {
 
 }
 
+function populateFromGET() {
+  // Check if the "filename" GET parameter is set
+  var urlParams = new URLSearchParams(window.location.search);
+  var filenameParam = urlParams.get('filename');
+  if (filenameParam) {
+    // Set the currently-selected item in the select box to the filenameParam value
+    retrieveCommands(filenameParam);
+  }
+}
+
+function retrieveCommands(selectedFilename) {
+    // Send an AJAX request to the PHP script to get the file contents
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'get_file_contents.php?filename=' + selectedFilename);
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+        // Set the contents of the "commands" box to the file contents
+        document.getElementById('commands').value = xhr.responseText;
+        // Load the image with the same filename as the selected file
+        var imageEl = document.createElement('img');
+        imageEl.src = './imageExamples/' + selectedFilename.split('_')[0] + '.gif';
+        const imageholder = document.getElementById('image-container');
+        while (imageholder.firstChild) {
+          imageholder.removeChild(imageholder.firstChild);
+        }
+        imageholder.appendChild(imageEl);
+        document.getElementById("executeCommands").click();
+      }
+      else {
+        console.log('Request failed.  Returned status of ' + xhr.status);
+      }
+    };
+    xhr.send();
+}
+
 function retrieveExample() {
     // Get the selected filename from the select element
     var selectedFilename = document.getElementById('filename-select').value;

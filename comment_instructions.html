@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mario Maker 2 Comment Drawing Instructions</title>
+    <link rel="stylesheet" href="./style.css?8" />
+</head>
+<body>
+    <main>
+        <div id="main-content" class="stack-of-things content-box" style="max-width: 120ch;">
+            <h1>Mario Maker 2 Comment Drawing Instructions</h1>
+            <div class="text-box">
+                <h2>Step 1: Getting the MM2 Color Map</h2>
+                <p>These instructions assume you will be using GIMP (<a href="https://www.gimp.org/">https://www.gimp.org/</a>)</p>
+                <ol>
+                    <li>Save this image:</li>
+                    <img src="https://knflrpn.com/GLaMS/images/MM2ColorMap.gif"/>
+                    <li>Open the image with GIMP.</li>
+                    <li>In GIMP, go to the "Windows" menu in the top menu bar, select "Dockable Dialogs", and select "Palettes" to open the Palette menu.</li>
+                    <li>In the Palette menu, right-click anywhere in the palettes and select "Import Palette..." from the context menu.</li>
+                    <li>In the dialog that opens, select the MM2ColorMap image as the source, give the new palette a name, and confirm that the settings are as shown here:</li>
+                    <img src="https://knflrpn.com/GLaMS/images/ImportColorMap.png"/>
+                </ol>
+            </div>
+            <div class="text-box">
+                <h2>Step 2: Making a GIF with the MM2 Color Map</h2>
+                <ol>
+                    <li>Open (in GIMP) the image you would like to start with.</li>
+                    <li>Scale and move the image as desired, ultimately ensuring that the canvas is 320x180 pixels (you can force a specific canvas size from the "Image > Canvas size" menu).</li>
+                    <li>Go to "Image > Mode > Indexed".</li>
+                    <li>Select "Use custom palette," and select the palette you created earlier. Note: Often, you'll want to play with brightness, contrast, and colors before converting to indexed color, and you can try different conversion settings (e.g. dithered or not) to get an image that looks as good as possible.</li>
+                </ol>
+                <p>I recorded a short video of the process here: <a href="https://youtu.be/T1gm6ZhWRIs">https://youtu.be/T1gm6ZhWRIs</a></p>
+            </div>
+            <div class="text-box">
+                <h2>Step 3: Converting the Image to Button Commands</h2>
+                <ol>
+                    <li>Download the image converter here: <a href="https://knflrpn.com/GLaMS/files/gif2mm2_v2.exe">https://knflrpn.com/GLaMS/files/gif2mm2_v2.exe</a>.</li>
+                    <li>Place the exe file in the same location as your images.</li>
+                    <li>In the Windows file explorer, drag your image onto the exe file to convert it.</li>
+                    <li>The program will generate a path and save it in a txt file in the same directory.</li>
+                    <li>Paste the commands from the txt file into the box on the <a href="https://knflrpn.com/GLaMS/comment_drawing.html">comment drawing webpage</a>.</li>
+                </ol>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
