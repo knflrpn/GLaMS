@@ -8,11 +8,16 @@
 	<meta http-equiv="Pragma" content="no-cache">
 	<meta http-equiv="Expires" content="0">
 	<title>GLaMS</title>
-	<link rel="stylesheet" href="./style.css?1" />
+	<link rel="stylesheet" href="./style.css?12" />
 	<script src="https://cdn.jsdelivr.net/gh/makeabilitylab/p5js/_libraries/serial.js"></script>
-	<script src="./SwiCC_comms.js?1"></script>
-	<script src="./page_funcs.js?1"></script>
+	<script src="./SwiCC_comms.js?12"></script>
+	<script src="./page_funcs.js?12"></script>
 	<script>
+
+		// Buffer to delay display outputs
+		const timeBuffer = [];
+		let oldModCon = '[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false]';
+		let oldModStick = '[0,0,0,0]';
 
 		/**
 		 * The main loop that runs the gamepad listening and manipulating logic.
@@ -43,18 +48,41 @@
 			applyForce();
 
 			updateMapDisplay();
-			updateConDisplay(curCon, modCon, curStick);
+//			updateConDisplay(curCon, modCon, curStick);
 
 			if (!queue_playing) { // Don't send real-time control while playing recording
 				packSwitchCon();
 				sendConToSwiCC();
 			}
 
-			// Communicate with other display pages
-			localStorage.setItem('GLaMS-curCon', JSON.stringify(curCon));
-			localStorage.setItem('GLaMS-curStick', JSON.stringify(curStick));
-			localStorage.setItem('GLaMS-modCon', JSON.stringify(modCon));
-			localStorage.setItem('GLaMS-modStick', JSON.stringify(modStick));
+			// If delaying, handle the delay
+			if (lagAmount > 0) {
+				const timestamp = Date.now();
+				// Save current data
+				timeBuffer.push({
+					timestamp,
+					delayedModCon: JSON.stringify(modCon),
+					delayedModStick: JSON.stringify(modStick)
+				});
+				// Check for changes that are older than lagAmount and apply them to modCon and modStick
+				if (timeBuffer.length > 0) {
+					while (timestamp - timeBuffer[0].timestamp >= lagAmount) {
+						const delayedValues = timeBuffer.shift();
+						oldModCon = delayedValues.delayedModCon;
+						oldModStick = delayedValues.delayedModStick;
+					}
+					localStorage.setItem('GLaMS-modCon', oldModCon);
+					localStorage.setItem('GLaMS-modStick', oldModStick);
+				}
+			} else {
+				// No delay; realtime modified data
+				localStorage.setItem('GLaMS-modCon', JSON.stringify(modCon));
+				localStorage.setItem('GLaMS-modStick', JSON.stringify(modStick));
+			}
+
+				// Communicate with other display pages
+				localStorage.setItem('GLaMS-curCon', JSON.stringify(curCon));
+				localStorage.setItem('GLaMS-curStick', JSON.stringify(curStick));
 
 		}
 
@@ -83,104 +111,24 @@
 							- Comm Port -<br />Click here to connect.</div>
 						<div class="status-div" id="status-swicc">- SwiCC -<br />Not detected.</div>
 					</div>
-					<div id="gamepad-image" class="content-box">
-						<svg viewBox="0 0 360 300" width="360" height="300" fill="none"
-							xmlns="http://www.w3.org/2000/svg">
-							<style>
-								text {
-									font-family: sans-serif;
-									font-size: 12px;
-									text-anchor: middle;
-								}
-							</style>
-							<g id="SwiCC-disp" stroke="rgb(0,0,0)">
-								<rect id="ConBGBox" x="15" y="25" width="330" height="260" rx="30"
-									fill="rgba(255,255,255,1)" stroke-width="3" />
-
-								<circle id="LStickOutline" cx="130" cy="225" r="40" stroke-width="3"
-									stroke="rgba(203, 203, 203, 1)" fill="rgba(0,0,0,0)" />
-								<circle id="LeftStick" cx="130" cy="225" r="20" transform="translate(0, 0)"
-									stroke-width="3" stroke="rgba(0,0,0,1)" fill="rgba(255,255,255,1)" />
-
-								<circle id="RStickOutline" cx="230" cy="225" r="40" stroke-width="3"
-									stroke="rgba(203, 203, 203, 1)" fill="rgba(0,0,0,0)" />
-								<circle id="RightStick" cx="230" cy="225" r="20" transform="translate(0, 0)"
-									stroke-width="3" fill="rgba(255,255,255,1)" />
-
-								<circle id="DOutline" cx="80" cy="150" r="40" stroke-width="3"
-									stroke="rgba(203, 203, 203, 1)" fill="rgba(0,0,0,0)" />
-								<mask id="mask-button-left" fill="white" stroke="white">
-									<circle cx="80" cy="150" r="10" stroke-width="3" />
-								</mask>
-								<circle id="DUp" cx="80" cy="150" r="10" transform="translate(0, -20)"
-									fill="rgba(255,255,255,0)" stroke-width="3" mask="url(#mask-button-left)" />
-								<circle id="DRight" cx="80" cy="150" r="10" transform="translate(20, 0)"
-									fill="rgba(255,255,255,0)" stroke-width="3" mask="url(#mask-button-left)" />
-								<circle id="DDown" cx="80" cy="150" r="10" transform="translate(0, 20)"
-									fill="rgba(255,255,255,0)" stroke-width="3" mask="url(#mask-button-left)" />
-								<circle id="DLeft" cx="80" cy="150" r="10" transform="translate(-20, 0)"
-									fill="rgba(255,255,255,0)" stroke-width="3" mask="url(#mask-button-left)" />
-
-								<circle id="BOutline" cx="280" cy="150" r="40" stroke-width="3"
-									stroke="rgba(203, 203, 203, 1)" fill="rgba(0,0,0,0)" />
-								<mask id="mask-button-right" fill="white" stroke="white">
-									<circle cx="280" cy="150" r="12" stroke-width="0" />
-								</mask>
-								<circle id="BTop" cx="280" cy="150" r="10" transform="translate(0, -20)"
-									fill="rgba(255,255,255,0)" stroke-width="3" mask="url(#mask-button-right)" />
-								<circle id="BRight" cx="280" cy="150" r="10" transform="translate(20, 0)"
-									fill="rgba(255,255,255,0)" stroke-width="3" mask="url(#mask-button-right)" />
-								<circle id="BBottom" cx="280" cy="150" r="10" transform="translate(0, 20)"
-									fill="rgba(255,255,255,0)" stroke-width="3" mask="url(#mask-button-right)" />
-								<circle id="BLeft" cx="280" cy="150" r="10" transform="translate(-20, 0)"
-									fill="rgba(255,255,255,0)" stroke-width="3" mask="url(#mask-button-right)" />
-
-								<circle id="Minus" cx="155" cy="150" r="10" fill="rgba(255,255,255,1)"
-									stroke-width="3" />
-								<circle id="Plus" cx="205" cy="150" r="10" fill="rgba(255,255,255,1)"
-									stroke-width="3" />
-
-								<mask id="mask-L1" fill="white" stroke="white">
-									<rect x="50" y="80" width="50" height="15" rx="7" stroke-width="3" />
-								</mask>
-								<mask id="mask-R1" fill="white" stroke="white">
-									<rect x="260" y="80" width="50" height="15" rx="7" stroke-width="3" />
-								</mask>
-								<mask id="mask-L2" fill="white" stroke="white">
-									<rect x="50" y="40" width="50" height="30" rx="7" stroke-width="3" />
-								</mask>
-								<mask id="mask-R2" fill="white" stroke="white">
-									<rect x="260" y="40" width="50" height="30" rx="7" stroke-width="3" />
-								</mask>
-								<rect id="L1" x="50" y="80" width="50" height="15" rx="7" fill="rgba(255,255,255,1)"
-									stroke-width="3" mask="url(#mask-L1)" />
-								<rect id="R1" x="260" y="80" width="50" height="15" rx="7" fill="rgba(255,255,255,1)"
-									stroke-width="3" mask="url(#mask-R1)" />
-								<rect id="L2" x="50" y="40" width="50" height="30" rx="7" fill="rgba(255,255,255,1)"
-									stroke-width="3" mask="url(#mask-L2)" />
-								<rect id="R2" x="260" y="40" width="50" height="30" rx="7" fill="rgba(255,255,255,1)"
-									stroke-width="3" mask="url(#mask-R2)" />
-
-								<text id="BTopText" x="280" y="154" fill="rgba(0,0,0,1)" stroke-width=0
-									transform="translate(0, -20)">X</text>
-								<text id="BRightText" x="280" y="154" fill="rgba(0,0,0,1)" stroke-width=0
-									transform="translate(20, 0)">A</text>
-								<text id="BBottomText" x="280" y="154" fill="rgba(0,0,0,1)" stroke-width=0
-									transform="translate(0, 20)">B</text>
-								<text id="BLeftText" x="280" y="154" fill="rgba(0,0,0,1)" stroke-width=0
-									transform="translate(-20, 0)">Y</text>
-							</g>
-						</svg>
-					</div>
+					<iframe id="gamepad-iframe" class="content-box" style="height:100%;" src="./inoutCon.html" frameborder="0">
+						<!-- The gamepad display -->
+					</iframe>
 					<div class="content-box">
 						<div class="row-of-things">
 							<div class="stack-of-things">
-								<div class="btny-div" onclick="toggleStick2Dpad(1)">Convert left stick to dpad</div>
-								<div class="status-div" id="status-stick2dpad">disabled</div>
+								<div class="btny-div" id="status-stick2dpad" onclick="toggleStick2Dpad(1)">Convert left stick to dpad</div>
 							</div>
 							<div class="stack-of-things">
-								<div class="btny-div" onclick="toggleStick2Dpad(2)">Convert right stick to ABXY</div>
-								<div class="status-div" id="status-stick2abxy">disabled</div>
+								<div class="btny-div" id="status-stick2abxy" onclick="toggleStick2Dpad(2)">Convert right stick to ABXY</div>
+							</div>
+							<div class="stack-of-things">
+								Rotate stick outputs (CW degrees [-180,180]):
+								<div class="row-of-things">
+									<div class="btny-div" style="width:max-content;" id="rot-down" onclick="changeRotation(-10)">CCW 10</div>
+									<input type="text" id="rotate-amt" style="border:1px solid black" value="0" onChange="setRotation()">
+									<div class="btny-div" style="width:max-content;" id="rot-up" onclick="changeRotation(10)">CW 10</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -204,10 +152,10 @@
 			<div class="row-of-things"> <!-- Other tools -->
 				<div class="content-box">
 					<div class="stack-of-things">
-						Delay (# frames):
-						<div class="btny-div" id="lag-up" onclick="changeLag(1)">Increase</div>
+						Delay (milliseconds):
+						<div class="btny-div" id="lag-up" onclick="changeLag(16.66666666666666666)">+16.6 (1 frame)</div>
 						<input type="text" id="lag-num" style="border:1px solid black" value="0" onChange="setLag()">
-						<div class="btny-div" id="lag-down" onclick="changeLag(-1)">Decrease</div>
+						<div class="btny-div" id="lag-down" onclick="changeLag(-16.6666666666666666)">-16.6 (1 frame)</div>
 					</div>
 				</div>
 				<div class="content-box">

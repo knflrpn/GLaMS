@@ -4,91 +4,94 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-	<meta http-equiv="Pragma" content="no-cache">
-	<meta http-equiv="Expires" content="0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>GLaMS ConDisp</title>
-    <link rel="stylesheet" href="./style.css?10" />
-    <script src="./page_funcs.js?10"></script>
+    <link rel="stylesheet" href="./style.css?12" />
+    <script src="./page_funcs.js?12"></script>
     <script>
         let curCon = Array(16).fill(false);
         let modCon = Array(16).fill(false);
         let curStick = Array(4).fill(128);
+        let modStick = Array(4).fill(128);
         let gamepad_connected = true;
         function dispLoop() {
             if (localStorage.getItem("GLaMS-curCon") !== null) {
                 curCon = JSON.parse(localStorage.getItem('GLaMS-curCon'));
                 modCon = JSON.parse(localStorage.getItem('GLaMS-modCon'));
                 curStick = JSON.parse(localStorage.getItem('GLaMS-curStick'));
+                modStick = JSON.parse(localStorage.getItem('GLaMS-modStick'));
             }
             const disp_in = document.getElementById("in_disp_en").checked;
             const disp_out = document.getElementById("out_disp_en").checked;
             if (disp_in && disp_out) {
-                updateConDisplay(curCon, modCon, curStick);
+                updateConDisplay(curCon, modCon, curStick, modStick);
             } else if (disp_in) {
-                updateConDisplay(curCon, curCon, curStick);
+                updateConDisplay(curCon, curCon, curStick, curStick);
             } else if (disp_out) {
-                updateConDisplay(modCon, modCon, curStick);
+                updateConDisplay(modCon, modCon, modStick, modStick);
             }
             requestAnimationFrame(dispLoop);
         }
         function changeColors(event) {
             let newvalue = document.getElementById("bg-col-sel").value;
             document.body.style.backgroundColor = newvalue;
-            setCookie("bg-col-sel" + "-color", newvalue);
+            setLocalStorageItem("bg-col-sel" + "-color", newvalue);
 
             newvalue = document.getElementById("box-col-sel").value;
             document.getElementById("ConBGBox").setAttribute("fill", newvalue);
-            setCookie("box-col-sel" + "-color", newvalue);
+            setLocalStorageItem("box-col-sel" + "-color", newvalue);
 
             newvalue = document.getElementById("active-in-col-sel").value;
             in_btn_highlight = newvalue;
-            setCookie("active-in-col-sel" + "-color", newvalue);
+            setLocalStorageItem("active-in-col-sel" + "-color", newvalue);
 
             newvalue = document.getElementById("active-out-col-sel").value;
             out_btn_highlight = newvalue
-            setCookie("active-out-col-sel" + "-color", newvalue);
+            setLocalStorageItem("active-out-col-sel" + "-color", newvalue);
 
             newvalue = document.getElementById("stroke-col-sel").value;
             document.getElementById("SwiCC-disp").setAttribute("stroke", newvalue);
-            setCookie("stroke-col-sel" + "-color", newvalue);
+            document.getElementById("accent-fills").setAttribute("fill", newvalue);
+            setLocalStorageItem("stroke-col-sel" + "-color", newvalue);
 
             newvalue = document.getElementById("accent-col-sel").value;
             document.getElementById("accents").setAttribute("stroke", newvalue);
-            setCookie("accent-col-sel" + "-color", newvalue);
+            setLocalStorageItem("accent-col-sel" + "-color", newvalue);
 
         }
 
         document.addEventListener("DOMContentLoaded", function () {
-            // Load the colors from cookie
+            // Load the colors from local storage
             const bgColSel = document.getElementById("bg-col-sel");
-            const bgColSelColor = getCookie("bg-col-sel-color");
+            const bgColSelColor = getLocalStorageItem("bg-col-sel-color");
             if (bgColSelColor) {
                 bgColSel.value = bgColSelColor;
             }
             const boxColSel = document.getElementById("box-col-sel");
-            const boxColSelColor = getCookie("box-col-sel-color");
+            const boxColSelColor = getLocalStorageItem("box-col-sel-color");
             if (boxColSelColor) {
                 boxColSel.value = boxColSelColor;
             }
             const activeInColSel = document.getElementById("active-in-col-sel");
-            const activeInColSelColor = getCookie("active-in-col-sel-color");
+            const activeInColSelColor = getLocalStorageItem("active-in-col-sel-color");
             if (activeInColSelColor) {
                 activeInColSel.value = activeInColSelColor;
             }
             const activeOutColSel = document.getElementById("active-out-col-sel");
-            const activeOutColSelColor = getCookie("active-out-col-sel-color");
+            const activeOutColSelColor = getLocalStorageItem("active-out-col-sel-color");
             if (activeOutColSelColor) {
                 activeOutColSel.value = activeOutColSelColor;
             }
             const strokeColSel = document.getElementById("stroke-col-sel");
-            const strokeColSelColor = getCookie("stroke-col-sel-color");
+            const strokeColSelColor = getLocalStorageItem("stroke-col-sel-color");
             if (strokeColSelColor) {
                 strokeColSel.value = strokeColSelColor;
             }
 
             const accentColSel = document.getElementById("accent-col-sel");
-            const accentColSelColor = getCookie("accent-col-sel-color");
+            const accentColSelColor = getLocalStorageItem("accent-col-sel-color");
             if (accentColSelColor) {
                 accentColSel.value = accentColSelColor;
             }
@@ -116,7 +119,7 @@
         <div id="main-content" class="stack-of-things"> <!-- Main center column -->
             <div id="gamepad-image" class="content-box" style="background-color: #0000;">
                 <?xml version="1.0" encoding="utf-8"?>
-                <svg viewBox="0 0 360 300" width="360" height="300" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg viewBox="0 30 360 270" width="360" height="270" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <style>
                         text {
                             font-family: sans-serif;
@@ -125,89 +128,89 @@
                         }
                     </style>
                     <g id="SwiCC-disp" stroke="rgb(0,0,0)">
-                        <rect id="ConBGBox" x="15" y="25" width="330" height="260" rx="30" fill="rgba(255,255,255,1)"
+                        <rect id="ConBGBox" x="15" y="45" width="330" height="240" rx="30" fill="rgba(255,255,255,1)"
                             stroke-width="3" />
 
                         <g id="accents" stroke="rgb(100,100,100)">
-                        <circle id="LStickOutline" cx="130" cy="225" r="40" stroke-width="3"
-                            fill="rgba(0,0,0,0)" />
-                            <circle id="RStickOutline" cx="230" cy="225" r="40" stroke-width="3"
-                            fill="rgba(0,0,0,0)" />
-                            <circle id="DOutline" cx="80" cy="150" r="40" stroke-width="3"
-                            fill="rgba(0,0,0,0)" />
-                            <circle id="BOutline" cx="280" cy="150" r="40" stroke-width="3"
-                            fill="rgba(0,0,0,0)" />
-                            </g>
+                            <circle id="LStickOutline" cx="130" cy="225" r="40" stroke-width="3" fill="rgba(0,0,0,0)" />
+                            <circle id="RStickOutline" cx="230" cy="225" r="40" stroke-width="3" fill="rgba(0,0,0,0)" />
+                            <circle id="DOutline" cx="80" cy="150" r="40" stroke-width="3" fill="rgba(0,0,0,0)" />
+                            <circle id="BOutline" cx="280" cy="150" r="40" stroke-width="3" fill="rgba(0,0,0,0)" />
+                        </g>
 
-                        <circle id="LeftStick" cx="130" cy="225" r="20" transform="translate(0, 0)" stroke-width="3"
-                            stroke="rgba(0,0,0,1)" fill="rgba(255,255,255,1)" />
+                        <g id="accent-fills" fill="rgba(0,0,0,0.4)" opacity="0.4">
+                            <circle id="LeftStickBack" cx="130" cy="225" r="20" transform="translate(0, 0)"
+                                stroke-width="0" stroke="rgba(100,100,100,1)" />
 
-                        <circle id="RightStick" cx="230" cy="225" r="20" transform="translate(0, 0)" stroke-width="3"
-                         fill="rgba(255,255,255,1)" />
+                            <circle id="RightStickBack" cx="230" cy="225" r="20" transform="translate(0, 0)"
+                                stroke-width="0" stroke="rgba(100,100,100,1)" />
+                        </g>
+
+                        <circle id="LeftStick" cx="130" cy="225" r="20" transform="translate(0, 0)" stroke-width="5"
+                            fill="rgba(255,255,255,1)" />
+
+                        <circle id="RightStick" cx="230" cy="225" r="20" transform="translate(0, 0)" stroke-width="5"
+                            fill="rgba(255,255,255,1)" />
 
                         <mask id="mask-button-left" fill="white" stroke="white">
                             <circle cx="80" cy="150" r="10" stroke-width="3" />
                         </mask>
                         <circle id="DUp" cx="80" cy="150" r="10" transform="translate(0, -20)"
-                            fill="rgba(255,255,255,0)" stroke-width="3"
-                            mask="url(#mask-button-left)" />
+                            fill="rgba(255,255,255,0)" stroke-width="5" mask="url(#mask-button-left)" />
                         <circle id="DRight" cx="80" cy="150" r="10" transform="translate(20, 0)"
-                            fill="rgba(255,255,255,0)" stroke-width="3"
-                            mask="url(#mask-button-left)" />
+                            fill="rgba(255,255,255,0)" stroke-width="5" mask="url(#mask-button-left)" />
                         <circle id="DDown" cx="80" cy="150" r="10" transform="translate(0, 20)"
-                            fill="rgba(255,255,255,0)" stroke-width="3"
-                            mask="url(#mask-button-left)" />
+                            fill="rgba(255,255,255,0)" stroke-width="5" mask="url(#mask-button-left)" />
                         <circle id="DLeft" cx="80" cy="150" r="10" transform="translate(-20, 0)"
-                            fill="rgba(255,255,255,0)" stroke-width="3"
-                            mask="url(#mask-button-left)" />
+                            fill="rgba(255,255,255,0)" stroke-width="5" mask="url(#mask-button-left)" />
 
                         <mask id="mask-button-right" fill="white" stroke="white">
                             <circle cx="280" cy="150" r="12" stroke-width="0" />
                         </mask>
                         <circle id="BTop" cx="280" cy="150" r="10" transform="translate(0, -20)"
-                            fill="rgba(255,255,255,0)" stroke-width="3"
-                            mask="url(#mask-button-right)" />
+                            fill="rgba(255,255,255,0)" stroke-width="5" mask="url(#mask-button-right)" />
                         <circle id="BRight" cx="280" cy="150" r="10" transform="translate(20, 0)"
-                            fill="rgba(255,255,255,0)" stroke-width="3"
-                            mask="url(#mask-button-right)" />
+                            fill="rgba(255,255,255,0)" stroke-width="5" mask="url(#mask-button-right)" />
                         <circle id="BBottom" cx="280" cy="150" r="10" transform="translate(0, 20)"
-                            fill="rgba(255,255,255,0)" stroke-width="3"
-                            mask="url(#mask-button-right)" />
+                            fill="rgba(255,255,255,0)" stroke-width="5" mask="url(#mask-button-right)" />
                         <circle id="BLeft" cx="280" cy="150" r="10" transform="translate(-20, 0)"
-                            fill="rgba(255,255,255,0)" stroke-width="3"
-                            mask="url(#mask-button-right)" />
+                            fill="rgba(255,255,255,0)" stroke-width="5" mask="url(#mask-button-right)" />
 
-                        <circle id="Minus" cx="155" cy="150" r="10" fill="rgba(255,255,255,1)"
-                            stroke-width="3" />
-                        <circle id="Plus" cx="205" cy="150" r="10" fill="rgba(255,255,255,1)"
-                            stroke-width="3" />
+                        <circle id="Minus" cx="155" cy="150" r="10" fill="rgba(255,255,255,1)" stroke-width="3" />
+                        <circle id="Plus" cx="205" cy="150" r="10" fill="rgba(255,255,255,1)" stroke-width="3" />
 
                         <mask id="mask-L1" fill="white" stroke="white">
-                            <rect x="50" y="80" width="50" height="15" rx="7" stroke-width="3" />
+                            <rect x="105" y="80" width="50" height="15" rx="7" stroke-width="3" />
                         </mask>
-                        <mask id="mask-R1" fill="white" stroke="white">
-                            <rect x="260" y="80" width="50" height="15" rx="7" stroke-width="3" />
-                        </mask>
-                        <mask id="mask-L2" fill="white" stroke="white">
-                            <rect x="50" y="40" width="50" height="30" rx="7" stroke-width="3" />
-                        </mask>
-                        <mask id="mask-R2" fill="white" stroke="white">
-                            <rect x="260" y="40" width="50" height="30" rx="7" stroke-width="3" />
-                        </mask>
-                        <rect id="L1" x="50" y="80" width="50" height="15" rx="7" fill="rgba(255,255,255,1)"
-                         stroke-width="3" mask="url(#mask-L1)" />
-                        <rect id="R1" x="260" y="80" width="50" height="15" rx="7" fill="rgba(255,255,255,1)"
-                         stroke-width="3" mask="url(#mask-R1)" />
-                        <rect id="L2" x="50" y="40" width="50" height="30" rx="7" fill="rgba(255,255,255,1)"
-                         stroke-width="3" mask="url(#mask-L2)" />
-                        <rect id="R2" x="260" y="40" width="50" height="30" rx="7" fill="rgba(255,255,255,1)"
-                         stroke-width="3" mask="url(#mask-R2)" />
+                        <rect id="L1" x="105" y="80" width="50" height="15" rx="7" fill="rgba(255,255,255,1)"
+                            stroke-width="3" mask="url(#mask-L1)" />
 
-                        <text id="BTopText" x="280" y="154" fill="rgba(0,0,0,1)" stroke-width=0 transform="translate(0, -20)">X</text>
-                        <text id="BRightText" x="280" y="154" fill="rgba(0,0,0,1)" stroke-width=0 transform="translate(20, 0)">A</text>
+                        <mask id="mask-R1" fill="white" stroke="white">
+                            <rect x="205" y="80" width="50" height="15" rx="7" stroke-width="3" />
+                        </mask>
+                        <rect id="R1" x="205" y="80" width="50" height="15" rx="7" fill="rgba(255,255,255,1)"
+                            stroke-width="3" mask="url(#mask-R1)" />
+
+                        <mask id="mask-L2" fill="white" stroke="white">
+                            <rect x="40" y="65" width="50" height="30" rx="7" stroke-width="3" />
+                        </mask>
+                        <rect id="L2" x="40" y="65" width="50" height="30" rx="7" fill="rgba(255,255,255,1)"
+                            stroke-width="3" mask="url(#mask-L2)" />
+
+                        <mask id="mask-R2" fill="white" stroke="white">
+                            <rect x="270" y="65" width="50" height="30" rx="7" stroke-width="3" />
+                        </mask>
+                        <rect id="R2" x="270" y="65" width="50" height="30" rx="7" fill="rgba(255,255,255,1)"
+                            stroke-width="3" mask="url(#mask-R2)" />
+
+                        <text id="BTopText" x="280" y="154" fill="rgba(0,0,0,1)" stroke-width=0
+                            transform="translate(0, -20)">X</text>
+                        <text id="BRightText" x="280" y="154" fill="rgba(0,0,0,1)" stroke-width=0
+                            transform="translate(20, 0)">A</text>
                         <text id="BBottomText" x="280" y="154" fill="rgba(0,0,0,1)" stroke-width=0
                             transform="translate(0, 20)">B</text>
-                        <text id="BLeftText" x="280" y="154" fill="rgba(0,0,0,1)" stroke-width=0 transform="translate(-20, 0)">Y</text>
+                        <text id="BLeftText" x="280" y="154" fill="rgba(0,0,0,1)" stroke-width=0
+                            transform="translate(-20, 0)">Y</text>
                     </g>
                 </svg>
             </div>

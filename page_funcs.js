@@ -231,18 +231,14 @@ function toggleStick2Dpad(side) {
     const elL = document.getElementById('status-stick2dpad');
     if (stick_to_dpad & 1) {
         elL.classList.add('indicator-active');
-        elL.textContent = "enabled";
     } else {
         elL.classList.remove('indicator-active');
-        elL.textContent = "disabled";
     }
     const elR = document.getElementById('status-stick2abxy');
     if (stick_to_dpad & 2) {
         elR.classList.add('indicator-active');
-        elR.textContent = "enabled";
     } else {
         elR.classList.remove('indicator-active');
-        elR.textContent = "disabled";
     }
 }
 
@@ -275,7 +271,7 @@ let in_btn_highlight = "rgba(0,128,0,1)";
  * @param {boolean[]} outBtns - An array of boolean values indicating whether each output button should be highlighted.
  * @param {number[]} stickPos - An array of four values representing the position of the two sticks on the gamepad.
  */
-function updateConDisplay(inBtns, outBtns, stickPos) {
+function updateConDisplay(inBtns, outBtns, inStickPos, outStickPos) {
     // Do not update the display if a gamepad is not connected
     if (!gamepad_connected) { return; }
 
@@ -298,12 +294,19 @@ function updateConDisplay(inBtns, outBtns, stickPos) {
     }
 
     // Move the left and right sticks to their updated positions
-    const dlx = (stickPos[0] - 128) / 10;
-    const dly = (stickPos[1] - 128) / 10;
-    const drx = (stickPos[2] - 128) / 10;
-    const dry = (stickPos[3] - 128) / 10;
+    const dlx = (outStickPos[0] * 15);
+    const dly = (outStickPos[1] * 15);
+    const drx = (outStickPos[2] * 15);
+    const dry = (outStickPos[3] * 15);
     document.getElementById("LeftStick").setAttribute("transform", `translate(${dlx},${dly})`);
     document.getElementById("RightStick").setAttribute("transform", `translate(${drx},${dry})`);
+    // Move the left and right sticks to their updated positions
+    const dlxb = (inStickPos[0] * 15);
+    const dlyb = (inStickPos[1] * 15);
+    const drxb = (inStickPos[2] * 15);
+    const dryb = (inStickPos[3] * 15);
+    document.getElementById("LeftStickBack").setAttribute("transform", `translate(${dlxb},${dlyb})`);
+    document.getElementById("RightStickBack").setAttribute("transform", `translate(${drxb},${dryb})`);
 }
 
 function updateMapDisplay() {
@@ -380,11 +383,12 @@ function changeLag(amt) {
         lagAmount = 0;
         lag_enabled = false;
     } else {
-        if (lagAmount > 120) lagAmount = 120;
+        if (lagAmount > 2000) lagAmount = 2000;
         lag_enabled = true;
     }
-    sendTextToSwiCC("+SLAG " + lagAmount + "\n");
-    document.getElementById("lag-num").value = lagAmount;
+    let delay_frames = Math.ceil(lagAmount * 60 / 1000);
+    sendTextToSwiCC("+SLAG " + delay_frames + "\n");
+    document.getElementById("lag-num").value = Math.round(lagAmount*100)/100;
 }
 
 /**
@@ -393,14 +397,14 @@ function changeLag(amt) {
 function setLag() {
     // Get the lag amount from the input field
     const lagInput = document.getElementById("lag-num");
-    lagAmount = parseInt(lagInput.value);
+    lagAmount = parseFloat(lagInput.value);
     if (isNaN(lagAmount)) lagAmount = 0;
 
     // Set the lag amount and update the lag status based on the input value
     lag_enabled = false;
     if (lagAmount > 0) {
-        if (lagAmount > 120) {
-            lagAmount = 120;
+        if (lagAmount > 2000) {
+            lagAmount = 2000;
         }
         lag_enabled = true;
     }
@@ -409,20 +413,70 @@ function setLag() {
     sendTextToSwiCC("+SLAG " + lagAmount + "\n");
 
     // Update the input field value to match the actual lag amount
-    lagInput.value = lagAmount;
+    lagInput.value = Math.round(lagAmount*100)/100;
+}
+
+function changeRotation(amt) {
+    stick_rotation += amt;
+    if (stick_rotation < -180) {
+        stick_rotation = -180;
+    }
+    else if (stick_rotation > 180) {
+        stick_rotation = 180;
+    }
+    document.getElementById("rotate-amt").value = stick_rotation;
 }
 
 /**
- * Set a cookie with the given name and value.
- * @param {string} name - The name of the cookie to be set.
- * @param {string} value - The value to be stored in the cookie.
+ * Set the rotation amount for the sticks.
  */
-function setCookie(name, value) {
-    // Encode the value to ensure it can be safely stored in the cookie
-    const encodedValue = encodeURIComponent(value);
+function setRotation() {
+    // Get the lag amount from the input field
+    const rotInput = document.getElementById("rotate-amt");
+    stick_rotation = parseInt(rotInput.value);
+    if (isNaN(stick_rotation)) {
+        stick_rotation = 0;
+        rotInput.value = stick_rotation;
+    }
+}
 
-    // Set the cookie with the specified name, value, and expiration date
-    document.cookie = `${name}=${encodedValue}; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/; SameSite=Strict`;
+/**
+ * Set a value in local storage and remove the corresponding cookie.
+ * @param {string} name - The name of the item to be set.
+ * @param {string} value - The value to be stored.
+ */
+function setLocalStorageItem(name, value) {
+    // Remove the cookie with the specified name, if it exists
+    deleteCookie(name);
+
+    // Store the value in local storage
+    localStorage.setItem(name, value);
+}
+
+/**
+ * Retrieve the value of an item in local storage.
+ * @param {string} name - The name of the item to retrieve.
+ * @returns {string|null} The value of the item, or null if the item does not exist.
+ */
+function getLocalStorageItem(name) {
+    // If the cookie exists, delete it and store the value in local storage
+    const cookieValue = getCookie(name);
+    if (cookieValue !== null) {
+        deleteCookie(name);
+        localStorage.setItem(name, cookieValue);
+    }
+
+    // Return the value from local storage
+    return localStorage.getItem(name);
+}
+
+/**
+ * Remove a cookie with the specified name.
+ * @param {string} name - The name of the cookie to delete.
+ */
+function deleteCookie(name) {
+    // Set the cookie's expiration date to a past date to remove it
+    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; SameSite=Strict`;
 }
 
 /**

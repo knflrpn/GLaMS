@@ -4,19 +4,20 @@ let swCon_p = Array(0, 0, 0, 0, 0, 0, 0); // previous value sent
 // The data last read from the game controller
 let curCon = Array(17).fill(false);
 let curToggle = Array(17).fill(false);
-let curStick = Array(4).fill(128); // already converted to bytes
-// The modification array
-let modArray = Array(16).fill(0);
-let modArrayStale = true;
+let curStick = Array(4).fill(0.0); // already converted to bytes
+// The modification information
+let modArray = Array(16).fill(0);  // Button-to-button mapping array
+let modArrayStale = true;       // Flag that array needs to be re-pulled from page.
+let stick_rotation = 0.0;  // Amount to rotate stick movement (in degrees CW)
 // The modified gamepad data
 let modCon = Array(17).fill(false);
-let modStick = Array(4).fill(128);
+let modStick = Array(4).fill(0.0);
 // Gamepad data to force
 let forceCon = Array(16).fill(false);
 
 let gamepad_connected = false;
 let gamepad_num = 0;
-let stick_to_dpad = 0;
+let stick_to_dpad = 0;  // bitmask; 0th=left, 1st=right
 let lag_enabled = false;
 let autojump_enabled = false;
 const STICK_DEADZONE = 0.08;
@@ -80,10 +81,10 @@ function packSwitchCon(skipMod=false) {
     }
 
     // Sticks
-    swCon[3] = sendStick[0];
-    swCon[4] = sendStick[1];
-    swCon[5] = sendStick[2];
-    swCon[6] = sendStick[3];
+    swCon[3] = stick2Byte(sendStick[0]);
+    swCon[4] = stick2Byte(sendStick[1]);
+    swCon[5] = stick2Byte(sendStick[2]);
+    swCon[6] = stick2Byte(sendStick[3]);
 
 }
 
@@ -177,25 +178,11 @@ function readGamepad(con_index) {
             }
             curCon[i] = gamepad.buttons[i].value > 0.3;
         }
-        // Convert stick values to bytes
-        curStick[0] = stick2Byte(gamepad.axes[0]);
-        curStick[1] = stick2Byte(gamepad.axes[1]);
-        curStick[2] = stick2Byte(gamepad.axes[2]);
-        curStick[3] = stick2Byte(gamepad.axes[3]);
-    }
-    // Convert stick to dpad if desired.
-    if (stick_to_dpad & 1) {
-        if (curStick[0] < 128 - (0.45 * 128)) curCon[14] = true;
-        if (curStick[0] > 128 + (0.45 * 128)) curCon[15] = true;
-        if (curStick[1] < 128 - (0.45 * 128)) curCon[12] = true;
-        if (curStick[1] > 128 + (0.45 * 128)) curCon[13] = true;
-    }
-    // Convert stick to abxy if desired.
-    if (stick_to_dpad & 2) {
-        if (curStick[2] < 128 - (0.45 * 128)) curCon[2] = true;
-        if (curStick[2] > 128 + (0.45 * 128)) curCon[1] = true;
-        if (curStick[3] < 128 - (0.45 * 128)) curCon[3] = true;
-        if (curStick[3] > 128 + (0.45 * 128)) curCon[0] = true;
+        // Retrieve stick values
+        curStick[0] = gamepad.axes[0];
+        curStick[1] = gamepad.axes[1];
+        curStick[2] = gamepad.axes[2];
+        curStick[3] = gamepad.axes[3];
     }
 }
 
@@ -225,10 +212,28 @@ function applyMap() {
     }
     modCon[16] = curCon[16]; // home
 
-    modStick[0] = curStick[0];
-    modStick[1] = curStick[1];
-    modStick[2] = curStick[2];
-    modStick[3] = curStick[3];
+    let rot_rads = stick_rotation * (Math.PI / 180);
+    // Use global stick_rotation to rotate stick values
+    modStick[0] = curStick[0] * Math.cos(rot_rads) - curStick[1] * Math.sin(rot_rads);
+    modStick[1] = curStick[0] * Math.sin(rot_rads) + curStick[1] * Math.cos(rot_rads);
+    modStick[2] = curStick[2] * Math.cos(rot_rads) - curStick[3] * Math.sin(rot_rads);
+    modStick[3] = curStick[2] * Math.sin(rot_rads) + curStick[3] * Math.cos(rot_rads);
+
+    // Convert stick to dpad if desired.
+    if (stick_to_dpad & 1) {
+        if (modStick[0] < -0.45) curCon[14] = true;
+        if (modStick[0] > 0.45) curCon[15] = true;
+        if (modStick[1] < -0.45) curCon[12] = true;
+        if (modStick[1] > 0.45) curCon[13] = true;
+    }
+    // Convert stick to abxy if desired.
+    if (stick_to_dpad & 2) {
+        if (modStick[2] < -0.45) curCon[2] = true;
+        if (modStick[2] > 0.45) curCon[1] = true;
+        if (modStick[3] < -0.45) curCon[3] = true;
+        if (modStick[3] > 0.45) curCon[0] = true;
+    }
+
 }
 
 function applyForce() {
