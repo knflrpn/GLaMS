@@ -564,8 +564,12 @@ function runTAS() {
         commandQueue = [];
         updateRunButtonLabel("Run");
     } else {
-        saveCommandsToCookie();
         saveCommandsToLocalStorage();
+
+        // Clear queue
+        commandQueue = [];
+        // Initial controller state to get SwiCC into buffer mode.
+        queueConData("", 2, 128, 128, 128, 128);
 
         const inputText = document.getElementById("commands").value;
 
@@ -585,13 +589,16 @@ function runTAS() {
             const btns = btnsMatch[1].trim();
             const remaining = btnsMatch[2].trim() || "";
             const frameCount = parseInt(remaining.trim().split(" ")[0]) || 1;
-            const [LX, LY, RX, RY] = remaining.split(" ").slice(1, 5).map(s => parseInt(s) || 128);
+            const [LX, LY, RX, RY] = remaining.split(" ").slice(1, 5).map(s => {
+                const parsed = parseInt(s);
+                return isNaN(parsed) ? 128 : parsed;
+            });
 
             queueConData(btns, frameCount, LX, LY, RX, RY);
         }
 
         // Add a neutral state at the end of the queue
-        queueConData("");
+        queueConData("", 2, 128, 128, 128, 128);
 
         // Send the queued commands to the Switch
         initiateQueueTransfer();

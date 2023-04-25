@@ -410,7 +410,8 @@ function setLag() {
     }
 
     // Send the lag amount to the gamepad
-    sendTextToSwiCC("+SLAG " + lagAmount + "\n");
+    let delay_frames = Math.ceil(lagAmount * 60 / 1000);
+    sendTextToSwiCC("+SLAG " + delay_frames + "\n");
 
     // Update the input field value to match the actual lag amount
     lagInput.value = Math.round(lagAmount*100)/100;

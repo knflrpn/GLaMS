@@ -23,8 +23,9 @@
 		 * The main loop that runs the gamepad listening and manipulating logic.
 		 */
 		function mainLoop() {
-			// Set next update; could also use requestAnimationFrame(mainLoop);
-			setTimeout(mainLoop, 16);
+			// Set next update;
+			requestAnimationFrame(mainLoop);
+			// or setTimeout(mainLoop, 16);
 
 			checkGamepads();
 			readGamepad(gamepad_num);
