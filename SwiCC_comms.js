@@ -18,6 +18,7 @@ let forceCon = Array(16).fill(false);
 let gamepad_connected = false;
 let gamepad_num = 0;
 let stick_to_dpad = 0;  // bitmask; 0th=left, 1st=right
+let recording = false;
 let lag_enabled = false;
 let autojump_enabled = false;
 const STICK_DEADZONE = 0.08;
@@ -26,8 +27,56 @@ let serial_connected = false;
 let swicc_detected = false;
 let queue_playing = false;
 
+let rec_buff_len = 16384;
+let recorded_amt = 0;
+let record_amt_rcvd = 0;
+
+
+function onSerialDataReceived(eventSender, newData) {
+    console.log(newData);
+    // Response of "+SwiCC" is from an ID request.
+    if (newData.startsWith("+SwiCC")) {
+        swicc_detected = true;
+        document.getElementById("status-swicc").classList.add("indicator-active");
+        document.getElementById("status-swicc").innerHTML = "- SwiCC -<br/>Active.";
+    }
+    // A request for queue fill amount will result in newData being in the form "+GQF NNNN" where the queue fill amount is the number in hex.  When that happens, populate queueFillResponses with the response.
+    if (newData.startsWith("+GQF ")) {
+        let response = parseInt(newData.substring(5).trim(), 16);
+        queueFillResponses.push(response);
+    }
+
+    if (newData.startsWith("+R ")) {
+        record_amt_rcvd++;
+        processAndAppendRecording(newData);
+    }
+
+    // There is still recorded data to get
+    if (newData.startsWith("+GR 1")) {
+        setRecordingProgressBar( record_amt_rcvd / recorded_amt * 100)
+        // Request next data
+        sendTextToSwiCC("+GR 1\n")
+    }
+
+    // There is still recorded data to get
+    if (newData.startsWith("+GR 0")) {
+        setRecordingProgressBar( 100 );
+    }
+
+    // SwiCC is sending record buffer size
+    if (newData.startsWith("+GRB ")) {
+        rec_buff_len = parseInt(newData.slice(5, 9), 16);
+    }
+    // SwiCC is sending record buffer fill
+    if (newData.startsWith("+GRF ")) {
+        recorded_amt = parseInt(newData.slice(5, 9), 16);
+        setRecordingProgressBar( recorded_amt / rec_buff_len * 100)
+    }
+}
+
+
 /* Pack the provided controller data into the Switch data format */
-function packSwitchCon(skipMod=false) {
+function packSwitchCon(skipMod = false) {
     const sendCon = skipMod ? curCon : modCon;
     const sendStick = skipMod ? curStick : modStick;
     // Low byte
@@ -291,21 +340,6 @@ function onSerialConnectionClosed(eventSender) {
     document.getElementById("status-swicc").innerHTML = "- SwiCC -<br/>Not detected.";
 }
 
-function onSerialDataReceived(eventSender, newData) {
-    //    console.log(newData);
-    // Response of "+SwiCC" is from an ID request.
-    if (newData === "+SwiCC") {
-        swicc_detected = true;
-        document.getElementById("status-swicc").classList.add("indicator-active");
-        document.getElementById("status-swicc").innerHTML = "- SwiCC -<br/>Active.";
-    }
-    // A request for queue fill amount will result in newData being in the form "+GQF NNNN" where the queue fill amount is the number in hex.  When that happens, populate queueFillResponses with the response.
-    if (newData.startsWith("+GQF")) {
-        let response = parseInt(newData.substring(5).trim(), 16);
-        queueFillResponses.push(response);
-    }
-}
-
 // Send text data over serial
 function sendTextToSwiCC(textData) {
     if (serial.isOpen()) {
@@ -313,11 +347,35 @@ function sendTextToSwiCC(textData) {
     }
 }
 
+function setVSYNCDelay(amount) {
+    console.log("Setting VSYNC delay to " + amount);
+    // Ensure the input amount is a number
+    if (typeof amount !== 'number') {
+        console.error('The amount must be a number.');
+        return;
+    }
+
+    // Check if the input amount is within the acceptable range (0 to 65535)
+    if (amount < 0 || amount > 65535) {
+        console.error('The amount must be within the range of 0 to 65535.');
+        return;
+    }
+
+    // Convert the amount to a 4-digit hexadecimal string with zero-padding
+    const hexAmount = amount.toString(16).padStart(4, '0').toUpperCase();
+
+    // Prepare the string to be sent
+    const command_string = `+VSD ${hexAmount}\n`;
+
+    // Call the sendTextToSwiCC function with the prepared string
+    sendTextToSwiCC(command_string);
+}
+
 function convertButtonString(btns) {
     let fButtnL = 0;
     let fButtnH = 0;
     let fHAT = 8;
-    const btnArr = btns.split(/[\s,]+/);
+    const btnArr = btns.toUpperCase().split(/[\s,]+/);
 
     if (btnArr.includes('Y')) {
         fButtnL |= 1;
@@ -350,13 +408,16 @@ function convertButtonString(btns) {
     if (btnArr.includes('+')) {
         fButtnH += 2;
     }
-    if (btnArr.includes('s')) {
+    if (btnArr.includes('SL')) {
+        fButtnH += 4;
+    }
+    if (btnArr.includes('SR')) {
         fButtnH += 8;
     }
-    if (btnArr.includes('h')) {
+    if (btnArr.includes('H')) {
         fButtnH += 16;
     }
-    if (btnArr.includes('c')) {
+    if (btnArr.includes('C')) {
         fButtnH += 32;
     }
 
@@ -396,13 +457,94 @@ function convertButtonString(btns) {
     return { fButtnH, fButtnL, fHAT };
 }
 
+function reverseConvertButtonString(fButtnH, fButtnL, fHAT) {
+    let btns = [];
+
+    if (fButtnL & 1) {
+        btns.push('Y');
+    }
+    if (fButtnL & 2) {
+        btns.push('B');
+    }
+    if (fButtnL & 4) {
+        btns.push('A');
+    }
+    if (fButtnL & 8) {
+        btns.push('X');
+    }
+    if (fButtnL & 16) {
+        btns.push('L1');
+    }
+    if (fButtnL & 32) {
+        btns.push('R1');
+    }
+    if (fButtnL & 64) {
+        btns.push('L2');
+    }
+    if (fButtnL & 128) {
+        btns.push('R2');
+    }
+
+    if (fButtnH & 1) {
+        btns.push('-');
+    }
+    if (fButtnH & 2) {
+        btns.push('+');
+    }
+    if (fButtnH & 4) {
+        btns.push('SL');
+    }
+    if (fButtnH & 8) {
+        btns.push('SR');
+    }
+    if (fButtnH & 16) {
+        btns.push('H');
+    }
+    if (fButtnH & 32) {
+        btns.push('C');
+    }
+
+    switch (fHAT) {
+        case 0:
+            btns.push('U');
+            break;
+        case 1:
+            btns.push('U', 'R');
+            break;
+        case 2:
+            btns.push('R');
+            break;
+        case 3:
+            btns.push('D', 'R');
+            break;
+        case 4:
+            btns.push('D');
+            break;
+        case 5:
+            btns.push('D', 'L');
+            break;
+        case 6:
+            btns.push('L');
+            break;
+        case 7:
+            btns.push('U', 'L');
+            break;
+        default:
+            // No action needed for fHAT = 8 as it's the neutral position
+            break;
+    }
+
+    return btns.join(' ');
+}
 
 let commandQueue = Array();
 let queueFillResponses = Array()
+let initialQueueLength = 1;
 /* Begins the queue transfer by sending an initial batch and scheduling the fill amount checking. */
 function initiateQueueTransfer() {
     queue_playing = true;
     if (commandQueue.length > 0) {
+        initialQueueLength = commandQueue.length;
         let numToSend = Math.min(60, commandQueue.length);
         if (numToSend > 0) {
             sendQueueToSwicc(60);
@@ -411,6 +553,7 @@ function initiateQueueTransfer() {
             setTimeout(continueQueueTransfer, 250);
         }
     }
+    setPlaybackProgressBar(0);
 }
 
 /* Checks the returned queue fill amount and sends the next batch if needed. */
@@ -429,6 +572,8 @@ function continueQueueTransfer() {
                 // All done
                 console.log("Done sending.");
                 queue_playing = false;
+                setPlaybackProgressBar(100);
+                return;
             }
         } else {
             // Queue decently full.
@@ -440,7 +585,7 @@ function continueQueueTransfer() {
     }
     // Ask for queue amount again
     sendTextToSwiCC("+GQF \n");
-
+    setPlaybackProgressBar((initialQueueLength - commandQueue.length) / initialQueueLength * 100)
 }
 
 /* Sends (at most) the specified number of queue entries to the switch */
@@ -616,3 +761,64 @@ function updateRunButtonLabel(label) {
     document.getElementById("run-btn").innerText = `Click to ${label}`;
 }
 
+function extractRecordingParams(hexStr) {
+    const headerPattern = /^\+R /;
+
+    const hexPart = hexStr.replace(headerPattern, '');
+
+    const fButtnH = parseInt(hexPart.slice(0, 2), 16);
+    const fButtnL = parseInt(hexPart.slice(2, 4), 16);
+    const fHAT = parseInt(hexPart.slice(4, 6), 16);
+    const sLX = parseInt(hexPart.slice(6, 8), 16);
+    const sLY = parseInt(hexPart.slice(8, 10), 16);
+    const sRX = parseInt(hexPart.slice(10, 12), 16);
+    const sRY = parseInt(hexPart.slice(12, 14), 16);
+    const count = parseInt(hexPart.slice(15, 17), 16);
+
+    return { fButtnH, fButtnL, fHAT, sLX, sLY, sRX, sRY, count };
+}
+
+function processAndAppendRecording(hexStr) {
+    const params = extractRecordingParams(hexStr);
+
+    const buttonString = reverseConvertButtonString(params.fButtnH, params.fButtnL, params.fHAT);
+
+    const rightStickString = (params.sRX !== 128 || params.sRY !== 128) ? ` ${params.sRX} ${params.sRY}` : '';
+    const leftStickString = (params.sLX !== 128 || params.sLY !== 128 || rightStickString !== '') ? ` ${params.sLX} ${params.sLY}` : '';
+
+    const formattedString = `{${buttonString}} ${params.count}${leftStickString}${rightStickString}`;
+
+    const textarea = document.getElementById('recorded-inputs');
+    textarea.value += formattedString + '\n';
+}
+
+function toggleRecordingState() {
+    const recBtn = document.getElementById("toggle-recording");
+    recording = !recording;
+    lag_enabled = recording;
+
+    if (recording) {
+        sendTextToSwiCC("+REC 1\n");
+        recBtn.textContent = "Stop recording";
+        recBtn.classList.add("indicator-active");
+        checkRecordingFill();
+    } else {
+        sendTextToSwiCC("+REC 0\n");
+        recBtn.textContent = "Start recording";
+        recBtn.classList.remove("indicator-active");
+    }
+}
+
+function checkRecordingFill() {
+    if (recording) {
+        sendTextToSwiCC("+GRF \n");
+        setTimeout(checkRecordingFill, 500);
+    }
+}
+
+function getRecording() {
+    const textarea = document.getElementById('recorded-inputs');
+    textarea.value = "";
+    record_amt_rcvd = 0;
+    sendTextToSwiCC("+GR 0\n");
+}

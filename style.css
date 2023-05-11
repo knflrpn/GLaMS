@@ -1,6 +1,7 @@
 html {
     box-sizing: border-box;
     font-size: 1em;
+    height: 100vh;
 }
 
 *,
@@ -17,12 +18,14 @@ html {
 
 body {
     background-color: #001d32;
+    height: 100%;
 }
 
 main {
     display: flex;
     justify-content: center;
     padding: 1rem;
+    height: 100%;
 }
 
 .stack-of-things {
@@ -47,6 +50,7 @@ main {
     grid-template-columns: 1fr 1fr 1fr;
 }
 
+
 .content-box {
     background-color: #fff6e6;
     padding: 1rem;
@@ -65,7 +69,7 @@ main {
 }
 
 .indicator-active {
-    background-color: green !important;
+    background-color: #008500 !important;
 }
 
 .table-container {
@@ -134,7 +138,7 @@ input {
 
 textarea {
     padding: 0.2rem 0.6rem;
-    height: 70rem;
+    height: 100%;
     width: 50ch;
 }
 
@@ -143,25 +147,25 @@ select {
 }
 
 #images {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  grid-gap: 20px;
-  width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-gap: 20px;
+    width: 100%;
 }
 
 #images div {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }
 
 #images img {
-  max-width: 100%;
+    max-width: 100%;
 }
 
 #images span {
-  font-size: 1.2rem;
+    font-size: 1.2rem;
 }
 
 #drawingCanvas {
@@ -177,22 +181,22 @@ h1 {
 }
 
 h2 {
-	font-size: 1.5rem;
-	margin-top: 1.5rem;
-	margin-bottom: 1rem;
-	background-color: #a0ff75;
-	padding: 0.5rem 2rem;
-	font-weight: bold;
+    font-size: 1.5rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    background-color: #a0ff75;
+    padding: 0.5rem 2rem;
+    font-weight: bold;
 }
 
 ol {
-	counter-reset: list-counter;
-	list-style-type: none;
-	padding: 1rem 1rem 1rem 2rem;
-	margin: 1rem 0rem;
-	background-color: #fffcf5;
-	border-radius: 1rem;
-	box-shadow: 0.2rem 0.2rem 1rem -0.5rem black;
+    counter-reset: list-counter;
+    list-style-type: none;
+    padding: 1rem 1rem 1rem 2rem;
+    margin: 1rem 0rem;
+    background-color: #fffcf5;
+    border-radius: 1rem;
+    box-shadow: 0.2rem 0.2rem 1rem -0.5rem black;
 }
 
 li {
@@ -202,6 +206,7 @@ li {
     line-height: 1.5;
     margin-bottom: 0.5rem;
 }
+
 /* Adding list counter before li */
 li::before {
     content: counter(list-counter) ".";
@@ -209,4 +214,29 @@ li::before {
     left: -1.5rem;
     font-weight: bold;
     color: #333;
+}
+
+.progress-container {
+    width: 100%;
+    height: 30px;
+    background-color: #ffffff;
+    position: relative;
+}
+
+.progress-bar {
+    height: 100%;
+    background-color: #008500;
+    position: absolute;
+    width: 0;
+    transition: width 0.25s;
+}
+
+.progress-label {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 14px;
+    font-weight: bold;
+    color: #000000;
 }

@@ -447,9 +447,6 @@ function setRotation() {
  * @param {string} value - The value to be stored.
  */
 function setLocalStorageItem(name, value) {
-    // Remove the cookie with the specified name, if it exists
-    deleteCookie(name);
-
     // Store the value in local storage
     localStorage.setItem(name, value);
 }
@@ -460,44 +457,6 @@ function setLocalStorageItem(name, value) {
  * @returns {string|null} The value of the item, or null if the item does not exist.
  */
 function getLocalStorageItem(name) {
-    // If the cookie exists, delete it and store the value in local storage
-    const cookieValue = getCookie(name);
-    if (cookieValue !== null) {
-        deleteCookie(name);
-        localStorage.setItem(name, cookieValue);
-    }
-
     // Return the value from local storage
     return localStorage.getItem(name);
-}
-
-/**
- * Remove a cookie with the specified name.
- * @param {string} name - The name of the cookie to delete.
- */
-function deleteCookie(name) {
-    // Set the cookie's expiration date to a past date to remove it
-    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; SameSite=Strict`;
-}
-
-/**
- * Retrieve the value of a cookie with the specified name.
- * @param {string} name - The name of the cookie to retrieve.
- * @returns {string|null} The value of the cookie, or null if the cookie does not exist.
- */
-function getCookie(name) {
-    // Split the document cookie into individual cookies
-    const cookies = document.cookie.split(';');
-
-    // Iterate over each cookie to find the one with the specified name
-    for (const cookie of cookies) {
-        const [cookieName, cookieValue] = cookie.split('=');
-        const trimmedName = cookieName.trim();
-        if (trimmedName === name) {
-            // Decode the value to retrieve the original value
-            return decodeURIComponent(cookieValue);
-        }
-    }
-    // Return null if the cookie was not found
-    return null;
 }

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GLaMS</title>
+    <link rel="stylesheet" href="./style.css?7" />
+    <script src="https://cdn.jsdelivr.net/gh/makeabilitylab/p5js/_libraries/serial.js"></script>
+    <script src="./SwiCC_comms.js?3"></script>
+    <script src="./page_funcs.js?3"></script>
+    <script src="./TAS_page_funcs.js?7"></script>
+    <script src="./command_parser.js?7"></script>
+    <script>
+        let sentConfig = false;
+        function mainLoop() {
+            setTimeout(mainLoop, 16);
+
+            checkGamepads();
+            readGamepad(gamepad_num);
+
+            if (swicc_detected && !sentConfig) {
+                // Enable vsync
+                sendTextToSwiCC("+VSYNC 1\n")
+                sendTextToSwiCC("+SLAG 0\n");
+                sendTextToSwiCC("+GRB \n"); // Check recording buffer size
+                setVSYNCDelayFromInput();
+                sentConfig = true;
+            }
+
+            if (!queue_playing) {
+                packSwitchCon(true);
+                sendConToSwiCC();
+            }
+
+        }
+
+        function setVSYNCDelayFromInput() {
+            const inputElement = document.getElementById('vsync-delay');
+            if (!inputElement) {
+                console.error('Element with id "vsync-delay" not found.');
+                return;
+            }
+
+            // Get the value of the inputElement and convert it to a number
+            const amount = parseInt(inputElement.value, 10);
+
+            // Check if the value is a valid number
+            if (isNaN(amount)) {
+                console.error('Invalid input value. Please enter a valid number.');
+                return;
+            }
+            // Save it for next time.
+            saveToLocalStorage("vsync_delay", amount);
+
+            // Call the setVSYNCDelay function with the parsed amount
+            setVSYNCDelay(amount);
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            loadCommandsFromLocalStorage();
+            saved_delay = loadFromLocalStorage('vsync_delay');
+            document.getElementById("vsync-delay").value = saved_delay;
+            mainLoop();
+        });
+
+    </script>
+
+</head>
+
+<body>
+    <main style="height:100vh;">
+        <div id="main-content" class="stack-of-things"> <!-- Main center column -->
+            <div class="row-of-things" style="height:100%;">
+                <div id="control-status" class="stack-of-things" style="height: 100%;">
+                    <div id="comms-box" class="content-box">
+                        <div class="status-div" id="status-gamepad">- Gamepad -<br />Use gamepad to connect.</div>
+                        <div class="status-div" id="status-serial" onclick="connectToSerialDevice()">- Comm Port -<br />
+                            Click here to connect.</div>
+                        <div class="status-div" id="status-swicc">- SwiCC -<br />Not detected.</div>
+                    </div>
+                    <div class="content-box">
+                        <input type="text" id="vsync-delay" style="border:1px solid black" value="0"> &nbsp;
+                        <div class="btny-div" id="set-vsync-delay" onclick="setVSYNCDelayFromInput()">Update VSYNC Delay</div>
+                    </div>
+                    <div class="content-box stack-of-things" style="height: 100%;">
+                        <div class="btny-div" id="toggle-recording" onclick="toggleRecordingState()">Start recording</div>
+                        <div class="btny-div" id="set-vsync-delay" onclick="getRecording()">Read recording</div>
+                        <div class="progress-container">
+                            <div id="progress-record" class="progress-bar"></div>
+                            <span id="progress-label-record" class="progress-label">0%</span>
+                        </div>
+                        <textarea id="recorded-inputs"></textarea>
+                    </div>
+                </div>
+                <div class="content-box" style="height:100%;">
+                    <div class="stack-of-things">
+                        <div class="btny-div" id="run-btn" onclick="runTAS()">Run</div>
+                        <div class="progress-container">
+                            <div id="progress-playback" class="progress-bar"></div>
+                            <span id="progress-label-playback" class="progress-label">0%</span>
+                        </div>
+
+                        <textarea id="commands"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>

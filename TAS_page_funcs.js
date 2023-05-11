@@ -32,6 +32,22 @@ function getExamples() {
 
 }
 
+function setPlaybackProgressBar(percentage) {
+  const progressBar = document.getElementById('progress-playback');
+  const progressLabel = document.getElementById('progress-label-playback');
+
+  progressBar.style.width = percentage + '%';
+  progressLabel.textContent = Math.round(percentage*10)/10 + '%';
+}
+
+function setRecordingProgressBar(percentage) {
+  const progressBar = document.getElementById('progress-record');
+  const progressLabel = document.getElementById('progress-label-record');
+
+  progressBar.style.width = percentage + '%';
+  progressLabel.textContent = Math.round(percentage*10)/10 + '%';
+}
+
 function populateFromGET() {
   // Check if the "filename" GET parameter is set
   var urlParams = new URLSearchParams(window.location.search);
@@ -43,70 +59,34 @@ function populateFromGET() {
 }
 
 function retrieveCommands(selectedFilename) {
-    // Send an AJAX request to the PHP script to get the file contents
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'get_file_contents.php?filename=' + selectedFilename);
-    xhr.onload = function () {
-      if (xhr.status === 200) {
-        // Set the contents of the "commands" box to the file contents
-        document.getElementById('commands').value = xhr.responseText;
-        // Load the image with the same filename as the selected file
-        var imageEl = document.createElement('img');
-        imageEl.src = './imageExamples/' + selectedFilename.split('_')[0] + '.gif';
-        const imageholder = document.getElementById('image-container');
-        while (imageholder.firstChild) {
-          imageholder.removeChild(imageholder.firstChild);
-        }
-        imageholder.appendChild(imageEl);
-        document.getElementById("executeCommands").click();
+  // Send an AJAX request to the PHP script to get the file contents
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', 'get_file_contents.php?filename=' + selectedFilename);
+  xhr.onload = function () {
+    if (xhr.status === 200) {
+      // Set the contents of the "commands" box to the file contents
+      document.getElementById('commands').value = xhr.responseText;
+      // Load the image with the same filename as the selected file
+      var imageEl = document.createElement('img');
+      imageEl.src = './imageExamples/' + selectedFilename.split('_')[0] + '.gif';
+      const imageholder = document.getElementById('image-container');
+      while (imageholder.firstChild) {
+        imageholder.removeChild(imageholder.firstChild);
       }
-      else {
-        console.log('Request failed.  Returned status of ' + xhr.status);
-      }
-    };
-    xhr.send();
-}
-
-function retrieveExample() {
-    // Get the selected filename from the select element
-    var selectedFilename = document.getElementById('filename-select').value;
-
-    // Send an AJAX request to the PHP script to get the file contents
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'get_file_contents.php?filename=' + selectedFilename);
-    xhr.onload = function () {
-      if (xhr.status === 200) {
-        // Set the contents of the "commands" box to the file contents
-        document.getElementById('commands').value = xhr.responseText;
-        // Load the image with the same filename as the selected file
-        var imageEl = document.createElement('img');
-        imageEl.src = './imageExamples/' + selectedFilename.split('_')[0] + '.gif';
-        const imageholder = document.getElementById('image-container');
-        while (imageholder.firstChild) {
-          imageholder.removeChild(imageholder.firstChild);
-        }
-        imageholder.appendChild(imageEl);
-      }
-      else {
-        console.log('Request failed.  Returned status of ' + xhr.status);
-      }
-    };
-    xhr.send();
+      imageholder.appendChild(imageEl);
+      document.getElementById("executeCommands").click();
+    }
+    else {
+      console.log('Request failed.  Returned status of ' + xhr.status);
+    }
+  };
+  xhr.send();
 }
 
 function saveCommandsToLocalStorage() {
   var text = encodeURIComponent(document.getElementById("commands").value);
-  if (text.length > 500) { return; }
+  if (text.length > 10000) { return; }
   localStorage.setItem("savedCommands", text);
-}
-
-function saveCommandsToCookie() {
-  var text = "a";
-  if (text.length > 500) { return; }
-  var d = new Date();
-  d.setTime(d.getTime() - (30));
-  var expires = "expires=" + d.toUTCString();
-  document.cookie = "savedCommands=" + text + ";" + expires + ";SameSite=Strict;path=/";
 }
 
 function loadCommandsFromLocalStorage() {
@@ -116,4 +96,16 @@ function loadCommandsFromLocalStorage() {
   }
 }
 
+function saveToLocalStorage(name, data) {
+  localStorage.setItem(name.toString(), data);
+}
+
+function loadFromLocalStorage(name) {
+  var savedData = localStorage.getItem(name.toString());
+  if (savedData) {
+    return savedData;
+  } else {
+    return 0;
+  }
+}
 
