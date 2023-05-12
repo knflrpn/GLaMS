@@ -5,12 +5,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GLaMS</title>
-    <link rel="stylesheet" href="./style.css?7" />
+    <link rel="stylesheet" href="./style.css?16" />
     <script src="https://cdn.jsdelivr.net/gh/makeabilitylab/p5js/_libraries/serial.js"></script>
-    <script src="./SwiCC_comms.js?3"></script>
-    <script src="./page_funcs.js?3"></script>
-    <script src="./TAS_page_funcs.js?7"></script>
-    <script src="./command_parser.js?7"></script>
+    <script src="./SwiCC_comms.js?16"></script>
+    <script src="./page_funcs.js?16"></script>
+    <script src="./TAS_page_funcs.js?16"></script>
+    <script src="./command_parser.js?16"></script>
     <script>
         let sentConfig = false;
         function mainLoop() {
@@ -75,9 +75,9 @@
                 <div id="control-status" class="stack-of-things" style="height: 100%;">
                     <div id="comms-box" class="content-box">
                         <div class="status-div" id="status-gamepad">- Gamepad -<br />Use gamepad to connect.</div>
-                        <div class="status-div" id="status-serial" onclick="connectToSerialDevice()">- Comm Port -<br />
+                        <div class="status-div" id="status-serial-0" onclick="connectToSerialDevice()">- COM Port -<br />
                             Click here to connect.</div>
-                        <div class="status-div" id="status-swicc">- SwiCC -<br />Not detected.</div>
+                        <div class="status-div" id="status-swicc-0">- SwiCC -<br />Not detected.</div>
                     </div>
                     <div class="content-box">
                         <input type="text" id="vsync-delay" style="border:1px solid black" value="0"> &nbsp;

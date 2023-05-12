@@ -104,11 +104,18 @@
 		<div id="main-content" class="stack-of-things"> <!-- Main center column -->
 			<div class="row-of-things"> <!-- Top row -->
 				<div id="control-status" class="stack-of-things">
-					<div id="comms-box" class="content-box">
+					<div class="content-box stack-of-things">
 						<div class="status-div" id="status-gamepad">- Gamepad -<br />Use gamepad to connect.</div>
-						<div class="status-div" id="status-serial-0" onclick="connectToSerialDevice()">
-							- COM Port -<br />Click here to connect.</div>
-						<div class="status-div" id="status-swicc-0">- SwiCC -<br />Not detected.</div>
+						<div class="row-of-things">
+							<div class="status-div" id="status-serial-0" onclick="connectToSerialDevice()">
+								- COM Port 1 -<br />Click here to connect.</div>
+							<div class="status-div" id="status-swicc-0" onclick="toggleSwiCC(0)">- SwiCC -<br />Not detected.</div>
+						</div>
+						<div class="row-of-things">
+							<div class="status-div" id="status-serial-1" onclick="connectToSerialDevice()">
+								- COM Port 2 -<br />Click here to connect.</div>
+							<div class="status-div" id="status-swicc-1" onclick="toggleSwiCC(1)">- SwiCC -<br />Not detected.</div>
+						</div>
 					</div>
 					<iframe id="gamepad-iframe" class="content-box" style="height:100%; min-height:22rem;" src="./inoutCon.html" frameborder="0">
 						<!-- The gamepad display -->

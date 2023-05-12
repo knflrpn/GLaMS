@@ -31,12 +31,14 @@ main {
 .stack-of-things {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     gap: 0.5rem;
 }
 
 .row-of-things {
     display: flex;
     flex-direction: row;
+    justify-content: center;
     gap: 0.5rem;
     flex-wrap: wrap;
 }
@@ -60,6 +62,7 @@ main {
 }
 
 .status-div {
+    position: relative;
     margin: 3px;
     padding: 0.5rem 1rem;
     border-radius: 0.4rem;
@@ -70,6 +73,17 @@ main {
 
 .indicator-active {
     background-color: #008500 !important;
+}
+
+.indicator-stop::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 1rem;
+    width: 1rem;
+    background-color: red;
 }
 
 .table-container {

@@ -4,7 +4,7 @@ let swCon_p = Array(0, 0, 0, 0, 0, 0, 0); // previous value sent
 // The data last read from the game controller
 let curCon = Array(17).fill(false);
 let curToggle = Array(17).fill(false);
-let curStick = Array(4).fill(0.0); // already converted to bytes
+let curStick = Array(4).fill(0.0); // Stick [-1,1]
 // The modification information
 let modArray = Array(16).fill(0);  // Button-to-button mapping array
 let modArrayStale = true;       // Flag that array needs to be re-pulled from page.
@@ -23,22 +23,37 @@ let lag_enabled = false;
 let autojump_enabled = false;
 const STICK_DEADZONE = 0.08;
 
-let serial_connected = false;
-let swicc_detected = false;
+let serial_connected = Array(4).fill(false);
+let swicc_detected = Array(4).fill(false);
+let swicc_enables = Array(4).fill(true);
 let queue_playing = false;
 
 let rec_buff_len = 16384;
 let recorded_amt = 0;
 let record_amt_rcvd = 0;
 
+const serials = [];
+for (let i = 0; i < 4; i++) {
+    const serial = new Serial();
+    serial.on(SerialEvents.CONNECTION_OPENED, onSerialConnectionOpened);
+    serial.on(SerialEvents.CONNECTION_CLOSED, onSerialConnectionClosed);
+    serial.on(SerialEvents.DATA_RECEIVED, onSerialDataReceived);
+    serial.on(SerialEvents.ERROR_OCCURRED, onSerialErrorOccurred);
+    serials.push(serial);
+}
+
+
 
 function onSerialDataReceived(eventSender, newData) {
-    console.log(newData);
     // Response of "+SwiCC" is from an ID request.
     if (newData.startsWith("+SwiCC")) {
-        swicc_detected = true;
-        document.getElementById("status-swicc").classList.add("indicator-active");
-        document.getElementById("status-swicc").innerHTML = "- SwiCC -<br/>Active.";
+        for ( let i=0; i<4; i++ ) {
+            if (eventSender == serials[i]) {
+                document.getElementById("status-swicc-"+i).classList.add("indicator-active");
+                document.getElementById("status-swicc-"+i).innerHTML = "- SwiCC -<br/>Active.";
+                swicc_detected[i] = true;
+            }
+        }
     }
     // A request for queue fill amount will result in newData being in the form "+GQF NNNN" where the queue fill amount is the number in hex.  When that happens, populate queueFillResponses with the response.
     if (newData.startsWith("+GQF ")) {
@@ -53,14 +68,14 @@ function onSerialDataReceived(eventSender, newData) {
 
     // There is still recorded data to get
     if (newData.startsWith("+GR 1")) {
-        setRecordingProgressBar( record_amt_rcvd / recorded_amt * 100)
+        setRecordingProgressBar(record_amt_rcvd / recorded_amt * 100)
         // Request next data
         sendTextToSwiCC("+GR 1\n")
     }
 
     // There is still recorded data to get
     if (newData.startsWith("+GR 0")) {
-        setRecordingProgressBar( 100 );
+        setRecordingProgressBar(100);
     }
 
     // SwiCC is sending record buffer size
@@ -70,7 +85,7 @@ function onSerialDataReceived(eventSender, newData) {
     // SwiCC is sending record buffer fill
     if (newData.startsWith("+GRF ")) {
         recorded_amt = parseInt(newData.slice(5, 9), 16);
-        setRecordingProgressBar( recorded_amt / rec_buff_len * 100)
+        setRecordingProgressBar(recorded_amt / rec_buff_len * 100)
     }
 }
 
@@ -150,19 +165,21 @@ function sendConToSwiCC() {
             swCon_p[i] = swCon[i];
         }
     }
-    if (serial.isOpen() && stale) {
-        // console.log(swCon);
-        let ctype = lag_enabled ? "QL" : "IMM";
-        if (stick_to_dpad === 3) {
-            // Just send digital button data
-            serial.writeLine("+" + ctype + " " + byte2hex(swCon[0]) + byte2hex(swCon[1]) + byte2hex(swCon[2]));
-        } else {
-            // Include analog sticks
-            serial.writeLine("+" + ctype + " " + byte2hex(swCon[0]) + byte2hex(swCon[1]) + byte2hex(swCon[2])
-                + byte2hex((stick_to_dpad & 1) ? 128 : swCon[3])
-                + byte2hex((stick_to_dpad & 1) ? 128 : swCon[4])
-                + byte2hex((stick_to_dpad & 2) ? 128 : swCon[5])
-                + byte2hex((stick_to_dpad & 2) ? 128 : swCon[6]));
+    for (let i=0; i<4; i++) {
+        if (serials[i].isOpen() && swicc_enables[i] && stale) {
+            // console.log(swCon);
+            let ctype = lag_enabled ? "QL" : "IMM";
+            if (stick_to_dpad === 3) {
+                // Just send digital button data
+                serials[i].writeLine("+" + ctype + " " + byte2hex(swCon[0]) + byte2hex(swCon[1]) + byte2hex(swCon[2]));
+            } else {
+                // Include analog sticks
+                serials[i].writeLine("+" + ctype + " " + byte2hex(swCon[0]) + byte2hex(swCon[1]) + byte2hex(swCon[2])
+                    + byte2hex((stick_to_dpad & 1) ? 128 : swCon[3])
+                    + byte2hex((stick_to_dpad & 1) ? 128 : swCon[4])
+                    + byte2hex((stick_to_dpad & 2) ? 128 : swCon[5])
+                    + byte2hex((stick_to_dpad & 2) ? 128 : swCon[6]));
+            }
         }
     }
 }
@@ -291,59 +308,83 @@ function applyForce() {
     }
 }
 
-const serial = new Serial();
-serial.on(SerialEvents.CONNECTION_OPENED, onSerialConnectionOpened);
-serial.on(SerialEvents.CONNECTION_CLOSED, onSerialConnectionClosed);
-serial.on(SerialEvents.DATA_RECEIVED, onSerialDataReceived);
-serial.on(SerialEvents.ERROR_OCCURRED, onSerialErrorOccurred);
+function toggleSwiCC(num) {
+    swicc_enables[num] = !swicc_enables[num];
+    if (swicc_enables[num]) {
+        document.getElementById("status-swicc-"+num).classList.remove("indicator-stop");
+    } else {
+        document.getElementById("status-swicc-"+num).classList.add("indicator-stop");
+    }
+}
 
 /* Prompt user to connect to serial device */
 async function connectToSerialDevice() {
-    if (!serial.isOpen()) {
-        await serial.connectAndOpen(portFilters = null, serialOptions = { baudRate: 115200 });
+    for (let i=0; i<4; i++) {
+        if (!serial_connected[i] && !serials[i].isOpen()) {
+            await serials[i].connectAndOpen(portFilters = null, serialOptions = { baudRate: 115200 });
+            return;
+        }
     }
 }
 
 function onSerialErrorOccurred(eventSender, error) {
     console.log("onSerialErrorOccurred", error);
-    serial_connected = false;
-    document.getElementById("status-serial").classList.remove("indicator-active");
-    document.getElementById("status-serial").innerHTML = "- Comm Port -</br>Click here to connect.";
-    swicc_detected = false;
-    document.getElementById("status-swicc").classList.remove("indicator-active");
-    document.getElementById("status-swicc").innerHTML = "- SwiCC -<br/>Not detected.";
+    for (let i=0; i<4; i++) {
+        if (serials[i]==eventSender) {
+            serial_connected[i] = false;
+            document.getElementById("status-serial-"+i).classList.remove("indicator-active");
+            document.getElementById("status-serial-"+i).innerHTML = "- COM Port -</br>Click here to connect.";
+            swicc_detected[i] = false;
+            document.getElementById("status-swicc-"+i).classList.remove("indicator-active");
+            document.getElementById("status-swicc-"+i).innerHTML = "- SwiCC -<br/>Not detected.";
+        }
+    }
     alert("Could not connect to serial.  Make sure something else (like another page) doesn't have a lock on it.");
 }
 
 function onSerialConnectionOpened(eventSender) {
-    console.log("onSerialConnectionOpened", eventSender);
-    serial_connected = true;
-    document.getElementById("status-serial").classList.add("indicator-active");
-    document.getElementById("status-serial").innerHTML = "- Comm Port -</br>Active.";
-    sendTextToSwiCC("+ID \n");
-    setTimeout(checkForSwiCC, 1000);
+    for (let i=0; i<4; i++) {
+        if (serials[i]==eventSender) {
+            serial_connected[i] = true;
+            document.getElementById("status-serial-"+i).classList.add("indicator-active");
+            document.getElementById("status-serial-"+i).innerHTML = "- COM Port -</br>Active.";
+            checkForSwiCC(i);
+        }
+    }
 }
-function checkForSwiCC() {
-    if (serial_connected && (!swicc_detected)) {
-        sendTextToSwiCC("+ID \n");
-        setTimeout(checkForSwiCC, 1000);
+function checkForSwiCC(num) {
+    if (serial_connected[num] && (!swicc_detected[num])) {
+        sendTextToSwiCC("+ID \n", num);
+        setTimeout(function(){checkForSwiCC(num);}, 1000);
     }
 }
 
 function onSerialConnectionClosed(eventSender) {
     console.log("onSerialConnectionClosed", eventSender);
-    serial_connected = false;
-    document.getElementById("status-serial").classList.remove("indicator-active");
-    document.getElementById("status-serial").innerHTML = "- Comm Port -</br>Click here to connect.";
-    swicc_detected = false;
-    document.getElementById("status-swicc").classList.remove("indicator-active");
-    document.getElementById("status-swicc").innerHTML = "- SwiCC -<br/>Not detected.";
+    for (let i=0; i<4; i++) {
+        if (serials[i]==eventSender) {
+            serial_connected[i] = false;
+            document.getElementById("status-serial-"+i).classList.remove("indicator-active");
+            document.getElementById("status-serial-"+i).innerHTML = "- COM Port -</br>Click here to connect.";
+            swicc_detected[i] = false;
+            document.getElementById("status-swicc-"+i).classList.remove("indicator-active");
+            document.getElementById("status-swicc-"+i).innerHTML = "- SwiCC -<br/>Not detected.";
+        }
+    }
 }
 
 // Send text data over serial
-function sendTextToSwiCC(textData) {
-    if (serial.isOpen()) {
-        serial.writeLine(textData);
+function sendTextToSwiCC(textData, sernum=-1) {
+    if (sernum < 0) { // All SwiCCs
+        for ( let i=0; i<num_connected; i++) {
+            if (serials[i].isOpen()) {
+                serials[i].writeLine(textData);
+            }
+        }
+    } else { //one SwiCC
+        if (serials[sernum].isOpen()) {
+            serials[sernum].writeLine(textData);
+        }
     }
 }
 
