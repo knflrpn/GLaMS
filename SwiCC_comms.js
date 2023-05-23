@@ -403,8 +403,8 @@ function setVSYNCDelay(amount) {
     }
 
     // Check if the input amount is within the acceptable range (0 to 65535)
-    if (amount < 0 || amount > 65535) {
-        console.error('The amount must be within the range of 0 to 65535.');
+    if (amount < 0 || amount > 15000) {
+        console.error('The amount must be within the range of 0 to 15000.');
         return;
     }
 

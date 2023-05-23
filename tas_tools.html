@@ -21,7 +21,6 @@
 
             if (swicc_detected[0] && !sentConfig) {
                 // Enable vsync
-                sendTextToSwiCC("+VSYNC 1\n")
                 sendTextToSwiCC("+SLAG 0\n");
                 sendTextToSwiCC("+GRB \n"); // Check recording buffer size
                 setVSYNCDelayFromInput();
@@ -47,7 +46,7 @@
             }
 
             // Get the value of the inputElement and convert it to a number
-            const amount = parseInt(inputElement.value, 10);
+            let amount = parseInt(inputElement.value, 10);
 
             // Check if the value is a valid number
             if (isNaN(amount)) {
@@ -57,6 +56,13 @@
             if (amount > 15000) {
                 amount = 15000;
                 inputElement.value = 15000;
+            }
+
+            if (amount < 0) {
+                inputElement.value = -1;
+                sendTextToSwiCC("+VSYNC 0\n")
+            } else {
+                sendTextToSwiCC("+VSYNC 1\n")
             }
 
             // Save it for next time.
@@ -89,7 +95,7 @@
                         <div class="status-div" id="status-swicc-0">- SwiCC -<br />Not detected.</div>
                     </div>
                     <div class="content-box">
-                        <input type="text" id="vsync-delay" style="border:1px solid black" value="0"> &nbsp;
+                        <input type="text" id="vsync-delay" style="border:1px solid black" value="-1"> &nbsp;
                         <div class="btny-div" id="set-vsync-delay" onclick="setVSYNCDelayFromInput()">Update VSYNC Delay</div>
                     </div>
                     <div class="content-box stack-of-things" style="height: 100%;">
