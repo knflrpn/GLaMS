@@ -55,12 +55,18 @@ function onSerialDataReceived(eventSender, newData) {
             }
         }
     }
+    // Firmware version
+    if (newData.startsWith("+VER ")) {
+        console.log(newData);
+    }
+
     // A request for queue fill amount will result in newData being in the form "+GQF NNNN" where the queue fill amount is the number in hex.  When that happens, populate queueFillResponses with the response.
     if (newData.startsWith("+GQF ")) {
         let response = parseInt(newData.substring(5).trim(), 16);
         queueFillResponses.push(response);
     }
 
+    // A recorded controller state
     if (newData.startsWith("+R ")) {
         record_amt_rcvd++;
         processAndAppendRecording(newData);
@@ -376,8 +382,8 @@ function onSerialConnectionClosed(eventSender) {
 // Send text data over serial
 function sendTextToSwiCC(textData, sernum=-1) {
     if (sernum < 0) { // All SwiCCs
-        for ( let i=0; i<num_connected; i++) {
-            if (serials[i].isOpen()) {
+        for ( let i=0; i<4; i++) {
+            if (swicc_detected[i] && serials[i].isOpen()) {
                 serials[i].writeLine(textData);
             }
         }

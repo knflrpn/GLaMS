@@ -5,12 +5,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GLaMS</title>
-    <link rel="stylesheet" href="./style.css?16" />
+    <link rel="stylesheet" href="./style.css?a" />
     <script src="https://cdn.jsdelivr.net/gh/makeabilitylab/p5js/_libraries/serial.js"></script>
-    <script src="./SwiCC_comms.js?16"></script>
-    <script src="./page_funcs.js?16"></script>
-    <script src="./TAS_page_funcs.js?16"></script>
-    <script src="./command_parser.js?16"></script>
+    <script src="./SwiCC_comms.js?a"></script>
+    <script src="./page_funcs.js?a"></script>
+    <script src="./TAS_page_funcs.js?a"></script>
+    <script src="./command_parser.js?a"></script>
     <script>
         let sentConfig = false;
         function mainLoop() {
@@ -19,13 +19,17 @@
             checkGamepads();
             readGamepad(gamepad_num);
 
-            if (swicc_detected && !sentConfig) {
+            if (swicc_detected[0] && !sentConfig) {
                 // Enable vsync
                 sendTextToSwiCC("+VSYNC 1\n")
                 sendTextToSwiCC("+SLAG 0\n");
                 sendTextToSwiCC("+GRB \n"); // Check recording buffer size
                 setVSYNCDelayFromInput();
                 sentConfig = true;
+            }
+
+            if( !swicc_detected[0] ) {
+                sentConfig = false;
             }
 
             if (!queue_playing) {
@@ -50,6 +54,11 @@
                 console.error('Invalid input value. Please enter a valid number.');
                 return;
             }
+            if (amount > 15000) {
+                amount = 15000;
+                inputElement.value = 15000;
+            }
+
             // Save it for next time.
             saveToLocalStorage("vsync_delay", amount);
 
