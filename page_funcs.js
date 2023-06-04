@@ -1,9 +1,10 @@
-const mapSymbols = Array("B", "A", "Y", "X", "L1", "R1", "L2", "R2", "-", "+", "SL", "SR", "U", "D", "L", "R")
+const mapSymbols = Array("B", "A", "Y", "X", "L1", "R1", "L2", "R2", "-", "+", "SL", "SR", "U", "D", "L", "R", "H", "C")
 /**
  * Build the button mapping table and append it to the "mapping-container" element.
- * @param {number} N - The number of rows and columns in the table. Default value is 16.
+ * @param {number} IN - The number of inputs for the table. Default value is 16.
+ * @param {number} OUT - The number of outputs for the table. Default value is 18.
  */
-function buildMappingTable(N = 16) {
+function buildMappingTable(IN = 16, OUT = 18) {
     const mappingContainer = document.getElementById("mapping-container");
 
     // Create table header
@@ -11,7 +12,7 @@ function buildMappingTable(N = 16) {
     tableHeader.classList.add("tablerow");
 
     // Add top labels to the table header
-    for (let i = 0; i < N; i++) {
+    for (let i = 0; i < IN; i++) {
         const labelCell = document.createElement("div");
         labelCell.classList.add("tablecell-label");
         labelCell.id = `lin-${i}`;
@@ -28,12 +29,12 @@ function buildMappingTable(N = 16) {
     mappingContainer.appendChild(tableHeader);
 
     // Create rows for the mapping table
-    for (let i = 0; i < N; i++) {
+    for (let i = 0; i < OUT; i++) {
         const row = document.createElement("div");
         row.classList.add("tablerow");
 
         // Create cells for each row
-        for (let j = 0; j < N; j++) {
+        for (let j = 0; j < IN; j++) {
             const cell = document.createElement("div");
             cell.classList.add("tablecell", "mapcell");
             // Make cells of the diagonal active by default
@@ -177,7 +178,7 @@ function randomizeMap(reset = false) {
 
     if (reset) {
         // Reset the mapping table to its default state
-        for (let i = 0; i < 16; i++) {
+        for (let i = 0; i < 18; i++) {
             for (let j = 0; j < 16; j++) {
                 const cell = document.getElementById(`${i}-${j}`);
                 if (i === j) {
@@ -442,7 +443,7 @@ function setRotation() {
 }
 
 /**
- * Set a value in local storage and remove the corresponding cookie.
+ * Set a value in local storage.
  * @param {string} name - The name of the item to be set.
  * @param {string} value - The value to be stored.
  */

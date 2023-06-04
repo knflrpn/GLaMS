@@ -2,7 +2,7 @@
 <html>
 <head>
 	<title>GLaMS Comment Images</title>
-    <link rel="stylesheet" href="./style.css?6" />
+    <link rel="stylesheet" href="./style.css?b" />
 </head>
 <body>
     <main>
@@ -23,7 +23,7 @@
 					// Split the filename at the underscore to get the image filename
 					var parts = files[i].split('_');
 					var imageFilename = './imageExamples/' + parts[0] + '.gif';
-					var timeString = parts[1];
+					var timeString = parts[1] + " " + parts[2];
 					
 					// Create a div element for the display
 					var div = document.createElement('div');

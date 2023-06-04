@@ -2,15 +2,15 @@
 let swCon = Array(0, 0, 8, 128, 128, 128, 128);
 let swCon_p = Array(0, 0, 0, 0, 0, 0, 0); // previous value sent
 // The data last read from the game controller
-let curCon = Array(17).fill(false);
-let curToggle = Array(17).fill(false);
+let curCon = Array(18).fill(false);
+let curToggle = Array(18).fill(false);
 let curStick = Array(4).fill(0.0); // Stick [-1,1]
 // The modification information
 let modArray = Array(16).fill(0);  // Button-to-button mapping array
 let modArrayStale = true;       // Flag that array needs to be re-pulled from page.
 let stick_rotation = 0.0;  // Amount to rotate stick movement (in degrees CW)
 // The modified gamepad data
-let modCon = Array(17).fill(false);
+let modCon = Array(18).fill(false);
 let modStick = Array(4).fill(0.0);
 // Gamepad data to force
 let forceCon = Array(16).fill(false);
@@ -45,6 +45,7 @@ for (let i = 0; i < 4; i++) {
 
 
 function onSerialDataReceived(eventSender, newData) {
+    //console.log("Received: " + newData);
     // Response of "+SwiCC" is from an ID request.
     if (newData.startsWith("+SwiCC")) {
         for ( let i=0; i<4; i++ ) {
@@ -117,7 +118,7 @@ function packSwitchCon(skipMod = false) {
     if (sendCon[10]) swCon[0] += 4;  // LS
     if (sendCon[11]) swCon[0] += 8;  // RS
     if (sendCon[16]) swCon[0] += 16; // home
-    //		if(sendCon[]) swCon[0] += 32;   // capture
+    if (sendCon[17]) swCon[0] += 32;   // capture
 
     // D-pad
     let dpval = sendCon[12] * 1 + sendCon[15] * 2 + sendCon[13] * 4 + sendCon[14] * 8
@@ -271,18 +272,18 @@ function createMap(N) {
 
 function applyMap() {
     let modVal = 0;
-    for (let i = 0; i < 16; i++) { // for each entry of curCon
+    for (let i = 0; i < 18; i++) { // for each entry of curCon
         // If this curCon button is pressed, merge the number with modVals
         if (curCon[i]) modVal |= modArray[i];
     }
-    //    console.log(modVal);
     // Parse the modVal into the per-button modCon
     modCon.fill(false);
-    for (let i = 0; i < 16; i++) { // for each entry of modCon
+    for (let i = 0; i < 18; i++) { // for each entry of modCon
         if (modVal & 1) modCon[i] = true;
         modVal >>= 1;
     }
-    modCon[16] = curCon[16]; // home
+    modCon[16] |= curCon[16]; // home is always home
+    modCon[17] |= curCon[17]; // capture is always capture
 
     let rot_rads = stick_rotation * (Math.PI / 180);
     // Use global stick_rotation to rotate stick values
@@ -615,12 +616,18 @@ function continueQueueTransfer() {
             if (commandQueue.length > 0) {
                 sendQueueToSwicc(60);
                 setTimeout(continueQueueTransfer, 250);
+                setPlaybackProgressBar(Math.min((initialQueueLength - commandQueue.length) / initialQueueLength * 100, 99))
             } else {
-                // All done
-                console.log("Done sending.");
-                queue_playing = false;
-                setPlaybackProgressBar(100);
-                return;
+                // Done sending; wait for the queue to empty
+                if (response <= 1) {
+                    console.log("Done sending.");
+                    setPlaybackProgressBar(100);
+                    queue_playing = false;
+                    return;
+                } else {
+                    setPlaybackProgressBar(99);
+                    setTimeout(continueQueueTransfer, 100);
+                }
             }
         } else {
             // Queue decently full.
@@ -632,7 +639,6 @@ function continueQueueTransfer() {
     }
     // Ask for queue amount again
     sendTextToSwiCC("+GQF \n");
-    setPlaybackProgressBar((initialQueueLength - commandQueue.length) / initialQueueLength * 100)
 }
 
 /* Sends (at most) the specified number of queue entries to the switch */
@@ -754,6 +760,7 @@ function runTAS() {
     if (queue_playing) {
         // Cancel the queued commands
         commandQueue = [];
+        queueConData("", 2, 128, 128, 128, 128);
         updateRunButtonLabel("Run");
     } else {
         saveCommandsToLocalStorage();

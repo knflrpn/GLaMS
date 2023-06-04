@@ -5,12 +5,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GLaMS</title>
-    <link rel="stylesheet" href="./style.css?a" />
+    <link rel="stylesheet" href="./style.css?c" />
     <script src="https://cdn.jsdelivr.net/gh/makeabilitylab/p5js/_libraries/serial.js"></script>
-    <script src="./SwiCC_comms.js?a"></script>
-    <script src="./page_funcs.js?a"></script>
-    <script src="./TAS_page_funcs.js?a"></script>
-    <script src="./command_parser.js?a"></script>
+    <script src="./SwiCC_comms.js?c"></script>
+    <script src="./page_funcs.js?c"></script>
+    <script src="./TAS_page_funcs.js?c"></script>
+    <script src="./command_parser.js?c"></script>
     <script>
         function mainLoop() {
             setTimeout(mainLoop, 16);
@@ -33,6 +33,8 @@
             canvas = document.getElementById('drawingCanvas');
             ctx = canvas.getContext('2d');
             ctx.imageSmoothingEnabled = false;
+            cursorCanvas = document.getElementById('cursorCanvas');
+            cursorCtx = cursorCanvas.getContext('2d');
             document.getElementById('executeCommands').addEventListener('click', executeCommands);
         });
 
@@ -63,7 +65,10 @@
                             <label for="commandsPerFrame">Preview speed:</label>
                             <input type="number" id="commandsPerFrame" min="1" value="100">
                             <div class="btny-div" id="executeCommands">Restart Preview</div>
-                            <canvas id="drawingCanvas" width="320" height="180"></canvas>
+                            <div style="position: relative; width: 320px; height: 180px;">
+                                <canvas id="drawingCanvas" width="320" height="180"></canvas>
+                                <canvas id="cursorCanvas" width="320" height="180" style="position:absolute;left:0;top:0;"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -71,6 +76,11 @@
                     <div class="stack-of-things">
                         <p>Place cursor in top-left corner and select color red before running.</p>
                         <div class="btny-div" id="run-btn" onclick="runTAS()">Run</div>
+                        <div class="progress-container">
+                            <div id="progress-playback" class="progress-bar"></div>
+                            <span id="progress-label-playback" class="progress-label">0%</span>
+                        </div>
+
                         <textarea id="commands"></textarea>
                     </div>
                 </div>

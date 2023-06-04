@@ -1,6 +1,8 @@
 const penSizes = [1, 2, 3, 4];
 let canvas;
 let ctx;
+let cursorCanvas;
+let cursorCtx;
 let currentX = 0;
 let currentY = 0;
 let selectedIndex = 0;
@@ -29,7 +31,7 @@ let animationFrameId;
 function executeCommands() {
 	const commandInput = document.getElementById('commands');
 	const commands = commandInput.value.trim().split('\n');
-	const commandsPerFrame = parseInt(document.getElementById('commandsPerFrame').value, 10) || 1;
+	const commandsPerFrame = parseInt(document.getElementById('commandsPerFrame').value, 10) || 10;
 	
     // Cancel previous animation if any
     if (animationFrameId) {
@@ -61,19 +63,31 @@ function executeCommands() {
     function parseNextCommands() {
         for (let i = 0; i < commandsPerFrame && commandIndex < commands.length; i++) {
             const command = commands[commandIndex++];
+            // This regex matches the first set of curly braces and everything inside them.
             const buttonString = command.match(/{([^}]*)}/)[0];
-            const [repeat = 1, xMagnitude = 127, yMagnitude = 127] = command.replace(buttonString, '').trim().split(' ').map((value, index) => index === 0 && !value ? 1 : parseInt(value, 10) || (index === 1 || index === 2 ? 127 : undefined));
+            // Then, find the repeat and stick magnitude values.
+            const [repeat = 1, xMagnitude = 128, yMagnitude = 128] = command.replace(buttonString, '').trim().split(' ').map((value, index) => {
+                const parsed = parseInt(value, 10);
+                if (index === 0 && value === '') {
+                  return 1;
+                } else if (isNaN(parsed)) {
+                  return index === 1 || index === 2 ? 128 : undefined;
+                } else {
+                  return parsed;
+                }
+              });
+              
 
             for (let j = 0; j < repeat; j++) {
                 // Apply X movement
-                if (xMagnitude !== 127) {
-                    const direction = xMagnitude === 1 ? 'L' : 'R';
+                if (xMagnitude !== 128) {
+                    const direction = xMagnitude < 128 ? 'L' : 'R';
                     moveCursor(direction, 2);
                 }
 
                 // Apply Y movement
-                if (yMagnitude !== 127) {
-                    const direction = yMagnitude === 1 ? 'U' : 'D';
+                if (yMagnitude !== 128) {
+                    const direction = yMagnitude < 128 ? 'U' : 'D';
                     moveCursor(direction, 2);
                 }
 
@@ -81,6 +95,7 @@ function executeCommands() {
             }
         }
 
+        drawCursor(currentX, currentY);
 
         if (commandIndex < commands.length) {
             animationFrameId = requestAnimationFrame(parseNextCommands);
@@ -154,6 +169,22 @@ function moveCursor(direction, amount=1) {
             currentX = Math.max(0, currentX - amount);
             break;
     }
+}
+
+// Cursor display function
+function drawCursor(x, y) {
+    // Clear previous cursor
+    cursorCtx.clearRect(0, 0, cursorCanvas.width, cursorCanvas.height);
+
+    // Draw new cursor
+    // Outer black box
+    cursorCtx.fillStyle = 'black';
+    cursorCtx.fillRect(x-3, y-3, 7, 7); // Centered at (x, y)
+    // Inner white box
+    cursorCtx.fillStyle = palette[selectedIndex];
+    cursorCtx.fillRect(x-2, y-2, 5, 5); // Centered at (x, y)}
+    // Clear center
+    cursorCtx.clearRect(x-1, y-1, 3, 3); // Centered at (x, y)
 }
 
 let justChangedColor = false;
