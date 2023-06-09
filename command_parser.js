@@ -62,9 +62,14 @@ function executeCommands() {
 	
     function parseNextCommands() {
         for (let i = 0; i < commandsPerFrame && commandIndex < commands.length; i++) {
-            const command = commands[commandIndex++];
+            const command = commands[commandIndex++].split(';')[0];;
             // This regex matches the first set of curly braces and everything inside them.
-            const buttonString = command.match(/{([^}]*)}/)[0];
+            const matched = command.match(/{([^}]*)}/);
+            // Check if there's any match
+            if (!matched || matched.length === 0) {
+                continue; // Skip this iteration if no curly braces are found
+            }
+            const buttonString = matched[0];
             // Then, find the repeat and stick magnitude values.
             const [repeat = 1, xMagnitude = 128, yMagnitude = 128] = command.replace(buttonString, '').trim().split(' ').map((value, index) => {
                 const parsed = parseInt(value, 10);
@@ -157,16 +162,40 @@ function changeColor(direction) {
 function moveCursor(direction, amount=1) {
     switch (direction) {
         case 'U':
-            currentY = Math.max(0, currentY - amount);
+            currentY = currentY - amount;
+            if (currentY < 0) {
+                if (amount === 1) {
+                    console.log('Cursor out of bounds: ' + currentX + ', ' + currentY);
+                }
+                currentY = 0;
+            }
             break;
         case 'R':
-            currentX = Math.min(canvas.width - 1, currentX + amount);
+            currentX = currentX + amount;
+            if (currentX >= canvas.width) {
+                if (amount === 1) {
+                    console.log('Cursor out of bounds: ' + currentX + ', ' + currentY);
+                }
+                currentX = canvas.width - 1;
+            }
             break;
         case 'D':
-            currentY = Math.min(canvas.height - 1, currentY + amount);
+            currentY = currentY + amount;
+            if (currentY >= canvas.height) {
+                if (amount === 1) {
+                    console.log('Cursor out of bounds: ' + currentX + ', ' + currentY);
+                }
+                currentY = canvas.height - 1;
+            }
             break;
         case 'L':
-            currentX = Math.max(0, currentX - amount);
+            currentX = currentX - amount;
+            if (currentX < 0) {
+                if (amount === 1) {
+                    console.log('Cursor out of bounds: ' + currentX + ', ' + currentY);
+                }
+                currentX = 0;
+            }
             break;
     }
 }

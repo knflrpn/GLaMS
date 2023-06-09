@@ -5,7 +5,7 @@ $dir = './imageExamples';
 // Open the directory
 if ($handle = opendir($dir)) {
 
-    // Initialize an array to hold the filenames and their corresponding "12m" values
+    // Initialize an array to hold the filenames and their corresponding "m" and "s" values
     $files = array();
 
     // Loop through the directory
@@ -16,17 +16,21 @@ if ($handle = opendir($dir)) {
             continue;
         }
 
-        // Extract the "12m" value from the filename
-        preg_match('/^[^_]+_([0-9]+)m_/', $entry, $matches);
-        $value = isset($matches[1]) ? (int)$matches[1] : 0;
+        // Extract the "m" and "s" value from the filename
+        preg_match('/^[^_]+_([0-9]+)m_([0-9]+)s_/', $entry, $matches);
+        $minuteValue = isset($matches[1]) ? (int)$matches[1] : 0;
+        $secondValue = isset($matches[2]) ? (int)$matches[2] : 0;
 
-        // Add the filename and value to the array
-        $files[] = array('filename' => $entry, 'value' => $value);
+        // Add the filename and values to the array
+        $files[] = array('filename' => $entry, 'minuteValue' => $minuteValue, 'secondValue' => $secondValue);
     }
 
-    // Sort the array by the "12m" value
+    // Sort the array by the "m" value, then by "s" value
     usort($files, function($a, $b) {
-        return $a['value'] - $b['value'];
+        if ($a['minuteValue'] == $b['minuteValue']) {
+            return $a['secondValue'] - $b['secondValue'];
+        }
+        return $a['minuteValue'] - $b['minuteValue'];
     });
 
     // Get an array of just the filenames

@@ -777,7 +777,7 @@ function runTAS() {
 
         // Iterate over each line and add commands to the queue
         for (let line of lines) {
-            line = line.trim();
+            line = line.split(";")[0].trim();
             if (!line) continue;
 
             const btnsRegex = /{(.*?)}(.*)/g;

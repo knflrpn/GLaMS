@@ -442,6 +442,61 @@ function setRotation() {
     }
 }
 
+
+let randIntervalId = null;
+
+/**
+ * Enable or disable the periodic randomization based on the current button state.
+ * If active, disables randomization; if inactive, enables randomization.
+ */
+function timedRandomize() {
+  const button = document.getElementById('enable-timed-random');
+
+  // If randomization is currently active, disable it.
+  if (button.classList.contains('indicator-active')) {
+    button.classList.remove('indicator-active');
+    button.textContent = 'Enable Periodic Randomization';
+    clearInterval(randIntervalId);
+    randIntervalId = null;
+  } else {
+    // If randomization is currently inactive, enable it.
+    button.classList.add('indicator-active');
+    button.textContent = 'Disable Periodic Randomization';
+    randIntervalId = setInterval(timedRandHelper, getRandInterval());
+  }
+}
+
+/**
+ * Helper function to be called periodically.
+ * Randomizes the map, then reschedules itself to maintain the updated interval.
+ */
+function timedRandHelper() {
+  randomizeMap();
+  if (randIntervalId) {
+    clearInterval(randIntervalId);
+    randIntervalId = setInterval(timedRandHelper, getRandInterval());
+  }
+}
+
+/**
+ * Get the interval from the input box, in milliseconds.
+ * If the input is invalid or less than or equal to zero, resets it to '10' and returns the default value of 10000 milliseconds.
+ * @return {number} - Interval in milliseconds.
+ */
+function getRandInterval() {
+  const timeInput = document.querySelector('#rand-time');
+  const time = parseFloat(timeInput.value);
+  
+  // If user input is invalid or less than or equal to zero, return the default interval.
+  if (isNaN(time) || time <= 0) {
+    timeInput.value = '10';  // reset invalid input
+    return 10000;  // default to 10 seconds
+  }
+  
+  // Convert the valid user input from seconds to milliseconds and return it.
+  return time * 1000;
+}
+
 /**
  * Set a value in local storage.
  * @param {string} name - The name of the item to be set.
