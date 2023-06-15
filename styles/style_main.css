@@ -55,12 +55,13 @@ h2 {
 	font-size: 1.5rem;
 	margin-top: 1.5rem;
 	margin-bottom: 1rem;
-	background-color: #a0ff75;
+	background-color: #441a00;
+	color: #fffcf5;
 	padding: 0.5rem 2rem;
 	font-weight: bold;
 }
 
-ol {
+ol, ul {
 	counter-reset: list-counter;
 	list-style-type: none;
 	padding: 1rem 1rem 1rem 2rem;
@@ -70,7 +71,7 @@ ol {
 	box-shadow: 0.2rem 0.2rem 1rem -0.5rem black;
 }
 
-li {
+ol > li {
 	counter-increment: list-counter;
 	position: relative;
 	font-size: 1rem;
@@ -78,10 +79,25 @@ li {
 	margin-bottom: 0.5rem;
 }
 
-li::before {
+ol > li::before {
 	content: counter(list-counter) ".";
 	position: absolute;
 	left: -1.5rem;
+	font-weight: bold;
+	color: #333;
+}
+
+ul > li {
+	position: relative;
+	font-size: 1rem;
+	line-height: 1.5;
+	margin-bottom: 0.5rem;
+}
+
+ul > li::before {
+	content: "•";
+	position: absolute;
+	left: -1rem;
 	font-weight: bold;
 	color: #333;
 }
@@ -333,3 +349,6 @@ li::before {
 	z-index: 2;
   }
   
+.text-box {
+	min-width: 100%;
+}
