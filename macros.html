@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Expires" content="0">
+	<title>GLaMS Macros</title>
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=PT+Serif&family=Ubuntu+Mono:wght@400&display=swap"
+		rel="stylesheet">
+
+	<link rel="stylesheet" href="./styles/style_main.css?1" />
+
+	<script src="./scripts/serial.js"></script>
+	<script src="./scripts/pages_core.js?1"></script>
+	<script src="./scripts/SwiCC_core.js?1"></script>
+	<script src="./scripts/SwiCC_record.js?1"></script>
+	<script src="./scripts/macro_page_funcs.js?1"></script>
+	<script src="./scripts/WackyGamepad.js?1"></script>
+	<script>
+		// Global variables
+		let gamepad = new WackyGamepad();
+		let sentConfig = false;
+
+		function mainLoop() {
+			requestAnimationFrame(mainLoop);
+
+			if (swiccDetected[0] && !sentConfig) {
+				// Configure vsync and other SwiCC settings
+				sendTextToSwiCC("+VER 0\n");
+				sendTextToSwiCC("+SLAG 0\n");
+				sendTextToSwiCC("+GRB \n"); // Check recording buffer size
+				setVSYNCDelayFromInput();
+				sentConfig = true;
+			}
+			if (!swiccDetected[0]) {
+				sentConfig = false;
+			}
+
+			// If queuePlaying, don't monitor gamepad or send commands
+			if (queuePlaying) {
+				return;
+			}
+
+			updateGamepad();
+
+			if (gamepad.isStale) {
+				if (recording) {
+					sendConToSwiCC(packSwitchCon(gamepad.state), "QL");
+				} else {
+					sendConToSwiCC(packSwitchCon(gamepad.state));
+				}
+				gamepad.isStale = false;
+			}
+
+		}
+
+		document.addEventListener("DOMContentLoaded", function () {
+			loadCommandsFromLocalStorage();
+			saved_delay = getLocalStorageItem('vsync_delay', -1);
+			document.getElementById("vsync-delay").value = saved_delay;
+			registerSwiCCIndicator(document.getElementById('status-swicc-0'), 0);
+			mainLoop();
+		});
+
+	</script>
+
+</head>
+
+<body>
+	<main class="row-of-things" style="height:95vh;">
+		<div id="control-status" class="stack-of-things" style="height: 100%;">
+			<div id="comms-box" class="content-box">
+				<div class="indicator-div" id="status-gamepad" onClick="incrementGamepadNum()">- Gamepad 0 -<br />Inactive.</div>
+				<div class="indicator-div" id="status-swicc-0" onclick="toggleSwiCC(0)">- SwiCC -<br />Click to connect.
+				</div>
+			</div>
+			<div class="content-box row-of-things">
+				<input type="text" id="vsync-delay" style="border:1px solid black" value="-1"> &nbsp;
+				<div class="btny-div" id="set-vsync-delay" onclick="setVSYNCDelayFromInput()">Update VSYNC Delay
+				</div>
+			</div>
+			<div class="content-box stack-of-things" style="height: 100%;">
+				<div class="btny-div" id="toggle-recording" onclick="toggleRecordingState()">Start recording
+				</div>
+				<div class="btny-div" id="set-vsync-delay" onclick="getRecording()">Read recording</div>
+				<div class="progress-container">
+					<div id="progress-record" class="progress-bar"></div>
+					<span id="progress-label-record" class="progress-label">0%</span>
+				</div>
+				<textarea id="recorded-inputs"></textarea>
+			</div>
+		</div>
+		<div class="content-box stack-of-things" style="height:100%;">
+			<div class="btny-div" id="run-btn" onclick="runTAS()">Run</div>
+			<div class="progress-container">
+				<div id="progress-playback" class="progress-bar"></div>
+				<span id="progress-label-playback" class="progress-label">0%</span>
+			</div>
+
+			<textarea id="commands"></textarea>
+		</div>
+	</main>
+</body>
+
+</html>

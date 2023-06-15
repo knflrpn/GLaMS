@@ -1,60 +1,72 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>GLaMS Comment Images</title>
-    <link rel="stylesheet" href="./style.css?b" />
-</head>
-<body>
-    <main>
-        <div id="main-content" class="content-box stack-of-things" style="width:95%; max-width:95%"> <!-- Main center column -->
-	<h1>Click to select.</h1>
-	
-	<div id="images"></div>
-	
-	<script>
-		// Make a request to get_examples.php to get the list of available text files
-		var xhr = new XMLHttpRequest();
-		xhr.open('GET', 'get_examples.php');
-		xhr.onload = function() {
-			if (xhr.status === 200) {
-				var files = JSON.parse(xhr.responseText);
-				var imagesDiv = document.getElementById('images');
-				for (var i = 0; i < files.length; i++) {
-					// Split the filename at the underscore to get the image filename
-					var parts = files[i].split('_');
-					var imageFilename = './imageExamples/' + parts[0] + '.gif';
-					var timeString = parts[1] + " " + parts[2];
-					
-					// Create a div element for the display
-					var div = document.createElement('div');
-					
-					// Create an image element for the corresponding image
-					var img = document.createElement('img');
-					img.src = imageFilename;
-					
-					// Create a link to comment_drawing.html with a GET parameter of the text file filename
-					var link = document.createElement('a');
-					link.href = 'comment_drawing.html?filename=' + encodeURIComponent(files[i]);
-					
-					// Create a span element for the time string and add it to the link
-					var timeSpan = document.createElement('span');
-					timeSpan.textContent = timeString;
 
-					// Add the image to the link
-					link.appendChild(img);
-					
-					// Add the link and text to the div
-					div.appendChild(link);
-					div.appendChild(timeSpan);
-					
-					// Add the div to the page
-					imagesDiv.appendChild(div);
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Expires" content="0">
+	<title>GLaMS Comment Images</title>
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=PT+Serif&family=Ubuntu+Mono:wght@700&display=swap"
+		rel="stylesheet">
+
+	<link rel="stylesheet" href="./styles/style_main.css?1" />
+</head>
+
+<body>
+	<main class="content-box" id="image-box">
+		<h1>Click to select.</h1>
+
+		<div id="images"></div>
+
+		<script>
+			// Make a request to get_examples.php to get the list of available text files
+			var xhr = new XMLHttpRequest();
+			xhr.open('GET', './scripts/get_images.php');
+			xhr.onload = function () {
+				if (xhr.status === 200) {
+					var files = JSON.parse(xhr.responseText);
+					var imagesDiv = document.getElementById('images');
+					for (var i = 0; i < files.length; i++) {
+						// Split the filename at the underscore to get the image filename
+						var parts = files[i].split('_');
+						var imageFilename = './precompiled_images/' + parts[0] + '.gif';
+						var timeString = parts[1] + " " + parts[2];
+
+						// Create a div element for the display
+						var div = document.createElement('div');
+
+						// Create an image element for the corresponding image
+						var img = document.createElement('img');
+						img.src = imageFilename;
+
+						// Create a link to comment_drawing.html with a GET parameter of the text file filename
+						var link = document.createElement('a');
+						link.href = 'comment_drawing.html?filename=' + encodeURIComponent(files[i]);
+
+						// Create a span element for the time string and add it to the link
+						var timeSpan = document.createElement('span');
+						timeSpan.textContent = timeString;
+
+						// Add the image to the link
+						link.appendChild(img);
+
+						// Add the link and text to the div
+						div.appendChild(link);
+						div.appendChild(timeSpan);
+
+						// Add the div to the page
+						imagesDiv.appendChild(div);
+					}
 				}
-			}
-		};
-		xhr.send();
-	</script>
-	</div>
+			};
+			xhr.send();
+		</script>
 	</main>
 </body>
+
 </html>

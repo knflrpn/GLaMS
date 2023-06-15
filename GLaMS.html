@@ -8,16 +8,22 @@
 	<meta http-equiv="Pragma" content="no-cache">
 	<meta http-equiv="Expires" content="0">
 	<title>GLaMS</title>
-	<link rel="stylesheet" href="./style.css?1" />
-	<script src="https://cdn.jsdelivr.net/gh/makeabilitylab/p5js/_libraries/serial.js"></script>
-	<script src="./SwiCC_comms.js?1"></script>
-	<script src="./page_funcs.js?1"></script>
-	<script>
 
-		// Buffer to delay display outputs
-		const timeBuffer = [];
-		let oldModCon = '[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false]';
-		let oldModStick = '[0,0,0,0]';
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=PT+Serif&family=Ubuntu+Mono:wght@700&display=swap"
+		rel="stylesheet">
+
+	<link rel="stylesheet" href="./styles/style_main.css?4" />
+
+	<script src="./scripts/serial.js"></script>
+	<script src="./scripts/pages_core.js?4"></script>
+	<script src="./scripts/SwiCC_core.js?4"></script>
+	<script src="./scripts/GLaMS_page_funcs.js?4"></script>
+	<script src="./scripts/WackyGamepad.js?5"></script>
+	<script>
+		// Global variables
+		let gamepad = new WackyGamepad();
 
 		/**
 		 * The main loop that runs the gamepad listening and manipulating logic.
@@ -27,61 +33,62 @@
 			requestAnimationFrame(mainLoop);
 			// or setTimeout(mainLoop, 16);
 
-			checkGamepads();
-			readGamepad(gamepad_num);
-
-			// Apply mapping
-			if (modArrayStale) createMap();
-			applyMap();
-
-			// Check for button spam toggle
-			if (document.getElementById("auto-jump-checkbox").checked) {
-				toggleAutoJump();
+			// If queuePlaying, update the progress bar and that's it
+			if (queuePlaying) {
+				updateProgressBar(playbackProgress);
+				return;
 			}
 
-			// Apply button spam if enabled
-			if (autojump_enabled) {
-				applyAutoJump();
-			} else {
-				forceCon.fill(false);
+			// Get mapping table and send to gamepad.
+			if (buttonMapStale) {
+				gamepad.setButtonMap(getButtonMap());
+				broadcastMapping();
+				buttonMapStale = false;
 			}
-			// Apply force-pushed buttons
-			applyForce();
 
-			updateMapDisplay();
-//			updateConDisplay(curCon, modCon, curStick);
-
-			packSwitchCon();
-			sendConToSwiCC();
-
-			// If delaying, handle the delay
-			if (lagAmount > 0) {
-				const timestamp = Date.now();
-				// Save current data
-				timeBuffer.push({
-					timestamp,
-					delayedModCon: JSON.stringify(modCon),
-					delayedModStick: JSON.stringify(modStick)
-				});
-				// Check for changes that are older than lagAmount and apply them to modCon and modStick
-				if (timeBuffer.length > 0) {
-					while (timestamp - timeBuffer[0].timestamp >= lagAmount) {
-						const delayedValues = timeBuffer.shift();
-						oldModCon = delayedValues.delayedModCon;
-						oldModStick = delayedValues.delayedModStick;
+			if (spamEnabled > 0) {
+				// Check if R3 is pressed to toggle between state 1 and 2
+				if (gamepad.justPressed[11]) {
+					if (spamEnabled == 1) {
+						spamEnabled = 2;
+						// Set indicator
+						const spamstat = document.getElementById("status-spam");
+						spamstat.classList.add("indicator-active");
+						spamstat.innerHTML = "on";
+					} else if (spamEnabled == 2) {
+						spamEnabled = 1;
+						// Set indicator
+						const spamstat = document.getElementById("status-spam");
+						spamstat.classList.remove("indicator-active");
+						spamstat.innerHTML = "off";
 					}
-					localStorage.setItem('GLaMS-modCon', oldModCon);
-					localStorage.setItem('GLaMS-modStick', oldModStick);
 				}
-			} else {
-				// No delay; realtime modified data
-				localStorage.setItem('GLaMS-modCon', JSON.stringify(modCon));
-				localStorage.setItem('GLaMS-modStick', JSON.stringify(modStick));
+				if (spamEnabled == 2) {
+					// Get spam table and send to gamepad.
+					gamepad.enableSpam(getSpamEnables());
+				} else {
+					gamepad.disableSpam();
+				}
 			}
 
-				// Communicate with other display pages
-				localStorage.setItem('GLaMS-curCon', JSON.stringify(curCon));
-				localStorage.setItem('GLaMS-curStick', JSON.stringify(curStick));
+			// Get new controller data and update page indicator.
+			updateGamepad();
+
+			// Highlight cells
+			highlightOnMap(gamepad.realtimeState['buttons'], gamepad.state['buttons']);
+
+			broadcastControllerState(
+					gamepad.realtimeState['buttons'],
+					gamepad.realtimeState['sticks'],
+					gamepad.state['buttons'],
+					gamepad.state['sticks']
+				);
+
+			if (gamepad.isStale) {
+				sendConToSwiCC(packSwitchCon(gamepad.state));
+				gamepad.isStale = false;
+			}
+
 
 		}
 
@@ -91,6 +98,20 @@
 			buildMappingTable();
 			buildRandomizeTable();
 			buildAutoTable();
+			// Add event listeners
+			document.getElementById('show-more').addEventListener('click', function () {
+				var hiddenRows = document.querySelectorAll('.hidden-com');
+				for (var i = 0; i < hiddenRows.length; i++) {
+					hiddenRows[i].classList.remove('hidden-com');
+				}
+				// Register the new indicators
+				registerSwiCCIndicator(document.getElementById('status-swicc-1'), 1);
+				registerSwiCCIndicator(document.getElementById('status-swicc-2'), 2);
+				registerSwiCCIndicator(document.getElementById('status-swicc-3'), 3);
+				// Hide the 'show-more' button after displaying all divs
+				document.getElementById('show-more').style.display = 'none';
+			});
+			registerSwiCCIndicator(document.getElementById('status-swicc-0'), 0);
 			// Start the loop
 			mainLoop();
 		});
@@ -100,85 +121,114 @@
 </head>
 
 <body>
-	<main>
-		<div id="main-content" class="stack-of-things"> <!-- Main center column -->
-			<div class="row-of-things"> <!-- Top row -->
-				<div id="control-status" class="stack-of-things">
-					<div id="comms-box" class="content-box">
-						<div class="status-div" id="status-gamepad">- Gamepad -<br />Use gamepad to connect.</div>
-						<div class="status-div" id="status-serial-0" onclick="connectToSerialDevice()">
-							- COM Port -<br />Click here to connect.</div>
-						<div class="status-div" id="status-swicc-0">- SwiCC -<br />Not detected.</div>
+	<main class="row-of-things" style="justify-content: center;"> <!-- Main center column -->
+		<div class="stack-of-things">
+			<div class="content-box stack-of-things">
+				<p>Scroll below input display for settings.</p>
+				<iframe id="gamepad-iframe" style="height:300px; min-width: 440px;" src="./con_display.html"
+					frameborder="0">
+					<!-- The gamepad display -->
+				</iframe>
+				<div class="indicator-div" id="status-gamepad" onClick="incrementGamepadNum()">- Gamepad 0 -<br />Inactive.</div>
+				<p>Clicking a connected SwiCC will pause it.</p>
+				<div class="grid-of-things grid-x2">
+					<div class="indicator-div" id="status-swicc-0" onclick="toggleSwiCC(0)">- SwiCC -<br />CLick to
+						connect.</div>
+					<div class="indicator-div hidden-com" id="status-swicc-1" onclick="toggleSwiCC(1)">- SwiCC
+						-<br />CLick to connect.</div>
+					<div class="indicator-div hidden-com" id="status-swicc-2" onclick="toggleSwiCC(2)">- SwiCC
+						-<br />CLick to connect.</div>
+					<div class="indicator-div hidden-com" id="status-swicc-3" onclick="toggleSwiCC(3)">- SwiCC
+						-<br />CLick to connect.</div>
+				</div>
+				<br />
+				<div id="show-more" class="btny-div">Add more SwiCCs</div>
+			</div>
+		</div>
+		<div class="stack-of-things">
+			<div class="content-box stack-of-things">
+				<p>Input (top) to output (right) mapping.</p>
+				<div id="mapping-container" class="table-container">
+					<!-- mapping table -->
+				</div>
+				<div class="btny-div" onclick="resetMap()">Reset</div>
+			</div>
+			<div class="content-box stack-of-things">
+				<p>Enable randomization:</p>
+				<div id="randomize-container" class="table-container">
+					<!-- randomization table -->
+				</div>
+				<div class="btny-div" onclick="randomizeMap(18)">Randomize</div>
+			</div>
+			<div class="content-box stack-of-things">
+				<div class="btny-div" id="enable-timed-random" onclick="timedRandomize()">Enable Periodic
+					Randomization</div>
+				<div class="row-of-things">
+					<input type="text" id="rand-num" value="1"> every <input type="text" id="rand-time" value="10">
+					seconds.
+				</div>
+			</div>
+		</div>
+
+		<div class="stack-of-things">
+			<div class="content-box">
+				<div class="row-of-things">
+					<div class="stack-of-things">
+						<div class="btny-div" id="status-stick2dpad" onclick="toggleStick2Dpad(1)">Left
+							stick to dpad</div>
 					</div>
-					<iframe id="gamepad-iframe" class="content-box" style="height:100%; min-height:22rem;" src="./inoutCon.html" frameborder="0">
-						<!-- The gamepad display -->
-					</iframe>
-					<div class="content-box">
+					<div class="stack-of-things">
+						<div class="btny-div" id="status-stick2abxy" onclick="toggleStick2Dpad(2)">Right
+							stick to ABXY</div>
+					</div>
+					<div class="stack-of-things">
+						<p>Rotate stick outputs (CW degrees [-180,180]):</p>
 						<div class="row-of-things">
-							<div class="stack-of-things">
-								<div class="btny-div" id="status-stick2dpad" onclick="toggleStick2Dpad(1)">Convert left stick to dpad</div>
-							</div>
-							<div class="stack-of-things">
-								<div class="btny-div" id="status-stick2abxy" onclick="toggleStick2Dpad(2)">Convert right stick to ABXY</div>
-							</div>
-							<div class="stack-of-things">
-								Rotate stick outputs (CW degrees [-180,180]):
-								<div class="row-of-things">
-									<div class="btny-div" style="width:max-content;" id="rot-down" onclick="changeRotation(-10)">CCW 10</div>
-									<input type="text" id="rotate-amt" style="border:1px solid black" value="0" onChange="setRotation()">
-									<div class="btny-div" style="width:max-content;" id="rot-up" onclick="changeRotation(10)">CW 10</div>
-								</div>
-							</div>
+							<div class="btny-div" style="width:max-content;" id="rot-down" onclick="setRotation(-15)">
+								CCW 15</div>
+							<input type="text" id="rotate-amt" value="0" onChange="setRotation()">
+							<div class="btny-div" style="width:max-content;" id="rot-up" onclick="setRotation(15)">
+								CW 15</div>
 						</div>
-					</div>
-				</div>
-				<div class="content-box"> <!-- Right side of top row -->
-					<div id="map-status" class="stack-of-things">
-						<div id="mapping-container" class="table-container">
-							Input (top) to output (right) mapping.<br /><br />
-							<!-- mapping table -->
-						</div>
-						<div class="btny-div" onclick="randomizeMap(1)">Reset</div>
-						<br />
-						<div id="randomize-container" class="table-container">
-							Enable randomization:<br /><br />
-							<!-- randomization table -->
-						</div>
-						<div class="btny-div" onclick="randomizeMap(0)">Randomize</div>
 					</div>
 				</div>
 			</div>
-			<div class="row-of-things"> <!-- Other tools -->
-				<div class="content-box">
-					<div class="stack-of-things">
-						Delay (milliseconds):
-						<div class="btny-div" id="lag-up" onclick="changeLag(16.66666666666666666)">+16.6 (1 frame)</div>
-						<input type="text" id="lag-num" style="border:1px solid black" value="0" onChange="setLag()">
-						<div class="btny-div" id="lag-down" onclick="changeLag(-16.6666666666666666)">-16.6 (1 frame)</div>
+			<div class="content-box">
+				<p>Delay (milliseconds):</p>
+				<div class="row-of-things">
+					<div class="btny-div" id="delay-up" onclick="addDelay(-16.66666666666666666)">-16.6 (1 frame)
+					</div>
+					<input type="text" id="delay-num" value="0" onChange="addDelay(0)">
+					<div class="btny-div" id="delay-down" onclick="addDelay(16.6666666666666666)">+16.6 (1 frame)
 					</div>
 				</div>
-				<div class="content-box">
-					<div class="stack-of-things">
-						Auto-enter Course ID.<br />Type ID here:
-						<input type="text" id="level-id" style="border:1px solid black">
-						Click ID button in game, then
-						<div class="btny-div" onclick="queueID()">Send</div>
-					</div>
-				</div>
-
-				<div class="content-box">
-					<div class="stack-of-things">
-						<div>Enable button spam: <input type="checkbox" id="auto-jump-checkbox"></div>
-						<div id="auto-container" class="table-container">
-							<!-- randomization table -->
-						</div>
-
-						(Click right stick in game to toggle)
-						<div class="status-div" id="status-autojump">off</div>
-					</div>
-				</div>
-
 			</div>
+			<div class="content-box">
+				<div class="stack-of-things">
+					Auto-enter Course ID.<br />Type ID here:
+					<input type="text" id="level-id">
+					Click ID button in game, then
+					<div class="btny-div" onclick="queueID()">Send</div>
+					<div class="progress-container">
+						<div id="progress-playback" class="progress-bar"></div>
+						<span id="progress-label-playback" class="progress-label">0%</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="content-box">
+				<div class="stack-of-things">
+					<div class="btny-div" id="toggle-button-spam" onclick="toggleButtonSpam()">Enable button spam
+					</div>
+					<div id="auto-container" class="table-container">
+						<!-- randomization table -->
+					</div>
+
+					<p>(Once enabled, click right stick in game to toggle)</p>
+					<div class="indicator-div" id="status-spam">off</div>
+				</div>
+			</div>
+
 		</div>
 	</main>
 </body>

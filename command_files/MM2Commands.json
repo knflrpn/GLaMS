@@ -1,0 +1,414 @@
+{
+    "commands": {
+        "jump": [
+            {
+                "buttons": "A",
+                "lx": 0,
+                "ly": 0,
+                "rx": 0,
+                "ry": 0,
+                "frames": 1
+            },
+            {
+                "buttons": "B",
+                "lx": 0,
+                "ly": 0,
+                "rx": 0,
+                "ry": 0,
+                "frames": 1
+            }
+        ],
+        "swim": [
+            {
+                "buttons": "A",
+                "lx": 0,
+                "ly": 0,
+                "rx": 0,
+                "ry": 0,
+                "frames": 1
+            },
+            {
+                "buttons": "B",
+                "lx": 0,
+                "ly": 0,
+                "rx": 0,
+                "ry": 0,
+                "frames": 1
+            }
+        ],
+        "hop": [
+            {
+                "buttons": "A",
+                "lx": 0,
+                "ly": 0,
+                "rx": 0,
+                "ry": 0,
+                "frames": 1
+            },
+            {
+                "buttons": "",
+                "lx": 0,
+                "ly": 0,
+                "rx": 0,
+                "ry": 0,
+                "frames": 20
+            }
+        ],
+        "tapright": [
+            {
+                "buttons": "R",
+                "lx": 0,
+                "ly": 0,
+                "rx": 0,
+                "ry": 0,
+                "frames": 1
+            },
+            {
+                "buttons": "",
+                "lx": 0,
+                "ly": 0,
+                "rx": 0,
+                "ry": 0,
+                "frames": 20
+            }
+        ],
+        "tapleft": [
+            {
+                "buttons": "L",
+                "lx": 0,
+                "ly": 0,
+                "rx": 0,
+                "ry": 0,
+                "frames": 1
+            },
+            {
+                "buttons": "",
+                "lx": 0,
+                "ly": 0,
+                "rx": 0,
+                "ry": 0,
+                "frames": 20
+            }
+        ],
+        "right": [
+            {
+                "buttons": "R",
+                "lx": 0,
+                "ly": 0,
+                "rx": 0,
+                "ry": 0,
+                "frames": 1
+            }
+        ],
+        "left": [
+            {
+                "buttons": "L",
+                "lx": 0,
+                "ly": 0,
+                "rx": 0,
+                "ry": 0,
+                "frames": 1
+            }
+        ],
+        "duck": [
+            {
+                "buttons": "D",
+                "lx": 0,
+                "ly": 0,
+                "rx": 0,
+                "ry": 0,
+                "frames": 1
+            }
+        ],
+        "down": [
+            {
+                "buttons": "D",
+                "lx": 0,
+                "ly": 0,
+                "rx": 0,
+                "ry": 0,
+                "frames": 1
+            }
+        ],
+        "run": [
+            {
+                "buttons": "Y",
+                "lx": 0,
+                "ly": 0,
+                "rx": 0,
+                "ry": 0,
+                "frames": 1
+            }
+        ],
+        "fire": [
+            {
+                "buttons": "X",
+                "lx": 0,
+                "ly": 0,
+                "rx": 0,
+                "ry": 0,
+                "frames": 1
+            }
+        ],
+        "spin": [
+            {
+                "buttons": "L1",
+                "lx": 0,
+                "ly": 0,
+                "rx": 0,
+                "ry": 0,
+                "frames": 1
+            }
+        ],
+        "twirl": [
+            {
+                "buttons": "L1",
+                "lx": 0,
+                "ly": 0,
+                "rx": 0,
+                "ry": 0,
+                "frames": 1
+            }
+        ],
+        "up": [
+            {
+                "buttons": "U",
+                "lx": 0,
+                "ly": 0,
+                "rx": 0,
+                "ry": 0,
+                "frames": 1
+            }
+        ],
+        "climb": [
+            {
+                "buttons": "U",
+                "lx": 0,
+                "ly": 0,
+                "rx": 0,
+                "ry": 0,
+                "frames": 1
+            }
+        ],
+        "roll": [
+            {
+                "buttons": "D",
+                "lx": 0,
+                "ly": 0,
+                "rx": 0,
+                "ry": 0,
+                "frames": 2
+            },
+            {
+                "buttons": "D R1",
+                "lx": 0,
+                "ly": 0,
+                "rx": 0,
+                "ry": 0,
+                "frames": 2
+            },
+            {
+                "buttons": "",
+                "lx": 0,
+                "ly": 0,
+                "rx": 0,
+                "ry": 0,
+                "frames": 30
+            }
+        ],
+        "schmoov": [
+            {
+                "buttons": "",
+                "lx": -1,
+                "ly": 0,
+                "rx": 0,
+                "ry": 0,
+                "frames": 1
+            },
+            {
+                "buttons": "",
+                "lx": 0,
+                "ly": 1,
+                "rx": 0,
+                "ry": 0,
+                "frames": 1
+            },
+            {
+                "buttons": "",
+                "lx": 1,
+                "ly": 0,
+                "rx": 0,
+                "ry": 0,
+                "frames": 1
+            },
+            {
+                "buttons": "",
+                "lx": 0,
+                "ly": 1,
+                "rx": 0,
+                "ry": 0,
+                "frames": 1
+            },
+            {
+                "buttons": "",
+                "lx": 0,
+                "ly": -1,
+                "rx": 0,
+                "ry": 0,
+                "frames": 1
+            },
+            {
+                "buttons": "",
+                "lx": -1,
+                "ly": 1,
+                "rx": 0,
+                "ry": 0,
+                "frames": 1
+            },
+            {
+                "buttons": "",
+                "lx": 1,
+                "ly": 1,
+                "rx": 0,
+                "ry": 0,
+                "frames": 1
+            }
+        ],
+        "screenshot": [
+            {
+                "buttons": "C",
+                "lx": 0,
+                "ly": 0,
+                "rx": 0,
+                "ry": 0,
+                "frames": 2
+            },
+            {
+                "buttons": "",
+                "lx": 0,
+                "ly": 0,
+                "rx": 0,
+                "ry": 0,
+                "frames": 30
+            }
+        ],
+        "ttours": [
+            {
+                "buttons": "C",
+                "lx": 0,
+                "ly": 0,
+                "rx": 0,
+                "ry": 0,
+                "frames": 2
+            },
+            {
+                "buttons": "",
+                "lx": 0,
+                "ly": 0,
+                "rx": 0,
+                "ry": 0,
+                "frames": 30
+            }
+        ],
+        "capture": [
+            {
+                "buttons": "C",
+                "lx": 0,
+                "ly": 0,
+                "rx": 0,
+                "ry": 0,
+                "frames": 2
+            },
+            {
+                "buttons": "",
+                "lx": 0,
+                "ly": 0,
+                "rx": 0,
+                "ry": 0,
+                "frames": 30
+            }
+        ]
+    },
+    "params": {
+        "jump": {
+            "length": 2,
+            "probability": 1
+        },
+        "swim": {
+            "length": 2,
+            "probability": 1
+        },
+        "hop": {
+            "length": 21,
+            "probability": 1
+        },
+        "tapright": {
+            "length": 21,
+            "probability": 1
+        },
+        "tapleft": {
+            "length": 21,
+            "probability": 1
+        },
+        "right": {
+            "length": 1,
+            "probability": 1
+        },
+        "left": {
+            "length": 1,
+            "probability": 1
+        },
+        "duck": {
+            "length": 1,
+            "probability": 1
+        },
+        "down": {
+            "length": 1,
+            "probability": 1
+        },
+        "run": {
+            "length": 1,
+            "probability": 1
+        },
+        "fire": {
+            "length": 1,
+            "probability": 1
+        },
+        "spin": {
+            "length": 1,
+            "probability": 1
+        },
+        "twirl": {
+            "length": 1,
+            "probability": 1
+        },
+        "up": {
+            "length": 1,
+            "probability": 1
+        },
+        "climb": {
+            "length": 1,
+            "probability": 1
+        },
+        "roll": {
+            "length": 4,
+            "probability": 1
+        },
+        "schmoov": {
+            "length": 4,
+            "probability": 1
+        },
+        "screenshot": {
+            "length": 4,
+            "probability": 0.02
+        },
+        "ttours": {
+            "length": 4,
+            "probability": 0.02
+        },
+        "capture": {
+            "length": 4,
+            "probability": 0.02
+        }
+    }
+}

@@ -1,6 +1,6 @@
 <?php
 // Define the directory to scan
-$dir = './imageExamples';
+$dir = './../precompiled_images';
 
 // Open the directory
 if ($handle = opendir($dir)) {

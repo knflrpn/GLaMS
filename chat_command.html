@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Expires" content="0">
+	<title>GLaMS</title>
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=PT+Serif&family=Ubuntu+Mono:wght@700&display=swap"
+		rel="stylesheet">
+
+	<link rel="stylesheet" href="./styles/style_main.css?1" />
+	<link rel="stylesheet" href="./styles/style_commands.css?1" />
+
+	<script src="./scripts/serial.js"></script>
+	<script src="./scripts/pages_core.js?1"></script>
+	<script src="./scripts/SwiCC_core.js?1"></script>
+	<script src="./scripts/GLaMS_page_funcs.js?1"></script>
+	<script src="./scripts/WackyGamepad.js?1"></script>
+	<script src="./scripts/MessageManager.js"></script>
+	<script src="./scripts/tp_page_funcs.js?1"></script>
+
+	<script>
+		let tickToggle = false;
+		let gamepad = new WackyGamepad();
+		let messageManager = new MessageManager();
+
+		let tc_ws = null;
+
+		let chatEnabled = false;
+
+		/**
+		 * The main loop that runs the gamepad listening and manipulating logic.
+		 */
+		function mainLoop() {
+			// Set next update;
+			requestAnimationFrame(mainLoop);
+
+			// Get new controller data and update page indicator.
+			updateGamepad();
+
+			tickToggle = !tickToggle;
+			if (tickToggle) {
+				// clock the message manager
+				messageManager.tick();
+			}
+
+			const currentMessages = messageManager.messages;
+			// For each message, populate the message list, adding classes according to
+			// message.handled, message.actionable, and message.expired
+			const msglist = document.getElementById('message-list');
+			if (msglist != null) {
+				msglist.innerHTML = "";
+				currentMessages.forEach(message => {
+					const msgid = "message-" + message.id;
+					const msgdiv = document.createElement('div');
+					msgdiv.id = msgid;
+					msgdiv.classList.add('tc-message');
+					if (message.handled) {
+						msgdiv.classList.add('tc-handled');
+					}
+					if (message.actionable) {
+						msgdiv.classList.add('tc-actionable');
+					}
+					if (message.expired) {
+						msgdiv.classList.add('tc-expired');
+					}
+					msgdiv.innerHTML = message.user + ": " + message.content;
+					msglist.prepend(msgdiv);
+				});
+			}
+
+			// Inject message state into controller.
+			const currentMessage = messageManager.message;
+			if (currentMessage != null && chatEnabled) {
+				// Merge the gamepad state with the message manager state.
+				// Buttons come as a space-separated list of buttons
+				const chatbuttons = messageManager.conState.buttons.split(" ");
+				// Press each button
+				chatbuttons.forEach(button => {
+					gamepad.pressButton(button);
+				});
+				gamepad.setLeftStick(messageManager.conState.lx, messageManager.conState.ly);
+				gamepad.setRightStick(messageManager.conState.rx, messageManager.conState.ry);
+			}
+
+
+			// Highlight the active command
+			// First remove all highlights from children of command-list
+			const cmdlist = document.getElementById('command-list');
+			if (cmdlist != null) {
+				cmdlist.childNodes.forEach(child => {
+					if (child.classList != null) {
+						child.classList.remove('command-active');
+					}
+				});
+			}
+
+			// Then for each command in messageManager.commands, find the corresponding command div and highlight it.
+			messageManager.commands.forEach(command => {
+				const cmdid = "command-" + command;
+				const cmddiv = document.getElementById(cmdid);
+				if (cmddiv != null) {
+					cmddiv.classList.add('command-active');
+				}
+			});
+
+			if (gamepad.isStale) {
+				sendConToSwiCC(packSwitchCon(gamepad.state));
+				gamepad.isStale = false;
+			}
+
+			// Communicate with display pages
+			broadcastControllerState(
+				gamepad.realtimeState['buttons'],
+				gamepad.realtimeState['sticks'],
+				gamepad.state['buttons'],
+				gamepad.state['sticks']
+			);
+
+		}
+
+		function toggleChat() {
+			chatEnabled = !chatEnabled;
+			const indicator = document.getElementById('chat-enable');
+			if (indicator != null) {
+				if (chatEnabled) {
+					indicator.classList.add('indicator-active');
+				} else {
+					indicator.classList.remove('indicator-active');
+				}
+			}
+
+		}
+		// Page onLoad
+		document.addEventListener("DOMContentLoaded", function () {
+			registerSwiCCIndicator(document.getElementById('status-swicc-0'), 0);
+			const tc_channel = document.getElementById("channel-input");
+			tc_channel.value = getLocalStorageItem('GLaMS-tcChannel', "");
+			populateCommands();
+			// Start the loop
+			mainLoop();
+		});
+
+	</script>
+</head>
+
+<body style="height:101vh;">
+	<main class="row-of-things" style="justify-content: center;"> <!-- Main center column -->
+		<div class="stack-of-things">
+			<div class="content-box stack-of-things">
+				<p>Scroll below input display for settings.</p>
+				<iframe id="gamepad-iframe" style="height:300px; min-width: 440px;" src="./con_display.html"
+					frameborder="0">
+					<!-- The gamepad display -->
+				</iframe>
+				<div class="indicator-div" id="status-gamepad" onClick="incrementGamepadNum()">- Gamepad 0 -<br />Inactive.</div>
+				<div class="grid-of-things grid-x2">
+					<div class="indicator-div" id="status-swicc-0" onclick="toggleSwiCC(0)">- SwiCC -<br />Click to
+						connect.</div>
+				</div>
+			</div>
+			<div class="content-box stack-of-things">
+				<p>Chat/bot controls</p>
+				<div class="row-of-things">
+					<div class="btny-div" id="chat-enable" onclick="toggleChat()">Toggle Chat Control</div>
+				</div>
+
+			</div>
+		</div>
+		<div class="stack-of-things">
+			<div class="content-box stack-of-things">
+				<p>Available commands:<br />(click to test)</p>
+				<div id="command-list">
+					<!-- will be populated with commands -->
+				</div>
+				<a href="./edit_commands.html">click here to edit</a>
+			</div>
+		</div>
+		<div class="stack-of-things">
+			<div class="content-box stack-of-things">
+				<div class="row-of-things">
+					<input type="text" id="channel-input" placeholder="Channel Name" />
+					<button class="btny-div" id="tc-connect"
+						onclick="tc_connect(document.getElementById('channel-input').value)">Connect</button>
+				</div>
+				<p>Current message pool:</p>
+				<div id="message-list"
+					style="min-height:5rem; width:45ch; background-color: white; overflow-x: hidden;"></div>
+			</div>
+		</div>
+	</main>
+</body>
+
+</html>

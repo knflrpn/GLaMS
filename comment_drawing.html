@@ -2,89 +2,101 @@
 <html>
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GLaMS</title>
-    <link rel="stylesheet" href="./style.css?3" />
-    <script src="https://cdn.jsdelivr.net/gh/makeabilitylab/p5js/_libraries/serial.js"></script>
-    <script src="./SwiCC_comms.js?3"></script>
-    <script src="./page_funcs.js?3"></script>
-    <script src="./TAS_page_funcs.js?3"></script>
-    <script src="./command_parser.js?3"></script>
-    <script>
-        function mainLoop() {
-            setTimeout(mainLoop, 16);
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Expires" content="0">
+	<title>GLaMS</title>
 
-            checkGamepads();
-            readGamepad(gamepad_num);
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=PT+Serif&family=Ubuntu+Mono:wght@400&display=swap"
+		rel="stylesheet">
 
-            if (!queue_playing) {
-                packSwitchCon(true);
-                sendConToSwiCC();
-            }
+	<link rel="stylesheet" href="./styles/style_main.css?1" />
 
-        }
+	<script src="./scripts/serial.js"></script>
+	<script src="./scripts/pages_core.js?1"></script>
+	<script src="./scripts/SwiCC_core.js?1"></script>
+	<script src="./scripts/macro_page_funcs.js?1"></script>
+	<script src="./scripts/comment_page_funcs.js?1"></script>
+	<script src="./scripts/drawing_parser.js?1"></script>
+	<script src="./scripts/WackyGamepad.js?1"></script>
+	<script>
+		// Global variables
+		let gamepad = new WackyGamepad();
 
-        document.addEventListener("DOMContentLoaded", function () {
-            loadCommandsFromLocalStorage();
-            // getExamples();
-            populateFromGET();
-            mainLoop();
-            canvas = document.getElementById('drawingCanvas');
-            ctx = canvas.getContext('2d');
-            ctx.imageSmoothingEnabled = false;
-            cursorCanvas = document.getElementById('cursorCanvas');
-            cursorCtx = cursorCanvas.getContext('2d');
-            document.getElementById('executeCommands').addEventListener('click', executeCommands);
-        });
+		function mainLoop() {
+			requestAnimationFrame(mainLoop);
 
-    </script>
+			// If queuePlaying, don't monitor gamepad or send commands
+			if (queuePlaying) {
+				return;
+			}
+
+			updateGamepad();
+
+			if (gamepad.isStale) {
+				sendConToSwiCC(packSwitchCon(gamepad.state));
+				gamepad.isStale = false;
+			}
+
+
+		}
+
+		document.addEventListener("DOMContentLoaded", function () {
+			populateFromGET();
+			canvas = document.getElementById('drawingCanvas');
+			ctx = canvas.getContext('2d');
+			ctx.imageSmoothingEnabled = false;
+			cursorCanvas = document.getElementById('cursorCanvas');
+			cursorCtx = cursorCanvas.getContext('2d');
+			document.getElementById('executeCommands').addEventListener('click', executeCommands);
+			registerSwiCCIndicator(document.getElementById('status-swicc-0'), 0);
+			mainLoop();
+		});
+
+	</script>
 
 </head>
 
 <body>
-    <main>
-        <div id="main-content" class="row-of-things"> <!-- Main center column -->
-                <div id="control-status" class="stack-of-things">
-                    <div id="comms-box" class="content-box">
-                        <div class="status-div" id="status-gamepad">- Gamepad -<br />Use gamepad to connect.</div>
-                        <div class="status-div" id="status-serial-0" onclick="connectToSerialDevice()">- Comm Port
-                            -<br/>Click
-                            here to connect.</div>
-                        <div class="status-div" id="status-swicc-0">- SwiCC -<br />Not detected.</div>
-                    </div>
-                    <div id="examples-box" class="content-box">
-                        <div class="stack-of-things">
-                            <p>Select from pre-computed image paths:</p>
-                            <p><a href="precomputed_image_list.html">Browse Images</a></p>
-                            <div id="image-container"></div>
-                        </div>
-                    </div>
-                    <div id="draw-box" class="content-box">
-                        <div class="stack-of-things">
-                            <label for="commandsPerFrame">Preview speed:</label>
-                            <input type="number" id="commandsPerFrame" min="1" value="100">
-                            <div class="btny-div" id="executeCommands">Restart Preview</div>
-                            <div style="position: relative; width: 320px; height: 180px;">
-                                <canvas id="drawingCanvas" width="320" height="180"></canvas>
-                                <canvas id="cursorCanvas" width="320" height="180" style="position:absolute;left:0;top:0;"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="content-box">
-                    <div class="stack-of-things">
-                        <p>Place cursor in top-left corner and select color red before running.</p>
-                        <div class="btny-div" id="run-btn" onclick="runTAS()">Run</div>
-                        <div class="progress-container">
-                            <div id="progress-playback" class="progress-bar"></div>
-                            <span id="progress-label-playback" class="progress-label">0%</span>
-                        </div>
+	<main>
+		<div id="main-content" class="row-of-things"> <!-- Main center column -->
+			<div id="control-status" class="stack-of-things">
+				<div id="comms-box" class="content-box">
+					<div class="indicator-div" id="status-gamepad">- Gamepad -<br />Use gamepad to connect.</div>
+					<div class="indicator-div" id="status-swicc-0" onclick="toggleSwiCC(0)">- SwiCC -<br />Click to
+						connect.</div>
+				</div>
+				<div id="examples-box" class="content-box stack-of-things">
+					<p>Select from pre-computed image paths:</p>
+					<p><a href="precomputed_image_list.html">Browse Images</a></p>
+					<div id="image-container"></div>
+				</div>
+				<div id="draw-box" class="content-box stack-of-things">
+					<label for="commandsPerFrame">Preview speed:</label>
+					<input type="number" id="commandsPerFrame" min="1" value="100">
+					<div class="btny-div" id="executeCommands">Restart Preview</div>
+					<div style="position: relative; width: 320px; height: 180px;">
+						<canvas id="drawingCanvas" width="320" height="180"></canvas>
+						<canvas id="cursorCanvas" width="320" height="180"
+							style="position:absolute;left:0;top:0;"></canvas>
+					</div>
+				</div>
+			</div>
+			<div class="content-box stack-of-things">
+				<p>Place cursor in top-left corner and select color red before running.</p>
+				<div class="btny-div" id="run-btn" onclick="runTAS()">Run</div>
+				<div class="progress-container">
+					<div id="progress-playback" class="progress-bar"></div>
+					<span id="progress-label-playback" class="progress-label">0%</span>
+				</div>
 
-                        <textarea id="commands" style="white-space: nowrap; overflow-x: clip;"></textarea>
-                    </div>
-                </div>
-    </main>
+				<textarea id="commands" style="white-space: nowrap; overflow-x: clip;"></textarea>
+			</div>
+	</main>
 </body>
 
 </html>
