@@ -25,6 +25,10 @@ body {
 	justify-content: center;
 }
 
+p {
+	margin-bottom: 0.5rem;
+}
+
 input {
 	padding: 0.2rem 0.6rem;
 	text-align: center;

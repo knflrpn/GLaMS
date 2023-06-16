@@ -51,27 +51,36 @@
 			}
 
 			const currentMessages = messageManager.messages;
-			// For each message, populate the message list, adding classes according to
-			// message.handled, message.actionable, and message.expired
 			const msglist = document.getElementById('message-list');
+
 			if (msglist != null) {
-				msglist.innerHTML = "";
-				currentMessages.forEach(message => {
-					const msgid = "message-" + message.id;
-					const msgdiv = document.createElement('div');
-					msgdiv.id = msgid;
-					msgdiv.classList.add('tc-message');
-					if (message.handled) {
-						msgdiv.classList.add('tc-handled');
+				// Create a map of current messages for quick lookup
+				const currentMessagesMap = new Map(currentMessages.map(msg => [msg.id, msg]));
+
+				// Get all existing messages in the DOM
+				const existingMessages = msglist.getElementsByClassName('tc-message');
+
+				// Convert HTMLCollection to array for manipulation
+				Array.from(existingMessages).forEach(existingMessageElement => {
+					const id = existingMessageElement.id.split('-')[1]; // extract the id part
+
+					if (currentMessagesMap.has(id)) {
+						// If the message is in currentMessages, update it
+						const message = currentMessagesMap.get(id);
+						const newMessageElement = createMessageElement(message);
+						msglist.replaceChild(newMessageElement, existingMessageElement);
+						// Remove the message from the map to leave only new messages
+						currentMessagesMap.delete(id);
+					} else {
+						// If the message is not in currentMessages, remove it from the DOM
+						msglist.removeChild(existingMessageElement);
 					}
-					if (message.actionable) {
-						msgdiv.classList.add('tc-actionable');
-					}
-					if (message.expired) {
-						msgdiv.classList.add('tc-expired');
-					}
-					msgdiv.innerHTML = message.user + ": " + message.content;
-					msglist.prepend(msgdiv);
+				});
+
+				// Now currentMessagesMap contains only new messages, add them to the DOM
+				currentMessagesMap.forEach((message) => {
+					const newMessageElement = createMessageElement(message);
+					msglist.prepend(newMessageElement);
 				});
 			}
 
@@ -125,6 +134,24 @@
 
 		}
 
+		function createMessageElement(message) {
+			const msgid = "message-" + message.id;
+			const msgdiv = document.createElement('div');
+			msgdiv.id = msgid;
+			msgdiv.classList.add('tc-message');
+			if (message.handled) {
+				msgdiv.classList.add('tc-handled');
+			}
+			if (message.actionable) {
+				msgdiv.classList.add('tc-actionable');
+			}
+			if (message.expired) {
+				msgdiv.classList.add('tc-expired');
+			}
+			msgdiv.innerHTML = message.user + ": " + message.content;
+			return msgdiv;
+		}
+
 		function toggleChat() {
 			chatEnabled = !chatEnabled;
 			const indicator = document.getElementById('chat-enable');
@@ -159,7 +186,8 @@
 					frameborder="0">
 					<!-- The gamepad display -->
 				</iframe>
-				<div class="indicator-div" id="status-gamepad" onClick="incrementGamepadNum()">- Gamepad 0 -<br />Inactive.</div>
+				<div class="indicator-div" id="status-gamepad" onClick="incrementGamepadNum()">- Gamepad 0
+					-<br />Inactive.</div>
 				<div class="grid-of-things grid-x2">
 					<div class="indicator-div" id="status-swicc-0" onclick="toggleSwiCC(0)">- SwiCC -<br />Click to
 						connect.</div>
