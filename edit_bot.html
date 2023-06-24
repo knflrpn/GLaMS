@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Expires" content="0">
+	<title>GLaMS</title>
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=PT+Serif&family=Ubuntu+Mono:wght@400&display=swap"
+		rel="stylesheet">
+
+	<link rel="stylesheet" href="./styles/style_main.css?2" />
+	<link rel="stylesheet" href="./styles/style_commands.css?2" />
+
+	<script src="./scripts/pages_core.js?2"></script>
+	<script src="./scripts/tp_page_funcs.js?2"></script>
+	<script>
+
+		document.addEventListener("DOMContentLoaded", function () {
+			// Check if there is a saved commands file, else initialize with empty object
+			loadCommandsFromStorage();
+			loadGroupsFromStorage();
+			// Populate the current groups.
+			loadExistingGroups();
+			// Populate the command list div.
+			populateGroupCommandList();
+			document.getElementById('fileInput').addEventListener('change', handleBotFileUpload);
+
+			// Server file selection handling...
+			document.getElementById('serverFiles').addEventListener('change', function (event) {
+				const filename = event.target.value;
+
+				if (filename) {
+					fetch(`./command_files/${filename}`)
+						.then(response => response.text())
+						.then(content => {
+							setLocalStorageItem("tc_bot_file", content);
+							console.log('Server file selected and saved to localStorage.');
+							// Reload page
+							location.reload();
+						});
+				}
+			});
+
+		});
+
+
+		function saveGroup() {
+			// Extract group parameters from input fields
+			let groupName = document.getElementById('groupName').value;
+			let minCommands = parseInt(document.getElementById('minCommands').value, 10);
+			let maxCommands = parseInt(document.getElementById('maxCommands').value, 10);
+			let groupProbability = parseFloat(document.getElementById('groupProbability').value);
+			let groupExclusive = document.getElementById('groupExclusive').checked; // Read checkbox state
+			let groupCooldown = parseFloat(document.getElementById('groupCooldown').value);
+
+			// Extract selected commands
+			let selectedCommands = Array.from(document.querySelectorAll('.keyword-selected')).map(elem => elem.textContent);
+
+			if (!selectedCommands.length) {
+				alert('Please select at least one command.');
+				return;
+			}
+			// Check if all parameters are valid 
+			if (isNaN(minCommands) || isNaN(maxCommands) || isNaN(groupProbability) || isNaN(groupCooldown)) {
+				alert('Invalid group parameters. Please check your inputs and try again.');
+				return;
+			}
+
+			// Update botParams
+			botParams.groups[groupName] = {
+				"min": minCommands,
+				"max": maxCommands,
+				"probability": groupProbability,
+				"exclusive": groupExclusive,  // Add exclusive state
+				"cooldown": groupCooldown,
+				"commands": selectedCommands
+			};
+
+			// Save botParams to localStorage
+			setLocalStorageItem("tc_bot_file", JSON.stringify(botParams));
+			location.reload(); // Reload page
+
+		}
+
+		function populateGroupCommandList() {
+			let commandListDiv = document.getElementById('command-list');
+			commandListDiv.innerHTML = ''; // Clear existing commands
+
+			for (let command in commandMap) {
+				let keywordDiv = document.createElement('div');
+				keywordDiv.classList.add('keyword');
+				keywordDiv.textContent = command;
+				keywordDiv.addEventListener('click', toggleCommandSelection);
+				commandListDiv.appendChild(keywordDiv);
+			}
+		}
+
+		function toggleCommandSelection(event) {
+			// Toggle 'selected' class on click
+			event.target.classList.toggle('keyword-selected');
+		}
+
+
+		function loadExistingGroups() {
+			// Assuming 'botParams' is available globally
+			let existingGroupsDiv = document.getElementById('existingGroups');
+			existingGroupsDiv.innerHTML = ''; // Clear existing groups
+
+			for (let group in botParams.groups) {
+				let groupDiv = document.createElement('div');
+				groupDiv.className = 'edit-row';
+				const span = document.createElement('span');
+				span.className = 'keyword';
+				span.textContent = group;
+				groupDiv.appendChild(span);
+
+
+				let editButton = document.createElement('button');
+				editButton.textContent = 'Edit';
+				editButton.addEventListener('click', () => editGroup(group));
+
+				let deleteButton = document.createElement('button');
+				deleteButton.textContent = 'Delete';
+				deleteButton.className = 'delete-button';
+				deleteButton.addEventListener('click', () => deleteGroup(group));
+
+				groupDiv.appendChild(editButton);
+				groupDiv.appendChild(deleteButton);
+				existingGroupsDiv.appendChild(groupDiv);
+			}
+		}
+
+		function editGroup(groupName) {
+			let group = botParams.groups[groupName];
+
+			// Populate fields with group settings
+			document.getElementById('groupName').value = groupName;
+			document.getElementById('minCommands').value = group.min;
+			document.getElementById('maxCommands').value = group.max;
+			document.getElementById('groupProbability').value = group.probability;
+			document.getElementById('groupExclusive').checked = group.exclusive;
+			document.getElementById('groupCooldown').value = group.cooldown;
+
+			// Mark commands as selected
+			Array.from(document.querySelectorAll('.keyword')).forEach(elem => {
+				if (group.commands.includes(elem.textContent)) {
+					elem.classList.add('keyword-selected');
+				} else {
+					elem.classList.remove('keyword-selected');
+				}
+			});
+			window.scrollTo(0, 0);
+		}
+
+		function deleteGroup(groupName) {
+			if (confirm(`Are you sure you want to delete group "${groupName}"?`)) {
+				delete botParams.groups[groupName];
+				// Save botParams to localStorage
+				setLocalStorageItem("tc_bot_file", JSON.stringify(botParams));
+				location.reload(); // Reload page
+			}
+		}
+
+		function downloadGroupsFile() {
+			const element = document.createElement('a');
+			const data = getLocalStorageItem("tc_bot_file", '{"groups":{}}');
+			element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(data));
+			element.setAttribute('download', 'bot.json');
+
+			element.style.display = 'none';
+			document.body.appendChild(element);
+
+			element.click();
+
+			document.body.removeChild(element);
+		}
+
+		// Bot file upload handling...
+		function handleBotFileUpload(event) {
+			const file = event.target.files[0];
+
+			if (file) {
+				const reader = new FileReader();
+
+				reader.onload = function (event) {
+					const fileContent = event.target.result;
+					setLocalStorageItem("tc_bot_file", fileContent);
+					console.log('File uploaded and saved to localStorage.');
+					// Reload page
+					location.reload();
+				};
+
+				reader.readAsText(file);
+			}
+		}
+
+	</script>
+</head>
+
+<body id="editing-body">
+	<div class="editing-container">
+		<div id="groupEditingArea">
+			<h1>Create / Edit Command Group</h1>
+
+			<div class="editing-param-holder">
+				<span>Group Name:</span>&nbsp;
+				<input type="text" id="groupName" placeholder="Group Name">&nbsp;
+				<span class="help-icon"
+					help-text="The unique identifier for the command group. Must be letters, numbers, and/or underscore.">?</span>
+			</div>
+
+			<div class="editing-param-holder">
+				<span>Min Commands:</span>&nbsp;
+				<input type="text" id="minCommands" placeholder="0" value="0">&nbsp;
+				<span class="help-icon"
+					help-text="The minimum number of commands to be chosen when this group is used.">?</span>
+			</div>
+
+			<div class="editing-param-holder">
+				<span>Max Commands:</span>&nbsp;
+				<input type="text" id="maxCommands" placeholder="100" value="100">&nbsp;
+				<span class="help-icon"
+					help-text="The maximum number of commands to chosen when this group is used.">?</span>
+			</div>
+
+			<div class="editing-param-holder">
+				<span>Group Probability:</span>&nbsp;
+				<input type="text" id="groupProbability" placeholder="1" value="1">&nbsp;
+				<span class="help-icon"
+					help-text="The probability that this group is picked; 0=never, 1=always.">?</span>
+			</div>
+
+			<div class="editing-param-holder">
+				<span>Exclusive:</span>&nbsp;
+				<input type="checkbox" id="groupExclusive">&nbsp;
+				<span class="help-icon"
+					help-text="If an exclusive group fires, all other groups will be disqualified for the current selection round.">?</span>
+			</div>
+
+			<div class="editing-param-holder">
+				<span>Group Cooldown:</span>&nbsp;
+				<input type="text" id="groupCooldown" placeholder="0" value="0">&nbsp;
+				<span class="help-icon"
+					help-text="The minimum amount of time (seconds) between uses of this group.">?</span>
+			</div>
+
+			<br />
+			<span>Commands in group (click to select):</span>&nbsp;
+			<span class="help-icon"
+				help-text="When this group gets chosen, the commands selected here become eligible for execution.  How many commands can occur at once is set by the min and max above.">?</span>
+			<div id="command-list" class="dense-list">
+				<!-- Command keywords will be populated here -->
+			</div>
+			<br />
+			<div class="row-of-things">
+				<div class="btny-div" onclick="saveGroup()">Save Group</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="editing-container">
+		<h1>Existing Command Groups</h1>
+		<div id="existingGroups">
+			<!-- Existing command groups will be inserted here -->
+		</div>
+	</div>
+
+	<div class="editing-container">
+		<h1>Load / Save</h1>
+		<div>
+			<a href="./chat_command.html">Return to chat page.</a>
+		</div>
+		<div>
+			<a href="./edit_commands.html">Edit available commands.</a>
+		</div>
+		<div>
+			<div class="btny-div" onclick="downloadGroupsFile()">Save to File</div>
+		</div>
+		<div>
+			<p>Load from file:</p>
+			<input type="file" id="fileInput" accept=".json" style="width:unset;" />
+		</div>
+		<div>
+			<p>Load premade:</p>
+			<select id="serverFiles">
+				<option value="">--Choose an option--</option>
+				<option value="MPSS_Bot.json">Mario Party Super Stars Groups</option>
+				<!-- Add other options here -->
+			</select>
+		</div>
+	</div>
+</body>
+
+</html>

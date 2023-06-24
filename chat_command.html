@@ -18,21 +18,24 @@
 	<link rel="stylesheet" href="./styles/style_commands.css?1" />
 
 	<script src="./scripts/serial.js"></script>
-	<script src="./scripts/pages_core.js?1"></script>
-	<script src="./scripts/SwiCC_core.js?1"></script>
-	<script src="./scripts/GLaMS_page_funcs.js?1"></script>
-	<script src="./scripts/WackyGamepad.js?1"></script>
-	<script src="./scripts/MessageManager.js"></script>
-	<script src="./scripts/tp_page_funcs.js?1"></script>
+	<script src="./scripts/pages_core.js?6"></script>
+	<script src="./scripts/SwiCC_core.js?6"></script>
+	<script src="./scripts/GLaMS_page_funcs.js?6"></script>
+	<script src="./scripts/WackyGamepad.js?6"></script>
+	<script src="./scripts/MessageManager.js?6"></script>
+	<script src="./scripts/CommandBot.js?6"></script>
+	<script src="./scripts/tp_page_funcs.js?6"></script>
 
 	<script>
 		let tickToggle = false;
 		let gamepad = new WackyGamepad();
 		let messageManager = new MessageManager();
+		let bot = new CommandBot();
 
 		let tc_ws = null;
 
 		let chatEnabled = false;
+		let botEnabled = false;
 
 		/**
 		 * The main loop that runs the gamepad listening and manipulating logic.
@@ -43,6 +46,14 @@
 
 			// Get new controller data and update page indicator.
 			updateGamepad();
+
+			// Insert bot message if needed.
+			if (botEnabled) {
+				const botMessage = bot.getMessage();
+				if (botMessage != null) {
+					messageManager.insertMessage("Bot", botMessage);
+				}
+			}
 
 			tickToggle = !tickToggle;
 			if (tickToggle) {
@@ -86,7 +97,7 @@
 
 			// Inject message state into controller.
 			const currentMessage = messageManager.message;
-			if (currentMessage != null && chatEnabled) {
+			if (currentMessage != null && (chatEnabled || botEnabled)) {
 				// Merge the gamepad state with the message manager state.
 				// Buttons come as a space-separated list of buttons
 				const chatbuttons = messageManager.conState.buttons.split(" ");
@@ -162,14 +173,31 @@
 					indicator.classList.remove('indicator-active');
 				}
 			}
-
 		}
+		
+		function toggleBot() {
+			botEnabled = !botEnabled;
+			const indicator = document.getElementById('bot-enable');
+			if (indicator != null) {
+				if (botEnabled) {
+					indicator.classList.add('indicator-active');
+				} else {
+					indicator.classList.remove('indicator-active');
+				}
+			}
+		}
+		
+		function botRateChange(rate=5) {
+			bot.rate = rate;
+		}
+
 		// Page onLoad
 		document.addEventListener("DOMContentLoaded", function () {
 			registerSwiCCIndicator(document.getElementById('status-swicc-0'), 0);
 			const tc_channel = document.getElementById("channel-input");
 			tc_channel.value = getLocalStorageItem('GLaMS-tcChannel', "");
 			populateCommands();
+			populateGroups();
 			// Start the loop
 			mainLoop();
 		});
@@ -194,9 +222,19 @@
 				</div>
 			</div>
 			<div class="content-box stack-of-things">
-				<p>Chat/bot controls</p>
+				<p>Chat controls</p>
 				<div class="row-of-things">
-					<div class="btny-div" id="chat-enable" onclick="toggleChat()">Toggle Chat Control</div>
+					<input type="text" id="channel-input" placeholder="Channel Name" />
+					<button class="btny-div" id="tc-connect"
+						onclick="tc_connect(document.getElementById('channel-input').value)">Connect</button>
+						<div class="btny-div" id="chat-enable" onclick="toggleChat()">Toggle Chat Control</div>
+					</div>
+				<p>Bot controls</p>
+				<div class="row-of-things">
+					<div class="btny-div" id="bot-enable" onclick="toggleBot()">Toggle Bot Control</div>
+					<span style="line-height: 2rem;">Rate:</span>
+					<input type="number" id="bot-rate" value="5" min="0.1" max="20" step="0.5" onchange="botRateChange(this.value)" />
+					<span style="line-height: 2rem;">/s</span>
 				</div>
 
 			</div>
@@ -204,19 +242,21 @@
 		<div class="stack-of-things">
 			<div class="content-box stack-of-things">
 				<p>Available commands:<br />(click to test)</p>
-				<div id="command-list">
+				<div id="command-list" class="dense-list">
 					<!-- will be populated with commands -->
 				</div>
 				<a href="./edit_commands.html">click here to edit</a>
 			</div>
+			<div class="content-box stack-of-things">
+				<p>Bot command groups:</p>
+				<div id="group-list" class="dense-list">
+					<!-- will be populated with groups -->
+				</div>
+				<a href="./edit_bot.html">click here to edit</a>
+			</div>
 		</div>
 		<div class="stack-of-things">
 			<div class="content-box stack-of-things">
-				<div class="row-of-things">
-					<input type="text" id="channel-input" placeholder="Channel Name" />
-					<button class="btny-div" id="tc-connect"
-						onclick="tc_connect(document.getElementById('channel-input').value)">Connect</button>
-				</div>
 				<p>Current message pool:</p>
 				<div id="message-list"
 					style="min-height:5rem; width:45ch; background-color: white; overflow-x: hidden;"></div>

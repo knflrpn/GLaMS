@@ -1,0 +1,744 @@
+{
+	"commands": {
+		"up": [
+			{
+				"buttons": "",
+				"lx": 0,
+				"ly": -1,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			}
+		],
+		"right": [
+			{
+				"buttons": "",
+				"lx": 1,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			}
+		],
+		"down": [
+			{
+				"buttons": "",
+				"lx": 0,
+				"ly": 1,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			}
+		],
+		"left": [
+			{
+				"buttons": "",
+				"lx": -1,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			}
+		],
+		"rup": [
+			{
+				"buttons": "",
+				"lx": 1,
+				"ly": -1,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			}
+		],
+		"lup": [
+			{
+				"buttons": "",
+				"lx": -1,
+				"ly": -1,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			}
+		],
+		"ldown": [
+			{
+				"buttons": "",
+				"lx": -1,
+				"ly": 1,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			}
+		],
+		"rdown": [
+			{
+				"buttons": "",
+				"lx": 1,
+				"ly": 1,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			}
+		],
+		"halfdown": [
+			{
+				"buttons": "",
+				"lx": 0,
+				"ly": 0.5,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			}
+		],
+		"a": [
+			{
+				"buttons": "A",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			}
+		],
+		"holda": [
+			{
+				"buttons": "A",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			}
+		],
+		"b": [
+			{
+				"buttons": "B",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			}
+		],
+		"x": [
+			{
+				"buttons": "X",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			}
+		],
+		"y": [
+			{
+				"buttons": "Y",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			}
+		],
+		"l": [
+			{
+				"buttons": "L1",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			}
+		],
+		"r": [
+			{
+				"buttons": "R1",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			}
+		],
+		"zr": [
+			{
+				"buttons": "R2",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			}
+		],
+		"zl": [
+			{
+				"buttons": "L2",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			}
+		],
+		"jump": [
+			{
+				"buttons": "A",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			}
+		],
+		"gp": [
+			{
+				"buttons": "A",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 5
+			},
+			{
+				"buttons": "",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 10
+			},
+			{
+				"buttons": "A",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 2
+			}
+		],
+		"rock": [
+			{
+				"buttons": "L1",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 7
+			},
+			{
+				"buttons": "R1",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 7
+			}
+		],
+		"metal": [
+			{
+				"buttons": "L1",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 2
+			},
+			{
+				"buttons": "R1",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 2
+			}
+		],
+		"tapa": [
+			{
+				"buttons": "A",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			},
+			{
+				"buttons": "",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 30
+			}
+		],
+		"masha": [
+			{
+				"buttons": "A",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			},
+			{
+				"buttons": "",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			}
+		],
+		"mashb": [
+			{
+				"buttons": "B",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			},
+			{
+				"buttons": "",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			}
+		],
+		"mashab": [
+			{
+				"buttons": "A B",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			},
+			{
+				"buttons": "",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			}
+		],
+		"mashd": [
+			{
+				"buttons": "D",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			},
+			{
+				"buttons": "",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			}
+		],
+		"roll": [
+			{
+				"buttons": "R",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			}
+		],
+		"pump": [
+			{
+				"buttons": "R",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			},
+			{
+				"buttons": "",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			}
+		],
+		"skispin": [
+			{
+				"buttons": "A",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			},
+			{
+				"buttons": "B",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			},
+			{
+				"buttons": "Y",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			},
+			{
+				"buttons": "X",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			}
+		],
+		"reel": [
+			{
+				"buttons": "",
+				"lx": 0,
+				"ly": -1,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			},
+			{
+				"buttons": "",
+				"lx": 1,
+				"ly": -1,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			},
+			{
+				"buttons": "",
+				"lx": 1,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			},
+			{
+				"buttons": "",
+				"lx": 1,
+				"ly": 1,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			},
+			{
+				"buttons": "",
+				"lx": 0,
+				"ly": 1,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			},
+			{
+				"buttons": "",
+				"lx": -1,
+				"ly": 1,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			},
+			{
+				"buttons": "",
+				"lx": -1,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			},
+			{
+				"buttons": "",
+				"lx": -1,
+				"ly": 1,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			}
+		],
+		"screenshot": [
+			{
+				"buttons": "C",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 2
+			},
+			{
+				"buttons": "",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 30
+			}
+		],
+		"ttours": [
+			{
+				"buttons": "C",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 2
+			},
+			{
+				"buttons": "",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 30
+			}
+		],
+		"capture": [
+			{
+				"buttons": "C",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 2
+			},
+			{
+				"buttons": "",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 30
+			}
+		],
+		"exitmap": [
+			{
+				"buttons": "X",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			},
+			{
+				"buttons": "",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			},
+			{
+				"buttons": "X",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			},
+			{
+				"buttons": "",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			},
+			{
+				"buttons": "R U",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 1
+			},
+			{
+				"buttons": "A",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 2
+			},
+			{
+				"buttons": "",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 2
+			},
+			{
+				"buttons": "X B",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 2
+			},
+			{
+				"buttons": "",
+				"lx": 0,
+				"ly": 0,
+				"rx": 0,
+				"ry": 0,
+				"frames": 30
+			}
+		]
+	},
+	"params": {
+		"up": {
+			"length": 1,
+			"probability": 1
+		},
+		"right": {
+			"length": 1,
+			"probability": 1
+		},
+		"down": {
+			"length": 1,
+			"probability": 1
+		},
+		"left": {
+			"length": 1,
+			"probability": 1
+		},
+		"rup": {
+			"length": 1,
+			"probability": 1
+		},
+		"lup": {
+			"length": 1,
+			"probability": 1
+		},
+		"ldown": {
+			"length": 1,
+			"probability": 1
+		},
+		"rdown": {
+			"length": 1,
+			"probability": 1
+		},
+		"halfdown": {
+			"length": 1,
+			"probability": 1
+		},
+		"a": {
+			"length": 1,
+			"probability": 1
+		},
+		"holda": {
+			"length": 15,
+			"probability": 1
+		},
+		"b": {
+			"length": 1,
+			"probability": 1
+		},
+		"x": {
+			"length": 1,
+			"probability": 1
+		},
+		"y": {
+			"length": 1,
+			"probability": 1
+		},
+		"r": {
+			"length": 1,
+			"probability": 1
+		},
+		"zr": {
+			"length": 1,
+			"probability": 1
+		},
+		"zl": {
+			"length": 1,
+			"probability": 1
+		},
+		"jump": {
+			"length": 1,
+			"probability": 1
+		},
+		"gp": {
+			"length": 17,
+			"probability": 1
+		},
+		"rock": {
+			"length": 14,
+			"probability": 1
+		},
+		"metal": {
+			"length": 4,
+			"probability": 1
+		},
+		"tapa": {
+			"length": 15,
+			"probability": 1
+		},
+		"masha": {
+			"length": 2,
+			"probability": 1
+		},
+		"mashb": {
+			"length": 2,
+			"probability": 1
+		},
+		"mashab": {
+			"length": 2,
+			"probability": 1
+		},
+		"mashd": {
+			"length": 2,
+			"probability": 1
+		},
+		"roll": {
+			"length": 1,
+			"probability": 1
+		},
+		"pump": {
+			"length": 2,
+			"probability": 1
+		},
+		"skispin": {
+			"length": 4,
+			"probability": 1
+		},
+		"reel": {
+			"length": 8,
+			"probability": 1
+		},
+		"l": {
+			"length": 1,
+			"probability": 1
+		},
+		"screenshot": {
+			"length": 4,
+			"probability": 0.05
+		},
+		"ttours": {
+			"length": 4,
+			"probability": 0.05
+		},
+		"capture": {
+			"length": 4,
+			"probability": 0.05
+		},
+		"exitmap": {
+			"length": 12,
+			"probability": 1
+		}
+	}
+}

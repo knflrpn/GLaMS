@@ -309,6 +309,9 @@ function getButtonMap() {
 		const [x, y] = id.split("-").map(x => parseInt(x, 10));
 		modArray[x][y] = true;
 	}
+	// Home and capture are always mapped to themselves
+	modArray[16][16] = true;
+	modArray[17][17] = true;
 	return modArray;
 }
 

@@ -61,7 +61,6 @@
 
 			// Start the main loop
 			window.addEventListener('message', function (event) {
-				// Check the origin of the data!
 				if (typeof (event.data) === 'object') {
 					// event.data is an object, update the state
 					let curCon = event.data['GLaMS-curCon'];

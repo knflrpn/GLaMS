@@ -114,7 +114,7 @@ class MessageManager {
 			// If there is no current message, set a short command period
 			this.commandPeriod = 1;
 		} else {
-			this.commandPeriod = Math.min(250 / weightedCount * 0.9, this.maxCommandPeriod); 
+			this.commandPeriod = Math.min(250 / weightedCount * 0.85, this.maxCommandPeriod); 
 		}
 
 		// Track the running time
@@ -221,12 +221,12 @@ class MessageManager {
 				}
 			}
 
-			// Repeat states until reaching 60 frames
+			// Repeat states until reaching 60 ticks
 			while (expandedStates.length < 60) {
 				expandedStates = [...expandedStates, ...expandedStates];
 			}
 
-			// Truncate to exactly 60 frames
+			// Truncate to exactly 60 ticks
 			expandedStates.length = 60;
 
 			return expandedStates;
@@ -264,7 +264,6 @@ class MessageManager {
 				}
 			}
 		}
-
 		return result;
 	}
 

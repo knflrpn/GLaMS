@@ -71,13 +71,15 @@ function onSerialDataReceived(eventSender, newData) {
 	}
 }
 
+// Version: 2023-06-24
+
 function registerSwiCCIndicator(indicator, index) {
 	SwiCCIndicators[index] = indicator;
 }
 
 /* Pack the provided controller data into the Switch data format */
 function packSwitchCon(conState) {
-	let swCon = Array(6).fill(0);
+	let swCon = [0,0,0,0,0,0];
 	const sendCon = conState['buttons'];
 	// Low byte
 	if (sendCon[2]) swCon[1] += 1;   // Y
@@ -160,7 +162,7 @@ function sendConToSwiCC(swCon, command="IMM") {
 function byte2hex(d) {
 	if (d > 255) d = 255;
 	if (d < 0) d = 0;
-	var hex = Number(d).toString(16).toUpperCase();
+	var hex = d.toString(16).toUpperCase();
 
 	if (hex.length < 2) {
 		hex = "0" + hex;

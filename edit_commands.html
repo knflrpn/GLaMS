@@ -2,141 +2,299 @@
 <html>
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <title>GLaMS</title>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Expires" content="0">
+	<title>GLaMS</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=PT+Serif&family=Ubuntu+Mono:wght@400&display=swap"
-        rel="stylesheet">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=PT+Serif&family=Ubuntu+Mono:wght@400&display=swap"
+		rel="stylesheet">
 
-    <link rel="stylesheet" href="./styles/style_main.css?1" />
-    <link rel="stylesheet" href="./styles/style_commands.css?1" />
+	<link rel="stylesheet" href="./styles/style_main.css?2" />
+	<link rel="stylesheet" href="./styles/style_commands.css?2" />
 
-    <script src="./scripts/pages_core.js?1"></script>
-    <script src="./scripts/tp_page_funcs.js?1"></script>
-    <script>
+	<script src="./scripts/pages_core.js?2"></script>
+	<script src="./scripts/tp_page_funcs.js?2"></script>
+	<script>
 
-        document.addEventListener("DOMContentLoaded", function () {
-            // Check if there is a saved commands file, else initialize with empty object
-            loadCommandsFromStorage();
-            // Populate from initial commands file
-            loadAllCommands();
-            document.getElementById('fileInput').addEventListener('change', handleFileUpload);
+		function addRow() {
+			let row = document.getElementById('stateRowTemplate').cloneNode(true);
+			row.id = '';
+			row.style = '';
+			document.getElementById('stateRows').appendChild(row);
+		}
 
-            // New server file selection handling...
-document.getElementById('serverFiles').addEventListener('change', function(event) {
-	const filename = event.target.value;
+		function removeRow(button) {
+			let row = button.parentNode;
+			row.parentNode.removeChild(row);
+		}
 
-	if (filename) {
-		fetch(`./command_files/${filename}`)
-			.then(response => response.text())
-			.then(content => {
-				setLocalStorageItem("tc_commands_file", content);
-				console.log('Server file selected and saved to localStorage.');
-				// Reload page
-				location.reload();
+		function saveCommand() {
+			let keyword = document.getElementById('keyword').value.trim().toLowerCase();
+			if ((keyword === "") || !(/^\w+$/.test(keyword))) {
+				alert("Keyword must be letters, numbers, and/or underscore.");
+				return;
+			}
+			let length = parseInt(document.getElementById('length').value);
+			if (isNaN(length) || (length < 1)) {
+				length = 1;
+			}
+			let probability = parseFloat(document.getElementById('probability').value);
+			if (isNaN(probability) || (probability < 0)) {
+				probability = 1;
+			}
+
+			let rows = document.getElementById('stateRows').children;
+			let sequence = Array.from(rows).map(row => {
+				let inputs = row.getElementsByTagName('input');
+				return {
+					buttons: (inputs[0].value || "").toUpperCase(),
+					lx: parseFloat(inputs[1].value) || 0,
+					ly: parseFloat(inputs[2].value) || 0,
+					rx: parseFloat(inputs[3].value) || 0,
+					ry: parseFloat(inputs[4].value) || 0,
+					frames: parseInt(inputs[5].value) || 1
+				};
 			});
-	}
-});
+			commandMap[keyword] = sequence;
+			commandParams[keyword] = { length, probability };
+			// Save commands file
+			setLocalStorageItem("tc_commands_file", JSON.stringify({ commands: commandMap, params: commandParams }));
+			// Repopulate display
+			loadAllCommands();
+			// Empty the form
+			loadCommand();
+		}
 
-        });
+		function loadCommand(keyword = "", sequence = [{}], params = { length: 1, probability: 1 }) {
+			document.getElementById('keyword').value = keyword;
+			document.getElementById('length').value = params.length;
+			document.getElementById('probability').value = params.probability;
+			let stateRows = document.getElementById('stateRows');
+			while (stateRows.firstChild) {
+				stateRows.removeChild(stateRows.firstChild);
+			}
+			sequence.forEach(state => {
+				addRow();
+				let row = stateRows.lastChild;
+				let inputs = row.getElementsByTagName('input');
+				inputs[0].value = state.buttons || "";
+				inputs[1].value = state.lx || 0;
+				inputs[2].value = state.ly || 0;
+				inputs[3].value = state.rx || 0;
+				inputs[4].value = state.ry || 0;
+				inputs[5].value = state.frames || 1;
+			});
+			window.scrollTo(0, 0);
+		}
+
+		function deleteCommand(keyword) {
+			delete commandMap[keyword];
+			delete commandParams[keyword];
+			// Save commands file
+			setLocalStorageItem("tc_commands_file", JSON.stringify({ commands: commandMap, params: commandParams }));
+			// Repopulate display
+			loadAllCommands();
+			// Empty the form
+			loadCommand();
+		}
+
+		// Initialization function to load all existing commands
+		function loadAllCommands() {
+			const existingCommands = document.getElementById('existingCommands');
+			// Empty the div before repopulating it
+			existingCommands.innerHTML = '';
+			for (let keyword in commandMap) {
+				const div = document.createElement('div');
+				div.className = 'edit-row';
+				const span = document.createElement('span');
+				span.className = 'keyword';
+				span.textContent = keyword;
+				div.appendChild(span);
+				const editButton = document.createElement('button');
+				editButton.textContent = 'Edit';
+				editButton.onclick = () => loadCommand(keyword, commandMap[keyword], commandParams[keyword]);
+				div.appendChild(editButton);
+				const deleteButton = document.createElement('button');
+				deleteButton.textContent = 'Delete';
+				deleteButton.className = 'delete-button';
+				deleteButton.onclick = () => deleteCommand(keyword);
+				div.appendChild(deleteButton);
+				existingCommands.appendChild(div);
+			}
+		}
+
+		function downloadCommandsFile() {
+			const element = document.createElement('a');
+			const data = getLocalStorageItem("tc_commands_file", '{"commands":{},"params":{}}');
+			element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(data));
+			element.setAttribute('download', 'commands.json');
+
+			element.style.display = 'none';
+			document.body.appendChild(element);
+
+			element.click();
+
+			document.body.removeChild(element);
+		}
+
+		// Command file upload handling...
+		function handleCommandsFileUpload(event) {
+			const file = event.target.files[0];
+
+			if (file) {
+				const reader = new FileReader();
+
+				reader.onload = function (event) {
+					const fileContent = event.target.result;
+					setLocalStorageItem("tc_commands_file", fileContent);
+					console.log('File uploaded and saved to localStorage.');
+					// Reload page
+					location.reload();
+				};
+
+				reader.readAsText(file);
+			}
+		}
 
 
-    </script>
+		document.addEventListener("DOMContentLoaded", function () {
+			// Check if there is a saved commands file, else initialize with empty object
+			loadCommandsFromStorage();
+			// Populate from initial commands file
+			loadAllCommands();
+			document.getElementById('fileInput').addEventListener('change', handleCommandsFileUpload);
+
+			// Server file selection handling...
+			document.getElementById('serverFiles').addEventListener('change', function (event) {
+				const filename = event.target.value;
+
+				if (filename) {
+					fetch(`./command_files/${filename}`)
+						.then(response => response.text())
+						.then(content => {
+							setLocalStorageItem("tc_commands_file", content);
+							console.log('Server file selected and saved to localStorage.');
+							// Reload page
+							location.reload();
+						});
+				}
+			});
+
+		});
+
+
+	</script>
 </head>
 
 <body id="editing-body">
-    <div class="editing-container">
-        <div id="editingArea">
-            <h1>Create / Edit Command</h1>
+	<div class="editing-container">
+		<div id="editingArea">
+			<h1>Create / Edit Command</h1>
 
-            <div style="width:25rem; display:flex; justify-content:end; margin:0.5rem;">
-                <span>Keyword:</span>&nbsp;
-                <input type="text" id="keyword" placeholder="Keyword">&nbsp;
-                <span class="help-icon" help-text="The trigger keyword for the command.  Must be letters, numbers, and/or underscore.">?</span> 
-            </div>
+			<div style="width:25rem; display:flex; justify-content:end; margin:0.5rem;">
+				<span>Keyword:</span>&nbsp;
+				<input type="text" id="keyword" placeholder="Keyword">&nbsp;
+				<span class="help-icon"
+					help-text="The trigger keyword for the command.  Must be letters, numbers, and/or underscore.">?</span>
+			</div>
 
-            <div style="width:25rem; display:flex; justify-content:end; margin:0.5rem;">
-                <span>Minimum sequence time (ticks):</span>&nbsp;
-                <input type="text" id="length" placeholder="1" value="1">&nbsp;
-                <span class="help-icon" help-text="This is the minimum amount of time that the command will run.  Use this for commands that would fail if they got cut short, otherwise leave it at 1 so that the scheduler can manage the time.  This should be an integer number of ticks (1/30s).">?</span> 
-            </div>
+			<div style="width:25rem; display:flex; justify-content:end; margin:0.5rem;">
+				<span>Minimum sequence time (ticks):</span>&nbsp;
+				<input type="text" id="length" placeholder="1" value="1">&nbsp;
+				<span class="help-icon"
+					help-text="This is the minimum amount of time that the command will run.  Use this for commands that would fail if they got cut short, otherwise leave it at 1 so that the scheduler can manage the time.  This should be an integer number of ticks (1/30s).">?</span>
+			</div>
 
-            <div style="width:25rem; display:flex; justify-content:end; margin:0.5rem;">
-                <span>Run probability:</span>&nbsp;
-                <input type="text" id="probability" placeholder="1" value="1">&nbsp;
-                <span class="help-icon" help-text="The probability that the command will be accepted; 0=never, 1=always.">?</span> 
-            </div>
+			<div style="width:25rem; display:flex; justify-content:end; margin:0.5rem;">
+				<span>Run probability:</span>&nbsp;
+				<input type="text" id="probability" placeholder="1" value="1">&nbsp;
+				<span class="help-icon"
+					help-text="The probability that the command will be accepted; 0=never, 1=always.">?</span>
+			</div>
 
-            <br />
-            <div class="command-row">
-                <span>Buttons: <span class="help-icon" help-text="Space-separated list of buttons, such as 'A X'.">?</span></span>
-                <span>LX: <span class="help-icon" help-text="Left stick X value. Decimal number [-1,1], where negative is to the left. 0 is neutral.">?</span> </span>
-                <span>LY: <span class="help-icon" help-text="Left stick Y value. Decimal number [-1,1], where negative is up. 0 is neutral.">?</span> </span>
-                <span>RX: <span class="help-icon" help-text="Right stick X value. Decimal number [-1,1], where negative is to the left. 0 is neutral.">?</span> </span>
-                <span>RY: <span class="help-icon" help-text="Right stick Y value. Decimal number [-1,1], where negative is up. 0 is neutral.">?</span> </span>
-                <span>Ticks: <span class="help-icon" help-text="Number of ticks (1/30s) that this state should exist when playing this command's sequence. Note that total command time is controlled by the scheduler; this value controls what happens during the command.">?</span> </span>
-            </div>
-            <div class="command-row" id="stateRowTemplate" style="display: none;">
-                <input type="text" placeholder=" ">
-                <input type="text" placeholder="0" value="0">
-                <input type="text" placeholder="0" value="0">
-                <input type="text" placeholder="0" value="0">
-                <input type="text" placeholder="0" value="0">
-                <input type="text" placeholder="1" value="1">
-                <button onclick="removeRow(this)">Remove</button>
-            </div>
-            <div id="stateRows">
-                <div class="command-row">
-                    <input type="text" placeholder=" ">
-                    <input type="text" placeholder="0" value="0">
-                    <input type="text" placeholder="0" value="0">
-                    <input type="text" placeholder="0" value="0">
-                    <input type="text" placeholder="0" value="0">
-                    <input type="text" placeholder="1" value="1">
-                </div>
-            </div>
-            <br />
-            <div class="row-of-things">
-                <div class="btny-div" onclick="addRow()">Add Another State</div>
-                <div class="btny-div" onclick="saveCommand()">Save Command</div>
-            </div>
-        </div>
-    </div>
+			<br />
+			<div class="command-row">
+				<span>Buttons: <span class="help-icon"
+						help-text="Space-separated list of buttons, such as 'A X'.">?</span></span>
+				<span>LX: <span class="help-icon"
+						help-text="Left stick X value. Decimal number [-1,1], where negative is to the left. 0 is neutral.">?</span>
+				</span>
+				<span>LY: <span class="help-icon"
+						help-text="Left stick Y value. Decimal number [-1,1], where negative is up. 0 is neutral.">?</span>
+				</span>
+				<span>RX: <span class="help-icon"
+						help-text="Right stick X value. Decimal number [-1,1], where negative is to the left. 0 is neutral.">?</span>
+				</span>
+				<span>RY: <span class="help-icon"
+						help-text="Right stick Y value. Decimal number [-1,1], where negative is up. 0 is neutral.">?</span>
+				</span>
+				<span>Ticks: <span class="help-icon"
+						help-text="Number of ticks (1/30s) that this state should exist when playing this command's sequence. 
+						Note that total command time is controlled by the scheduler; this value controls what happens while the command runs. 
+						Note that the sequence will loop if the end is reached before the command has expired.  This can be avoided with a long blank entry as the final state.">?</span>
+				</span>
+			</div>
+			<div class="command-row" id="stateRowTemplate" style="display: none;">
+				<input type="text" placeholder=" ">
+				<input type="text" placeholder="0" value="0">
+				<input type="text" placeholder="0" value="0">
+				<input type="text" placeholder="0" value="0">
+				<input type="text" placeholder="0" value="0">
+				<input type="text" placeholder="1" value="1">
+				<button onclick="removeRow(this)">Remove</button>
+			</div>
+			<div id="stateRows">
+				<div class="command-row">
+					<input type="text" placeholder=" ">
+					<input type="text" placeholder="0" value="0">
+					<input type="text" placeholder="0" value="0">
+					<input type="text" placeholder="0" value="0">
+					<input type="text" placeholder="0" value="0">
+					<input type="text" placeholder="1" value="1">
+				</div>
+			</div>
+			<br />
+			<div class="row-of-things">
+				<div class="btny-div" onclick="addRow()">Add Another State</div>
+				<div class="btny-div" onclick="saveCommand()">Save Command</div>
+			</div>
+		</div>
+	</div>
 
-    <div class="editing-container">
-        <h1>Existing Commands</h1>
-        <div id="existingCommands">
-            <!-- Existing commands will be inserted here -->
-        </div>
-    </div>
+	<div class="editing-container">
+		<h1>Existing Commands</h1>
+		<div id="existingCommands">
+			<!-- Existing commands will be inserted here -->
+		</div>
+	</div>
 
-    <div class="editing-container">
-        <h1>Load / Save</h1>
-        <div>
-            <a href="./chat_command.html">Return to chat page.</a>
-        </div>
-        <div>
-            <div class="btny-div" onclick="downloadCommandFile()">Save to File</div>
-        </div>
-        <div>
-            <p>Load from file:</p>
-            <input type="file" id="fileInput" accept=".json" style="width:unset;"/>
-        </div>
-        <div>
-            <p>Load premade:</p>
-            <select id="serverFiles">
-                <option value="">--Choose an option--</option>
-                <option value="MM2Commands.json">Mario Maker 2</option>
-                <option value="MPSSCommands.json">Mario Party Super Stars</option>
-                <!-- Add other options here -->
-            </select>
-        </div>    </div>
+	<div class="editing-container">
+		<h1>Load / Save</h1>
+		<div>
+			<a href="./chat_command.html">Return to chat page.</a>
+		</div>
+		<div>
+			<div class="btny-div" onclick="downloadCommandsFile()">Save to File</div>
+		</div>
+		<div>
+			<p>Load from file:</p>
+			<input type="file" id="fileInput" accept=".json" style="width:unset;" />
+		</div>
+		<div>
+			<p>Load premade:</p>
+			<select id="serverFiles">
+				<option value="">--Choose an option--</option>
+				<option value="MM2_Commands.json">Mario Maker 2</option>
+				<option value="MPSS_Commands.json">Mario Party Super Stars</option>
+				<!-- Add other options here -->
+			</select>
+		</div>
+	</div>
 
 </body>
 

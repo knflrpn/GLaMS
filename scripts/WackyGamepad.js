@@ -1,3 +1,5 @@
+// Version: 2023-06-24
+
 class WackyGamepad {
 	constructor() {
 		this.isActive = false;
@@ -28,7 +30,7 @@ class WackyGamepad {
 		// Access the gamepads
 		const gamepads = navigator.getGamepads();
 
-		// Assuming that gamepad[0] is the controller of interest
+		// Get gamepad state
 		const gamepad = gamepads[this.gamepadNum];
 
 		if (gamepad) {
@@ -47,6 +49,10 @@ class WackyGamepad {
 
 			// Check for button toggles
 			let new_buttons = gamepad.buttons.map(button => button.pressed);
+			while (new_buttons.length < 18) {
+				new_buttons.push(false);
+			}
+
 			for (let i = 0; i < new_buttons.length; i++) {
 				if (new_buttons[i] && !this.realtimeButtons[i]) {
 					this.toggledButtons[i] = true;
@@ -58,9 +64,6 @@ class WackyGamepad {
 
 			// Prepare for spam.  First find possible buttons: not pressed in the old delayedeButtons, and true in spamButtons.
 			const possibleSpamButtons = this.delayedButtons.map((button, index) => !button && this.spamButtons[index]);
-			// Then choose a random one of those.
-			const spamButtonIndices = possibleSpamButtons.flatMap((canSpam, index) => canSpam ? index : []);
-			const spamIndex = spamButtonIndices.length > 0 ? spamButtonIndices[Math.floor(Math.random() * spamButtonIndices.length)] : -1;
 
 			if (this.delayAmount > 0.0) {
 				// Save current data
@@ -84,12 +87,17 @@ class WackyGamepad {
 				this.delayedButtons = this.realtimeButtons.slice();
 			}
 
-			// Apply spam to the random button
-			if (spamIndex >= 0) {
-				this.delayedButtons[spamIndex] = true;
+			// Then choose a random one of those, if any is possible.
+			if (possibleSpamButtons.includes(true)) {
+				const spamButtonIndices = possibleSpamButtons.flatMap((canSpam, index) => canSpam ? index : []);
+				const spamIndex = spamButtonIndices.length > 0 ? spamButtonIndices[Math.floor(Math.random() * spamButtonIndices.length)] : -1;
+				// Apply spam to the random button
+				if (spamIndex >= 0) {
+					this.delayedButtons[spamIndex] = true;
+				}
 			}
 
-			// New data, so copy delayed to modified
+			// New data is in, so start with a copy of delayed into modified
 			this.modifiedSticks = this.delayedSticks.slice();
 			this.modifiedButtons = this.delayedButtons.slice();
 
@@ -250,7 +258,7 @@ class WackyGamepad {
 	 */
 	pressButton(buttonIndex) {
 		if (typeof buttonIndex === "string") {
-			buttonIndex = this.buttonNames.indexOf(buttonIndex);
+			buttonIndex = this.buttonNames.indexOf(buttonIndex.toUpperCase());
 			if (buttonIndex === -1) {
 				return;
 			}
