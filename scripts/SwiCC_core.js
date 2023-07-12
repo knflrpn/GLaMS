@@ -256,6 +256,30 @@ function onSerialConnectionClosed(eventSender) {
 	}
 }
 
+function setVSYNCDelay(amount) {
+    console.log("Setting VSYNC delay to " + amount);
+    // Ensure the input amount is a number
+    if (typeof amount !== 'number') {
+        console.error('The amount must be a number.');
+        return;
+    }
+
+    // Check if the input amount is within the acceptable range (0 to 65535)
+    if (amount < 0 || amount > 15000) {
+        console.error('The amount must be within the range of 0 to 15000.');
+        return;
+    }
+
+    // Convert the amount to a 4-digit hexadecimal string with zero-padding
+    const hexAmount = amount.toString(16).padStart(4, '0').toUpperCase();
+
+    // Prepare the string to be sent
+    const command_string = `+VSD ${hexAmount}\n`;
+
+    // Call the sendTextToSwiCC function with the prepared string
+    sendTextToSwiCC(command_string);
+}
+
 // Send text data over serial
 function sendTextToSwiCC(textData, sernum = -1) {
 	if (sernum < 0) { // All SwiCCs
