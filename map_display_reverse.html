@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>GLaMS Mapping</title>
+
+    <link rel="stylesheet" href="./styles/style_main.css?4" />
+
+    <script src="./scripts/pages_core.js?1"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        // To look up icon positions in GLaMS mapping.
+        const conversion = [14, 12, 13, 15, 1, 0, 3, 2, 4, 6, 7, 5];
+        const reversion = [5, 4, 7, 6, 8, 11, 9, 10, -1, -1, -1, -1, 1, 2, 0, 3];
+        let currentOrder = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+        let newOrder = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+        function pullOut() {
+            // Set next update;
+            setTimeout(pullOut, 250);
+
+            currentOrder = newOrder;
+            // Get current mapping from local storage
+            let rawOrder = JSON.parse(getLocalStorageItem("btn-mapping", "[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]"));
+            newOrder = inverseOrder(rawOrder);
+
+            // For each icon, move it to the correct position.
+            for (let i = 0; i < 12; i++) {
+                if (currentOrder[conversion[i]] == newOrder[conversion[i]]) {
+                    continue;
+                }
+                moveIcon(i, reversion[currentOrder[conversion[i]]], 50);
+                const newConverted = newOrder[conversion[i]];
+                if (newConverted == -1) {
+                    setTimeout(function () {
+                        moveIcon(i, i, 150);
+                    }, 350);
+                } else {
+                    setTimeout(function () {
+                        moveIcon(i, reversion[newOrder[conversion[i]]], 0);
+                    }, 350);
+                }
+            }
+
+        }
+
+        function inverseOrder(arr) {
+    const result = new Array(arr.length);
+
+    for (let i = 0; i < arr.length; i++) {
+        result[arr[i]] = i;
+    }
+
+    return result;
+}
+        function moveIcon(index, newPosition, yOffset = 0) {
+            var iconWidth = 50;  /* Adjust to your icon's width */
+            var iconToMove = document.getElementById("bottom-icon-" + index);
+            var newLeftPosition = newPosition * iconWidth;
+
+            iconToMove.style.left = newLeftPosition + 'px';
+            iconToMove.style.top = yOffset + 'px';
+        }
+        document.addEventListener("DOMContentLoaded", function () {
+            // Move icons to initial positions.
+            for (var i = 0; i < 12; i++) {
+                moveIcon(i, i);
+            }
+            pullOut();
+        });
+    </script>
+</head>
+
+<body class="stack-of-things" style="background-color: black;">
+    <div id="shuffle-top-row" style="height:48px; display:flex; gap:2px;">
+        <img id="top-icon-0" class="static-icon" src="./images/icon-L.png" />
+        <img id="top-icon-1" class="static-icon" src="./images/icon-U.png" />
+        <img id="top-icon-2" class="static-icon" src="./images/icon-D.png" />
+        <img id="top-icon-3" class="static-icon" src="./images/icon-R.png" />
+        <img id="top-icon-4" class="static-icon" src="./images/icon-A.png" />
+        <img id="top-icon-5" class="static-icon" src="./images/icon-B.png" />
+        <img id="top-icon-6" class="static-icon" src="./images/icon-X.png" />
+        <img id="top-icon-7" class="static-icon" src="./images/icon-Y.png" />
+        <img id="top-icon-8" class="static-icon" src="./images/icon-L1.png" />
+        <img id="top-icon-9" class="static-icon" src="./images/icon-L2.png" />
+        <img id="top-icon-10" class="static-icon" src="./images/icon-R2.png" />
+        <img id="top-icon-11" class="static-icon" src="./images/icon-R1.png" />
+    </div>
+    <div id="shuffle-bottom-row row-of-things" style="position:relative; height:48px; z-index: -1;">
+        <img id="bottom-icon-0" class="shuffle-icon" src="./images/icon-L.png" />
+        <img id="bottom-icon-1" class="shuffle-icon" src="./images/icon-U.png" />
+        <img id="bottom-icon-2" class="shuffle-icon" src="./images/icon-D.png" />
+        <img id="bottom-icon-3" class="shuffle-icon" src="./images/icon-R.png" />
+        <img id="bottom-icon-4" class="shuffle-icon" src="./images/icon-A.png" />
+        <img id="bottom-icon-5" class="shuffle-icon" src="./images/icon-B.png" />
+        <img id="bottom-icon-6" class="shuffle-icon" src="./images/icon-X.png" />
+        <img id="bottom-icon-7" class="shuffle-icon" src="./images/icon-Y.png" />
+        <img id="bottom-icon-8" class="shuffle-icon" src="./images/icon-L1.png" />
+        <img id="bottom-icon-9" class="shuffle-icon" src="./images/icon-L2.png" />
+        <img id="bottom-icon-10" class="shuffle-icon" src="./images/icon-R2.png" />
+        <img id="bottom-icon-11" class="shuffle-icon" src="./images/icon-R1.png" />
+    </div>
+
+
+</body>
+
+</html>

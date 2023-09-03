@@ -84,18 +84,27 @@ function runTAS() {
 			line = line.split(";")[0].trim();
 			if (!line) continue;
 
-			const btnsRegex = /{(.*?)}(.*)/g;
-			const btnsMatch = btnsRegex.exec(line);
+			// The regex captures:
+			// 1. Buttons inside {} (optional)
+			// 2. LX, LY, RX, RY inside () if present
+			// 3. An optional integer for frameCount
+			const regex = /(?:{(.*?)}\s*)?(?:\((\d+)?\s*(\d+)?\s*(\d+)?\s*(\d+)?\))?\s*(\d*)?/g;
+			const match = regex.exec(line);
 
-			if (!btnsMatch) continue;
+			if (!match) continue;
 
-			const btns = btnsMatch[1].trim();
-			const remaining = btnsMatch[2].trim() || "";
-			const frameCount = parseInt(remaining.trim().split(" ")[0]) || 1;
-			const [LX, LY, RX, RY] = remaining.split(" ").slice(1, 5).map(s => {
+			const btns = match[1] ? match[1].trim() : "";
+			const frameCount = parseInt(match[6]) || 1;
+
+			// Extract and parse LX, LY, RX, RY values or use 128 as default
+			const [LX, LY, RX, RY] = [match[2], match[3], match[4], match[5]].map(s => {
 				const parsed = parseInt(s);
 				return isNaN(parsed) ? 128 : parsed;
 			});
+
+			console.log(btns);
+			console.log(frameCount);
+			console.log(LX, LY, RX, RY);
 
 			queueConData(btns, frameCount, LX, LY, RX, RY);
 		}

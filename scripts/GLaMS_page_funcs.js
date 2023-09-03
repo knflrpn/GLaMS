@@ -237,38 +237,54 @@ function randomizeMap(shuffleLimit = null) {
 	}
 
 	// Shuffle the active cells before picking the ones to shuffle
-	let toRandomize = shuffleArray(eligible);
+	let toRandomize = shuffleArray_FY(eligible);
 	// Limit the number of cells to be shuffled
 	if (shuffleLimit !== null) {
+		if (shuffleLimit < 2) shuffleLimit = 2;
 		toRandomize = toRandomize.slice(0, shuffleLimit);
 	}
 
 	// Shuffle the indices to be randomly correlated
-	const shuffled = shuffleArray(eligible);
+	//	const shuffled = shuffleArray(eligible);
+	const shuffled = shuffleArray_forceChange([...toRandomize]);
 
-	// Go down the table, swapping cell active states between toRandomize and shuffled
+	// Temporary storage to hold the new column data 
+	let tempColumns = new Array(toRandomize.length).fill(null).map(() => new Array(16).fill(false));
+
+	// Store the column data we want to move in the temporary storage
 	for (let i = 0; i < toRandomize.length; i++) {
 		for (let y = 0; y < 16; y++) {
-			const cell1 = document.getElementById(`${y}-${toRandomize[i]}`);
-			const cell2 = document.getElementById(`${y}-${shuffled[i]}`);
-			const cell1Active = cell1.classList.contains("tablecell-active");
-			const cell2Active = cell2.classList.contains("tablecell-active");
-			cell1.classList.remove("tablecell-active", "mapcell-active");
-			cell2.classList.remove("tablecell-active", "mapcell-active");
-			if (cell1Active) {
-				cell2.classList.add("tablecell-active");
-				cell2.classList.add("mapcell-active");
-			}
-			if (cell2Active) {
-				cell1.classList.add("tablecell-active");
-				cell1.classList.add("mapcell-active");
-			}
+			const cellFrom = document.getElementById(`${y}-${toRandomize[i]}`);
+			tempColumns[i][y] = cellFrom.classList.contains("tablecell-active");
 		}
 	}
 
+	// Apply the stored data from temporary storage to the new columns
+	for (let i = 0; i < toRandomize.length; i++) {
+		for (let y = 0; y < 16; y++) {
+			const cellTo = document.getElementById(`${y}-${shuffled[i]}`);
+			cellTo.classList.remove("tablecell-active", "mapcell-active");  // Clear any existing classes
+
+			// If the stored data is active, add the required classes
+			if (tempColumns[i][y]) {
+				cellTo.classList.add("tablecell-active", "mapcell-active");
+			}
+		}
+	}
 }
 
-function shuffleArray(array) {
+function shuffleArray_forceChange(array) {
+    for (let i = 0; i < (array.length-1); i++) {
+        // Generate a random index between i and the end of the array
+        const randomIndex = i + 1 + Math.floor(Math.random() * (array.length - i - 1));
+        // Swap the current element with the randomly picked element
+        [array[i], array[randomIndex]] = [array[randomIndex], array[i]];
+    }
+    return array;
+}
+
+
+function shuffleArray_FY(array) {
 	for (let i = array.length - 1; i > 0; i--) {
 		let j = Math.floor(Math.random() * (i + 1));
 		[array[i], array[j]] = [array[j], array[i]];
@@ -396,6 +412,21 @@ function setRotation(addAmount = 0) {
 
 
 /**
+ * Perform a single randomization with the specified number of buttons
+ */
+function singleLimitedRandomize() {
+	let num = parseInt(document.querySelector('#rand-num').value);
+
+	// If user input is invalid or less than or equal to zero, return the default interval.
+	if (isNaN(num) || num <= 2) {
+		num = 2;  // reset invalid input
+		document.querySelector('#rand-num').value = 2;
+	}
+
+	randomizeMap(num);
+}
+
+/**
  * Enable or disable the periodic randomization based on the current button state.
  * If active, disables randomization; if inactive, enables randomization.
  */
@@ -421,11 +452,12 @@ function timedRandomize() {
  * Randomizes the map, then reschedules itself to maintain the updated interval.
  */
 function timedRandHelper() {
-	const num = parseInt(document.querySelector('#rand-num').value);
+	let num = parseInt(document.querySelector('#rand-num').value);
 
 	// If user input is invalid or less than or equal to zero, return the default interval.
-	if (isNaN(num) || num <= 0) {
-		num = 0;  // reset invalid input
+	if (isNaN(num) || num <= 2) {
+		num = 2;  // reset invalid input
+		document.querySelector('#rand-num').value = 2;
 	}
 
 	randomizeMap(num);

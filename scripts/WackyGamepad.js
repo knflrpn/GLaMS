@@ -11,6 +11,9 @@ class WackyGamepad {
 		this.modifiedSticks = Array(4).fill(0.0);
 		this.toggledButtons = Array(18).fill(false);
 		this.spamButtons = Array(18).fill(false);
+		this.spamIndex = -1;
+		this.spamDelay = 0;
+		this.spamTimer = 0;
 		this.timeBuffer = [];
 		this.delayAmount = 0.0;
 		// Map matrix for button remapping; diagonal starts as true
@@ -87,14 +90,22 @@ class WackyGamepad {
 				this.delayedButtons = this.realtimeButtons.slice();
 			}
 
-			// Then choose a random one of those, if any is possible.
-			if (possibleSpamButtons.includes(true)) {
-				const spamButtonIndices = possibleSpamButtons.flatMap((canSpam, index) => canSpam ? index : []);
-				const spamIndex = spamButtonIndices.length > 0 ? spamButtonIndices[Math.floor(Math.random() * spamButtonIndices.length)] : -1;
-				// Apply spam to the random button
-				if (spamIndex >= 0) {
-					this.delayedButtons[spamIndex] = true;
+			// Choose a random spam button, if any is possible.
+			if (this.spamTimer === 0) {
+				this.spamTimer = this.spamDelay;
+				if (possibleSpamButtons.includes(true)) {
+					this.spamTimer = this.spamDelay;
+					const spamButtonIndices = possibleSpamButtons.flatMap((canSpam, index) => canSpam ? index : []);
+					this.spamIndex = spamButtonIndices.length > 0 ? spamButtonIndices[Math.floor(Math.random() * spamButtonIndices.length)] : -1;
+				} else {
+					this.spamIndex = -1;
 				}
+			} else {
+				this.spamTimer--;
+			}
+			// Apply spam to the random button
+			if (this.spamIndex >= 0) {
+				this.delayedButtons[this.spamIndex] = true;
 			}
 
 			// New data is in, so start with a copy of delayed into modified

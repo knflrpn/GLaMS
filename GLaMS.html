@@ -19,7 +19,7 @@
 	<script src="./scripts/serial.js?6"></script>
 	<script src="./scripts/pages_core.js?6"></script>
 	<script src="./scripts/SwiCC_core.js?6"></script>
-	<script src="./scripts/GLaMS_page_funcs.js?6"></script>
+	<script src="./scripts/GLaMS_page_funcs.js?7"></script>
 	<script src="./scripts/WackyGamepad.js?6"></script>
 	<script>
 		// Global variables
@@ -144,7 +144,12 @@
 				<br />
 				<div id="show-more" class="btny-div">Add more SwiCCs</div>
 			</div>
+			<div class="content-box stack-of-things">
+				<a href="./map_display_forward.html" target="_blank">Forward button map display</a>
+				<a href="./map_display_reverse.html" target="_blank">Reverse button map display</a>
+			</div>
 		</div>
+
 		<div class="stack-of-things">
 			<div class="content-box stack-of-things">
 				<p>Input (top) to output (right) mapping.</p>
@@ -164,9 +169,10 @@
 				<div class="btny-div" id="enable-timed-random" onclick="timedRandomize()">Enable Periodic
 					Randomization</div>
 				<div class="row-of-things">
-					<input type="text" id="rand-num" value="1"> every <input type="text" id="rand-time" value="10">
+					<input type="text" id="rand-num" value="2"> every <input type="text" id="rand-time" value="30">
 					seconds.
 				</div>
+				<div class="btny-div" onclick="singleLimitedRandomize()">Shuffle Now</div>
 			</div>
 		</div>
 

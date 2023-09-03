@@ -1,4 +1,4 @@
-; calculated with parameters: o-level 12, length weight 2
+; calculated with parameters: o-level 14, length weight 1.6
 {R} 2
 {R1} 2
 {R} 2
@@ -391,489 +391,143 @@
 {A R} 2
 {A D} 2
 {A L} 2
-{L2} 2
+{A D} 2
+{A R} 2
+{A D} 2
 {A L} 2
-{U} 2
-{A L} 2
-{U} 2
-{A L} 2
-{U} 2
-{A L} 2
-{U} 2
-{A L} 2
-{U} 2
-{A L} 2
-{U} 2
-{A L} 2
-{U} 2
-{A L} 2
+{A D} 2
+{A R} 2
+{L} 2
 {A D} 2
 {} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{L} 2
-{A U} 2
-{A D} 2
-{R} 2
-{D} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{R R2} 2
-{D} 2
-{R} 2
-{} 2
-{A R} 2
-{U} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{} 2
-{A R} 2
-{A D} 2
-{} 2
-{A D} 2
-{L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A U} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A U} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A U} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A U} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A U} 2
-{A L} 2
-{A D} 2
-{} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{L} 2
-{A U} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{R} 2
-{} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{U} 2
-{A R} 2
-{A D} 2
-{} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A U} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A U} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A U} 2
-{D} 2
-{} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{R} 2
-{} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{D} 2
-{} 2
-{A D} 2
-{L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A U} 2
-{A L} 2
-{A D} 2
-{} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{R} 2
-{A U} 2
-{R L2} 2
-{D} 2
-{R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{D} 2
-{} 2
-{A D} 2
-{L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A U} 2
-{L} 2
-{A D} 2
-{L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A U} 2
-{L} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A U} 2
-{L R2} 2
-{A} 2
-{L} 2
-{A D} 2
-{L} 2
-{A D} 2
-{L} 2
-{A D} 2
-{L} 2
-{A D} 2
-{L} 2
-{A D} 2
-{L} 2
-{A D} 2
-{L} 2
 {A D} 2
 {L L2} 2
+{D} 2
+{} 2
+{D} 2
+{} 2
+{A D} 2
+{} 2
+{A D} 2
+{L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A U} 2
+{D} 2
+{L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A U} 2
+{D} 2
+{L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A U} 2
+{D} 2
+{L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A U} 2
+{D} 2
+{L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
 {U} 2
-{L} 2
-{} 2
-{L} 2
-{} 2
-{L} 2
-{} 2
-{L} 2
-{} 2
-{L} 2
-{} 2
-{L} 2
-{} 2
-{L} 2
-{} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{R} 2
-{A D} 2
+{A R} 2
+{U} 2
 {A R} 2
 {A U} 2
 {A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{U} 2
+{R} 2
+{U} 2
+{R} 2
+{A U} 2
+{} 2
 {A U} 2
 {D} 2
 {} 2
@@ -882,152 +536,6 @@
 {A D} 2
 {A R} 2
 {A D} 2
-{R R2} 2
-{D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{U} 2
-{} 2
-{A U} 2
-{A D} 2
-{A R} 2
-{D} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A U} 2
-{L} 2
-{A D} 2
-{R} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{R} 2
-{D} 2
-{R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{R L2} 2
-{U} 2
-{} 2
-{A U} 2
-{} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{U} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{R} 2
-{U} 2
-{A R} 2
-{A D} 2
 {} 2
 {A D} 2
 {L} 2
@@ -1036,12 +544,17 @@
 {A D} 2
 {A L} 2
 {A D} 2
-{A L} 2
+{A R} 2
 {A D} 2
 {A L} 2
 {A D} 2
-{A L} 2
+{L} 2
 {A U} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
 {A L} 2
 {A D} 2
 {A L} 2
@@ -1053,121 +566,78 @@
 {A D} 2
 {A L} 2
 {A D} 2
-{A R} 2
+{L} 2
+{A U} 2
 {A D} 2
 {A L} 2
 {A D} 2
 {A R} 2
 {A D} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A U} 2
+{D} 2
+{} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A U} 2
 {L} 2
 {A D} 2
-{A U} 2
-{R} 2
+{L} 2
+{A D} 2
+{L} 2
+{A D} 2
+{A R} 2
+{U} 2
+{A R} 2
+{} 2
+{A R} 2
+{} 2
+{A R} 2
+{U} 2
+{A R} 2
 {U} 2
 {A R} 2
 {A U} 2
 {A R} 2
 {A U} 2
 {A L} 2
+{R} 2
 {A U} 2
 {A R} 2
 {A U} 2
 {A L} 2
 {R} 2
-{} 2
-{A R} 2
 {A U} 2
 {A R} 2
 {A U} 2
-{R} 2
-{A U} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{R} 2
-{D} 2
-{R} 2
-{D} 2
-{} 2
-{D} 2
-{} 2
-{D} 2
-{} 2
-{D} 2
-{} 2
-{D} 2
-{} 2
-{D} 2
-{} 2
-{D} 2
-{} 2
-{A D} 2
-{L} 2
-{A D} 2
 {A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A U} 2
-{L} 2
-{A D} 2
-{L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A U} 2
-{L} 2
-{A D} 2
-{L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A U} 2
-{L R2} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A L} 2
 {A U} 2
 {A L} 2
 {A U} 2
 {A R} 2
 {A U} 2
 {A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{L} 2
-{D} 2
-{A L} 2
 {U} 2
-{A L} 2
-{U} 2
-{A L} 2
+{} 2
+{A U} 2
 {A D} 2
 {A L} 2
+{D} 2
+{R} 2
+{A D} 2
+{} 2
+{A D} 2
+{} 2
+{A D} 2
+{L} 2
+{A D} 2
+{A R} 2
 {A D} 2
 {A L} 2
 {A D} 2
@@ -1184,1045 +654,378 @@
 {A D} 2
 {A L} 2
 {R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
+{U} 2
 {R} 2
-{A U} 2
+{} 2
+{A R} 2
+{} 2
 {A R} 2
 {A U} 2
+{} 2
+{A U} 2
 {A R} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
 {A U} 2
 {D} 2
-{L} 2
-{A D} 2
-{A R} 2
-{L} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{D} 2
-{A L} 2
-{A R} 2
-{A D} 2
-{R} 2
-{A U} 2
-{R} 2
-{A U} 2
-{R} 2
-{A U} 2
-{R} 2
-{A U} 2
-{R} 2
-{A U} 2
-{R} 2
-{A U} 2
-{} 2
-{A U} 2
-{A R} 2
-{D L2} 2
-{R} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{D} 2
-{} 2
-{A D} 2
-{A U} 2
-{A R} 2
-{U} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{R} 2
-{U} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{U} 2
-{A R} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A U} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{D} 2
-{} 2
-{A D} 2
-{A U} 2
-{A R} 2
-{U} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{U} 2
-{A R} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{D} 2
-{} 2
-{D} 2
-{} 2
-{D} 2
-{} 2
-{D} 2
-{} 2
-{D} 2
-{} 2
-{D} 2
-{} 2
-{D} 2
-{} 2
-{D} 2
-{} 2
-{D} 2
-{} 2
-{A D} 2
-{L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A U} 2
-{L} 2
-{A D} 2
-{L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A U} 2
-{L} 2
-{A D} 2
-{L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A U} 2
-{L R2} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{U} 2
-{A L} 2
-{U} 2
-{A L} 2
-{U} 2
-{A L} 2
-{U} 2
-{A L} 2
-{U} 2
-{A L} 2
-{U} 2
-{A L} 2
-{U} 2
-{A L} 2
-{U} 2
-{A L} 2
-{A D} 2
-{} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{U} 2
-{} 2
-{A U} 2
-{A D} 2
-{A R} 2
-{D} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A U} 2
-{L} 2
-{A D} 2
-{R} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{R} 2
-{D} 2
-{R} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A U} 2
-{D} 2
-{L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{} 2
-{A L} 2
-{R} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{L} 2
-{A U} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{L} 2
-{A D} 2
-{L} 2
-{A D} 2
-{L} 2
-{A D} 2
-{L L2} 2
-{U} 2
-{L} 2
-{U} 2
-{L} 2
-{U} 2
-{L} 2
-{U} 2
-{L} 2
-{U} 2
-{L} 2
-{U} 2
-{L} 2
-{} 2
-{L} 2
-{} 2
-{A L} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{D} 2
-{} 2
-{A D} 2
-{R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{R} 2
-{U} 2
-{} 2
-{A U} 2
-{R} 2
-{A D} 2
-{R} 2
-{A D} 2
-{R} 2
-{A D} 2
-{L} 2
-{D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{R} 2
-{U} 2
-{} 2
-{A U} 2
-{} 2
-{U} 2
-{} 2
-{U} 2
-{} 2
-{U} 2
-{} 2
-{U} 2
-{} 2
-{U} 2
-{} 2
-{U} 2
-{} 2
-{U} 2
-{} 2
-{U} 2
-{} 2
-{U} 2
-{} 2
-{A U} 2
-{L} 2
-{A U} 2
-{L} 2
-{A U} 2
-{L} 2
-{A U} 2
-{L} 2
-{A U} 2
-{L} 2
-{A U} 2
-{L} 2
-{A U} 2
-{L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{U} 2
-{} 2
-{A U} 2
-{A D} 2
-{A R} 2
-{D} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{L} 2
-{A U} 2
-{A D} 2
-{R} 2
-{D} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{U} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{R} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{R} 2
-{A U} 2
-{A D} 2
 {} 2
 {A D} 2
 {R R2} 2
-{D} 2
-{R} 2
-{D} 2
-{R} 2
-{D} 2
-{R} 2
-{D} 2
-{R} 2
-{D} 2
-{R} 2
-{D} 2
-{R} 2
-{D} 2
-{R} 2
-{} 2
-{R} 2
-{} 2
-{R} 2
-{} 2
-{R} 2
-{} 2
-{R} 2
-{} 2
-{A R} 2
-{} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{R} 2
-{A U} 2
 {A D} 2
+{} 2
+{A D} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{D} 2
 {} 2
 {A D} 2
 {L} 2
 {A D} 2
+{A L} 2
+{A D} 2
 {A R} 2
 {A D} 2
 {A L} 2
-{} 2
-{A L} 2
-{R} 2
 {A D} 2
 {A R} 2
 {A D} 2
-{} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
 {D} 2
 {} 2
 {A D} 2
+{A U} 2
+{A R} 2
+{U} 2
+{A R} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{R} 2
+{U} 2
+{R} 2
+{U} 2
+{R} 2
+{U} 2
+{R} 2
+{} 2
+{R} 2
+{} 2
+{R} 2
+{} 2
+{R} 2
+{} 2
+{R} 2
+{} 2
+{R} 2
+{} 2
+{R} 2
+{} 2
+{R} 2
+{} 2
+{A R} 2
+{A D} 2
+{A R} 2
+{A D} 2
 {A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
 {A D} 2
 {R L2} 2
 {D} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{R} 2
-{U} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{U} 2
-{A R} 2
-{A D} 2
 {} 2
 {A D} 2
 {} 2
 {A D} 2
-{L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A U} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A U} 2
-{D} 2
-{} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{D} 2
-{} 2
-{A D} 2
-{A U} 2
-{A R} 2
-{U} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{D} 2
-{} 2
-{A D} 2
-{L} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{L} 2
-{A U} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{D} 2
-{} 2
-{A D} 2
-{A U} 2
-{A R} 2
-{U} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{D R2} 2
-{L} 2
-{D} 2
-{L} 2
-{D} 2
-{L} 2
-{D} 2
-{L} 2
-{D} 2
-{L} 2
-{D} 2
-{L} 2
-{D} 2
-{L} 2
-{D} 2
-{L} 2
-{D} 2
-{L} 2
-{D} 2
-{} 2
-{A D} 2
-{L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{R L2} 2
-{D} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A U} 2
 {A R} 2
 {A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A U} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A U} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A U} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A U} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A U} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A U} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A U} 2
-{D} 2
-{} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
 {A L} 2
 {A D} 2
 {A R} 2
@@ -2244,52 +1047,39 @@
 {A R} 2
 {A D} 2
 {A L} 2
-{A D} 2
-{} 2
 {A D} 2
 {L R2} 2
-{D} 2
-{} 2
-{D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A U} 2
-{D} 2
-{L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A U} 2
-{L} 2
-{} 2
+{U} 2
 {A L} 2
 {U} 2
 {A L} 2
-{A U} 2
+{U} 2
+{A L} 2
+{U} 2
+{A L} 2
+{U} 2
+{A L} 2
+{U} 2
+{A L} 2
+{U} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{U L2} 2
 {A L} 2
 {A U} 2
 {A L} 2
@@ -2299,6 +1089,47 @@
 {A L} 2
 {A U} 2
 {A L} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{L} 2
+{A D} 2
+{A U} 2
+{R} 2
+{U} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
 {A U} 2
 {A L} 2
 {A U} 2
@@ -2313,584 +1144,425 @@
 {A R} 2
 {L} 2
 {A U} 2
-{} 2
-{A U} 2
-{L L2} 2
+{R} 2
 {U} 2
 {} 2
-{U} 2
-{} 2
-{A U} 2
-{} 2
 {A U} 2
 {L} 2
 {A U} 2
 {A R} 2
 {A U} 2
-{A L} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{} 2
-{A R} 2
-{A D} 2
 {A R} 2
 {A U} 2
 {A R} 2
-{A D} 2
+{A U} 2
 {A R} 2
 {A U} 2
 {A R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A D} 2
-{L} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A U} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A U} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A U} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A U} 2
-{A L} 2
-{A D} 2
-{A L} 2
 {A U} 2
 {D} 2
 {} 2
 {A D} 2
-{A R} 2
+{L} 2
 {A D} 2
 {A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{L} 2
 {A U} 2
-{A R} 2
+{A D} 2
+{A L} 2
 {A D} 2
 {A R} 2
-{A U} 2
-{A R} 2
 {A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
 {A L} 2
 {R} 2
-{A U} 2
-{R R2} 2
+{A D} 2
 {U} 2
-{} 2
-{U} 2
-{} 2
+{R} 2
 {A U} 2
-{A R} 2
+{R} 2
 {A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
+{A D} 2
 {L} 2
-{A U} 2
-{L L2} 2
-{U} 2
-{} 2
-{A U} 2
-{L} 2
-{A U} 2
-{L} 2
-{A U} 2
-{L} 2
-{A U} 2
+{A D} 2
 {A R} 2
-{A U} 2
+{A D} 2
+{A L} 2
+{A D} 2
 {A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
+{A D} 2
+{L} 2
 {D} 2
-{} 2
+{A L} 2
+{U} 2
+{A L} 2
 {A D} 2
 {} 2
+{A D} 2
+{A R} 2
 {A D} 2
 {A L} 2
 {A D} 2
 {A R} 2
+{A D} 2
+{L} 2
+{A D} 2
+{A U} 2
+{R} 2
+{U} 2
+{A R} 2
+{A U} 2
+{} 2
+{A U} 2
+{R} 2
 {A D} 2
 {R R2} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
 {D} 2
+{} 2
+{A D} 2
+{A U} 2
+{A R} 2
+{U} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
 {R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A U} 2
+{L} 2
+{A D} 2
+{L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{L} 2
+{A U} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
 {D} 2
+{} 2
+{A D} 2
+{A U} 2
+{A R} 2
+{U} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
 {R} 2
-{D} 2
-{} 2
-{D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{L L2} 2
-{D} 2
-{L} 2
-{D} 2
-{L} 2
-{D} 2
-{} 2
-{D} 2
-{} 2
-{D} 2
-{} 2
-{A D} 2
-{L} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A U} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A U} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A U} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A U} 2
-{D} 2
-{} 2
-{A D} 2
+{U} 2
 {A R} 2
 {A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A U} 2
 {A R} 2
 {U} 2
 {} 2
 {A U} 2
 {A D} 2
+{A R} 2
+{A D} 2
+{A R} 2
+{A D} 2
 {A L} 2
-{D} 2
+{A D} 2
+{A L} 2
+{A U} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A D} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
 {R} 2
+{A U} 2
+{A R} 2
+{A D} 2
+{} 2
 {A D} 2
 {L} 2
 {A D} 2
+{A R} 2
+{A D} 2
 {A L} 2
 {A D} 2
 {A L} 2
 {A U} 2
 {A L} 2
+{} 2
+{A L} 2
+{R} 2
 {A D} 2
-{A L} 2
-{A U} 2
-{A L} 2
+{R} 2
 {A D} 2
-{A L} 2
-{A U} 2
+{A R} 2
+{U} 2
+{A R} 2
+{A D} 2
+{L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{R L2} 2
 {D} 2
+{} 2
+{A D} 2
 {} 2
 {A D} 2
 {A R} 2
 {A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
+{A L} 2
 {A D} 2
 {A R} 2
-{A U} 2
-{A R} 2
+{A D} 2
+{A L} 2
 {A D} 2
 {A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{L R2} 2
+{U} 2
+{A L} 2
+{U} 2
+{A L} 2
+{U} 2
+{A L} 2
+{U} 2
+{A L} 2
+{U} 2
+{A L} 2
+{U} 2
+{A L} 2
+{U} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{U L2} 2
+{A L} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{L} 2
+{A D} 2
+{A U} 2
+{R} 2
+{U} 2
+{A R} 2
 {A U} 2
 {A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{L} 2
+{A U} 2
+{R} 2
 {U} 2
 {} 2
 {A U} 2
-{A D} 2
-{A L} 2
-{D} 2
-{R} 2
-{A D} 2
 {L} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
 {A U} 2
-{A L} 2
-{A D} 2
-{A L} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A R} 2
 {A U} 2
 {D} 2
 {} 2
 {A D} 2
-{A R} 2
+{L} 2
 {A D} 2
 {A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{L} 2
 {A U} 2
-{A R} 2
+{A D} 2
+{A L} 2
 {A D} 2
 {A R} 2
-{A U} 2
-{A R} 2
+{A D} 2
+{A L} 2
+{R} 2
+{A D} 2
 {U} 2
-{} 2
-{A U} 2
-{A D} 2
-{A L} 2
-{D} 2
 {R} 2
+{A U} 2
+{R} 2
+{A U} 2
 {A D} 2
 {L} 2
 {A D} 2
-{A L} 2
+{A R} 2
 {A D} 2
 {A L} 2
-{A U} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{L} 2
 {D} 2
-{} 2
-{A D} 2
-{R} 2
-{A D} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{R} 2
-{A U} 2
-{A D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
 {A L} 2
+{U} 2
+{A L} 2
+{A D} 2
+{} 2
 {A D} 2
 {A R} 2
 {A D} 2
 {A L} 2
 {A D} 2
 {A R} 2
+{A D} 2
+{L} 2
+{A D} 2
+{A U} 2
+{R} 2
+{U} 2
+{A R} 2
+{A U} 2
+{} 2
+{A U} 2
+{R} 2
 {A D} 2
 {R R2} 2
-{D} 2
-{R} 2
-{D} 2
-{R} 2
-{D} 2
-{} 2
-{D} 2
-{} 2
-{D} 2
-{} 2
-{D} 2
-{} 2
-{D} 2
-{} 2
-{D} 2
-{} 2
-{D} 2
-{} 2
-{D} 2
-{} 2
-{A D} 2
-{} 2
-{A D} 2
-{R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{D} 2
-{R} 2
-{A D} 2
-{L} 2
-{A U} 2
-{L} 2
-{D} 2
-{A L} 2
-{U} 2
-{A L} 2
-{U} 2
-{A L} 2
-{A D} 2
-{} 2
 {A D} 2
 {A R} 2
 {A D} 2
@@ -2905,125 +1577,49 @@
 {A L} 2
 {A D} 2
 {A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{U} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{} 2
-{A U} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{R} 2
-{} 2
-{A R} 2
-{U} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{} 2
-{A U} 2
-{R} 2
-{A D} 2
-{R} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A L} 2
-{R} 2
-{} 2
-{A R} 2
-{U} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{U} 2
-{R} 2
-{U} 2
-{R} 2
-{A U} 2
-{} 2
-{A U} 2
-{D} 2
-{} 2
 {A D} 2
 {L} 2
 {A D} 2
+{A U} 2
+{R} 2
+{U} 2
 {A R} 2
-{A D} 2
-{} 2
-{A D} 2
-{L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A R} 2
 {A D} 2
 {A R} 2
 {A D} 2
 {A L} 2
+{A D} 2
+{A L} 2
+{A U} 2
+{L} 2
+{A D} 2
+{L} 2
 {A D} 2
 {A R} 2
 {A D} 2
@@ -3038,6 +1634,506 @@
 {A D} 2
 {A L} 2
 {A D} 2
+{A R} 2
+{A D} 2
+{L} 2
+{A D} 2
+{A U} 2
+{R} 2
+{U} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{R} 2
+{U} 2
+{A R} 2
+{A D} 2
+{A R} 2
+{U} 2
+{} 2
+{A U} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A U} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{R} 2
+{A D} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A D} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A D} 2
+{L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A U} 2
+{L} 2
+{A D} 2
+{A L} 2
+{} 2
+{A L} 2
+{R} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{U} 2
+{A R} 2
+{A D} 2
+{L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{} 2
+{A L} 2
+{R} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{R L2} 2
+{D} 2
+{} 2
+{A D} 2
+{} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{L R2} 2
+{U} 2
+{A L} 2
+{U} 2
+{A L} 2
+{U} 2
+{A L} 2
+{U} 2
+{A L} 2
+{U} 2
+{A L} 2
+{U} 2
+{A L} 2
+{U} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{U L2} 2
+{A L} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{L} 2
+{A D} 2
+{A U} 2
+{R} 2
+{U} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{L} 2
+{A U} 2
+{R} 2
+{U} 2
+{} 2
+{A U} 2
+{L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{D} 2
+{} 2
+{A D} 2
+{L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{L} 2
+{A U} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{R} 2
+{A D} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{U} 2
+{} 2
+{A U} 2
+{A D} 2
+{A L} 2
+{D} 2
+{R} 2
+{A D} 2
+{L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{L} 2
+{D} 2
+{A L} 2
+{U} 2
+{A L} 2
+{A D} 2
+{} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{L} 2
+{A D} 2
+{A U} 2
+{R} 2
+{U} 2
+{A R} 2
+{A U} 2
+{} 2
+{A U} 2
+{R} 2
+{A D} 2
+{R R2} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{U} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A U} 2
+{L} 2
+{A D} 2
+{L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{L} 2
+{A U} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{L} 2
+{A D} 2
+{L} 2
+{A D} 2
+{A L} 2
+{R} 2
+{A U} 2
+{R} 2
+{A D} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{R} 2
+{U} 2
+{A R} 2
+{A D} 2
+{A R} 2
+{U} 2
+{} 2
+{A U} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A U} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
 {A L} 2
 {A D} 2
 {A L} 2
@@ -3050,9 +2146,104 @@
 {A R} 2
 {A U} 2
 {A R} 2
-{A D} 2
-{U} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{R} 2
 {} 2
+{A R} 2
+{A D} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{R} 2
+{A U} 2
+{A R} 2
+{A D} 2
+{} 2
+{A D} 2
+{L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A U} 2
+{A L} 2
+{A D} 2
+{} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{L} 2
+{A D} 2
+{A L} 2
+{R} 2
+{A U} 2
+{R} 2
+{A D} 2
+{R} 2
+{A U} 2
+{A D} 2
+{A R} 2
+{A U} 2
+{L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
 {A U} 2
 {A L} 2
 {A U} 2
@@ -3063,46 +2254,12 @@
 {R} 2
 {U} 2
 {R} 2
-{U} 2
-{} 2
-{U} 2
-{} 2
-{U} 2
-{} 2
-{U} 2
-{} 2
-{U} 2
-{} 2
-{U} 2
-{} 2
-{U} 2
-{} 2
-{U} 2
-{} 2
-{U} 2
-{} 2
-{U} 2
-{} 2
-{U} 2
-{} 2
-{U} 2
-{} 2
-{U} 2
-{} 2
-{U} 2
-{} 2
-{U} 2
-{} 2
-{U} 2
-{} 2
-{U} 2
-{} 2
-{U} 2
-{} 2
 {A U} 2
 {} 2
 {A U} 2
-{} 2
+{A L} 2
+{A U} 2
+{A R} 2
 {A U} 2
 {A R} 2
 {A U} 2
@@ -3122,23 +2279,38 @@
 {A U} 2
 {A R} 2
 {A U} 2
-{A L} 2
+{L} 2
 {A U} 2
+{A D} 2
+{R} 2
+{D} 2
 {A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
+{A D} 2
 {A R} 2
-{A U} 2
+{A D} 2
 {A L} 2
-{A U} 2
+{A D} 2
 {A R} 2
-{A U} 2
+{A D} 2
 {A L} 2
-{A U} 2
+{A D} 2
 {A R} 2
-{A U} 2
+{A D} 2
 {A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A R} 2
 {A U} 2
 {A R} 2
 {A U} 2
@@ -3148,145 +2320,999 @@
 {A U} 2
 {A L} 2
 {R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{L} 2
+{A U} 2
+{A D} 2
+{R} 2
+{D} 2
+{A R} 2
+{A D} 2
 {} 2
-{A R} 2
 {A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
 {} 2
+{A D} 2
+{} 2
+{A D} 2
+{L} 2
+{A D} 2
 {A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{R} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A R} 2
+{A D} 2
 {U} 2
+{} 2
+{A U} 2
+{L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{A U} 2
+{L} 2
+{A U} 2
+{L} 2
+{A U} 2
+{L} 2
+{A U} 2
+{L} 2
+{A U} 2
+{L} 2
+{A U} 2
+{L} 2
+{A U} 2
+{} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{L} 2
+{A U} 2
+{A D} 2
+{R} 2
+{D} 2
+{A R} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{R} 2
+{A D} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{L} 2
+{A U} 2
+{A D} 2
+{R} 2
+{D} 2
+{A R} 2
+{A D} 2
+{} 2
+{A D} 2
+{} 2
+{A D} 2
+{} 2
+{A D} 2
+{L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{L} 2
+{U} 2
+{L} 2
+{A U} 2
+{L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{R} 2
+{U} 2
+{R} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{A U} 2
+{L} 2
+{A U} 2
+{L} 2
+{A U} 2
+{L} 2
+{A U} 2
+{L} 2
+{A U} 2
+{L} 2
+{A U} 2
+{L} 2
+{A U} 2
+{} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{L} 2
+{A U} 2
+{A D} 2
+{R} 2
+{D} 2
+{A R} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{R} 2
+{A D} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{L} 2
+{A U} 2
+{A D} 2
+{R} 2
+{D} 2
+{A R} 2
+{A D} 2
+{} 2
+{A D} 2
+{} 2
+{A D} 2
+{} 2
+{A D} 2
+{L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A U} 2
+{L} 2
+{A D} 2
+{R} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{L} 2
+{U} 2
+{L} 2
+{U} 2
+{L} 2
+{U} 2
+{L} 2
+{U} 2
+{L} 2
+{U} 2
+{L} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{A U} 2
+{L} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{} 2
+{A U} 2
+{L R2} 2
+{U} 2
+{} 2
+{U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{L} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A U} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A U} 2
+{D} 2
+{} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
 {A R} 2
 {D} 2
+{L} 2
+{A D} 2
+{A U} 2
+{R} 2
+{U} 2
+{R} 2
+{U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{} 2
+{A R} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{} 2
+{A D} 2
+{U} 2
+{R} 2
+{U} 2
+{R} 2
+{U} 2
+{R} 2
+{A U} 2
+{L} 2
+{A U} 2
+{L} 2
+{A U} 2
+{A R} 2
+{} 2
+{A R} 2
+{A D} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A D} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{} 2
+{A U} 2
+{A R} 2
+{} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A L} 2
+{A U} 2
 {L} 2
 {A D} 2
 {A L} 2
 {A D} 2
 {A L} 2
+{A U} 2
+{R} 2
+{D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{R} 2
+{A D} 2
+{A R} 2
+{A U} 2
+{} 2
+{A U} 2
+{A R} 2
+{U} 2
+{A R} 2
+{A D} 2
+{} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
 {A D} 2
 {A L} 2
 {A U} 2
 {A L} 2
 {A D} 2
-{A L} 2
-{A U} 2
-{A L} 2
+{R} 2
+{A D} 2
+{A R} 2
+{U} 2
+{A R} 2
+{A D} 2
+{L} 2
+{A D} 2
+{A R} 2
 {A D} 2
 {A L} 2
-{A U} 2
-{A L} 2
 {A D} 2
-{A L} 2
-{A U} 2
+{A R} 2
+{A D} 2
+{R L2} 2
+{D} 2
+{R} 2
+{D} 2
+{R} 2
+{D} 2
+{} 2
+{D} 2
+{} 2
+{D} 2
+{} 2
+{D} 2
+{} 2
+{D} 2
+{} 2
+{D} 2
+{} 2
+{D} 2
+{} 2
 {D} 2
 {} 2
 {A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
-{A D} 2
-{A R} 2
-{A D} 2
-{A L} 2
+{} 2
 {A D} 2
 {} 2
 {A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
 {U} 2
+{L} 2
+{A U} 2
+{A D} 2
 {R} 2
-{U} 2
-{R} 2
-{U} 2
-{} 2
-{A U} 2
-{} 2
-{A U} 2
-{} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{A U} 2
-{A R} 2
-{A U} 2
-{A L} 2
-{R} 2
-{} 2
-{A R} 2
-{A D} 2
-{A R} 2
-{A U} 2
-{A R} 2
-{} 2
-{A R} 2
-{U} 2
-{A R} 2
 {D} 2
+{R} 2
+{D} 2
+{} 2
+{A D} 2
+{} 2
+{A D} 2
+{} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
 {L} 2
 {A D} 2
 {A L} 2
 {A D} 2
-{A L} 2
-{A D} 2
+{A R} 2
+{} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
 {A L} 2
 {A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{U} 2
+{L} 2
+{A U} 2
+{A D} 2
+{R} 2
 {D} 2
+{R} 2
+{D} 2
+{} 2
+{A D} 2
+{} 2
+{A D} 2
 {} 2
 {A D} 2
 {A R} 2
 {A D} 2
 {A L} 2
 {A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{L} 2
+{A U} 2
+{A D} 2
+{A L} 2
+{A D} 2
+{A R} 2
+{} 2
+{A R} 2
+{U} 2
+{A R} 2
+{A D} 2
+{A R} 2
+{A U} 2
+{A R} 2
+{A U} 2
+{A L} 2
+{A U} 2
+{A R} 2
+{U} 2
+{L} 2
+{A U} 2
+{A D} 2
+{R} 2
+{D} 2
+{R} 2
+{D} 2
 {} 2
 {A D} 2
-{U} 2
+{L} 2
+{A D} 2
+{L} 2
+{A D} 2
+{A L} 2
 {R} 2
-{U} 2
-{R} 2
-{U} 2
 {} 2
+{A R} 2
+{U} 2
+{A R} 2
+{A D} 2
+{} 2
+{A D} 2
+{R} 2
 {A U} 2
+{A D} 2
