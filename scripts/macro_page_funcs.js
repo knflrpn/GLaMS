@@ -102,10 +102,6 @@ function runTAS() {
 				return isNaN(parsed) ? 128 : parsed;
 			});
 
-			console.log(btns);
-			console.log(frameCount);
-			console.log(LX, LY, RX, RY);
-
 			queueConData(btns, frameCount, LX, LY, RX, RY);
 		}
 
