@@ -10,6 +10,8 @@ class WackyGamepad {
 		this.modifiedButtons = Array(18).fill(false);
 		this.modifiedSticks = Array(4).fill(0.0);
 		this.toggledButtons = Array(18).fill(false);
+		this.turboButtons = Array(18).fill(false);
+		this.turboDisables = Array(18).fill(false);
 		this.spamButtons = Array(18).fill(false);
 		this.spamIndex = -1;
 		this.spamDelay = 0;
@@ -65,8 +67,13 @@ class WackyGamepad {
 			}
 			this.realtimeButtons = new_buttons;
 
-			// Prepare for spam.  First find possible buttons: not pressed in the old delayedeButtons, and true in spamButtons.
-			const possibleSpamButtons = this.delayedButtons.map((button, index) => !button && this.spamButtons[index]);
+			let possibleSpamButtons;
+			if (this.spamTimer === 0) {
+				// Prepare for spam.  First find possible buttons: not pressed in the old delayedButtons, and true in spamButtons.
+				possibleSpamButtons = this.delayedButtons.map((button, index) => !button && this.spamButtons[index]);
+				// Prepare for turbo: pressed in old delayedButtons and true in turboButtons.
+				this.turboDisables = this.delayedButtons.map((button, index) => button && this.turboButtons[index]);
+			}
 
 			if (this.delayAmount > 0.0) {
 				// Save current data
@@ -90,8 +97,9 @@ class WackyGamepad {
 				this.delayedButtons = this.realtimeButtons.slice();
 			}
 
-			// Choose a random spam button, if any is possible.
+			// Recalculate spam if the timer has expired
 			if (this.spamTimer === 0) {
+				// Choose a random spam button, if any is possible.
 				this.spamTimer = this.spamDelay;
 				if (possibleSpamButtons.includes(true)) {
 					this.spamTimer = this.spamDelay;
@@ -107,6 +115,8 @@ class WackyGamepad {
 			if (this.spamIndex >= 0) {
 				this.delayedButtons[this.spamIndex] = true;
 			}
+			// Apply turbo disables
+			this.delayedButtons = this.delayedButtons.map((btn, index) => this.turboDisables[index] ? false : btn);
 
 			// New data is in, so start with a copy of delayed into modified
 			this.modifiedSticks = this.delayedSticks.slice();
@@ -200,7 +210,7 @@ class WackyGamepad {
 	/**
 	 * Sets which buttons will get spammed.
 	 * 
-	 * @param {<Array<boolean>} spamButtons - Which buttons to enable spam on.
+	 * @param {Array<boolean>} spamButtons - Which buttons to enable spam on.
 	 */
 	enableSpam(spamButtons) {
 		this.spamButtons = spamButtons;
@@ -211,6 +221,22 @@ class WackyGamepad {
 	 */
 	disableSpam() {
 		this.spamButtons = Array(18).fill(false);
+	}
+
+	/**
+	 * Sets which buttons will get turbo applied.
+	 * 
+	 * @param {Array<boolean>} turboButtons - Which buttons to enable spam on.
+	 */
+	enableTurbo(turboButtons) {
+		this.turboButtons = turboButtons;
+	}
+
+	/**
+	 * Turns off all turbo.
+	 */
+	disableTurbo() {
+		this.turboButtons = Array(18).fill(false);
 	}
 
 	/**
@@ -347,6 +373,17 @@ class WackyGamepad {
 		this.a2dR = right;
 	}
 
+	/**
+	 * @param {number} delay
+	 */
+	set spamSlowdown(delay) {
+		let newDelay = parseInt(delay);
+		if (isNaN(newDelay)) newDelay = 0;
+		if (newDelay < 0) newDelay = 0;
+		if (newDelay > 60) newDelay = 60;
+		this.spamDelay = newDelay;
+	}
+	
 	get realtimeState() {
 		return {
 			buttons: this.realtimeButtons,

@@ -19,8 +19,8 @@
 	<script src="./scripts/serial.js?6"></script>
 	<script src="./scripts/pages_core.js?6"></script>
 	<script src="./scripts/SwiCC_core.js?6"></script>
-	<script src="./scripts/GLaMS_page_funcs.js?7"></script>
-	<script src="./scripts/WackyGamepad.js?6"></script>
+	<script src="./scripts/GLaMS_page_funcs.js?8"></script>
+	<script src="./scripts/WackyGamepad.js?8"></script>
 	<script>
 		// Global variables
 		let gamepad = new WackyGamepad();
@@ -71,6 +71,12 @@
 				}
 			}
 
+			if (turboEnabled) {
+				gamepad.enableTurbo(getSpamEnables());
+			} else {
+				gamepad.disableTurbo();
+			}
+
 			// Get new controller data and update page indicator.
 			updateGamepad();
 
@@ -90,6 +96,11 @@
 			}
 
 
+		}
+
+		function setSpamDelay() {
+			const slider = document.getElementById('delay-slider');
+			gamepad.spamSlowdown = 4 - slider.value;
 		}
 
 		// Page onLoad
@@ -132,14 +143,14 @@
 				<div class="indicator-div" id="status-gamepad" onClick="incrementGamepadNum()">- Gamepad 0 -<br />Inactive.</div>
 				<p>Clicking a connected SwiCC will pause it.</p>
 				<div class="grid-of-things grid-x2">
-					<div class="indicator-div" id="status-swicc-0" onclick="toggleSwiCC(0)">- SwiCC -<br />CLick to
-						connect.</div>
-					<div class="indicator-div hidden-com" id="status-swicc-1" onclick="toggleSwiCC(1)">- SwiCC
-						-<br />CLick to connect.</div>
-					<div class="indicator-div hidden-com" id="status-swicc-2" onclick="toggleSwiCC(2)">- SwiCC
-						-<br />CLick to connect.</div>
-					<div class="indicator-div hidden-com" id="status-swicc-3" onclick="toggleSwiCC(3)">- SwiCC
-						-<br />CLick to connect.</div>
+					<div class="indicator-div" id="status-swicc-0" onclick="toggleSwiCC(0)">- SwiCC -
+						<br />Click to connect.</div>
+					<div class="indicator-div hidden-com" id="status-swicc-1" onclick="toggleSwiCC(1)">- SwiCC -
+						<br />Click to connect.</div>
+					<div class="indicator-div hidden-com" id="status-swicc-2" onclick="toggleSwiCC(2)">- SwiCC -
+						<br />Click to connect.</div>
+					<div class="indicator-div hidden-com" id="status-swicc-3" onclick="toggleSwiCC(3)">- SwiCC -
+						<br />Click to connect.</div>
 				</div>
 				<br />
 				<div id="show-more" class="btny-div">Add more SwiCCs</div>
@@ -211,27 +222,42 @@
 			</div>
 			<div class="content-box">
 				<div class="stack-of-things">
-					Auto-enter Course ID.<br />Type ID here:
-					<input type="text" id="level-id">
-					Click ID button in game, then
-					<div class="btny-div" onclick="queueID()">Send</div>
-					<div class="progress-container">
-						<div id="progress-playback" class="progress-bar"></div>
-						<span id="progress-label-playback" class="progress-label">0%</span>
+					Auto-enter Course ID.<br />Type ID here, click ID button in game, then press send.
+					<div class="row-of-things">
+						<input type="text" id="level-id">
+						<div class="btny-div" onclick="queueID()">Send</div>
+						<div class="progress-container" style="height:auto; width:40%;">
+							<div id="progress-playback" class="progress-bar"></div>
+							<span id="progress-label-playback" class="progress-label">0%</span>
+						</div>
 					</div>
 				</div>
 			</div>
 
 			<div class="content-box">
 				<div class="stack-of-things">
-					<div class="btny-div" id="toggle-button-spam" onclick="toggleButtonSpam()">Enable button spam
-					</div>
+					Select buttons for turbo or spam:
 					<div id="auto-container" class="table-container">
 						<!-- randomization table -->
 					</div>
+					<div class="row-of-things">
+						<div class="btny-div" id="toggle-turbo" onclick="toggleTurbo()">Enable turbo</div>
+						<div style="line-height:100%; margin-top:auto; margin-bottom:auto;">rate:</div>
+						<input type="range" id="delay-slider" min="0" max="4" step="1" value="4" onchange="setSpamDelay()" list="steplist">
+						<datalist id="steplist">
+							<option>0</option>
+							<option>1</option>
+							<option>2</option>
+							<option>3</option>
+							<option>4</option>
+						</datalist>
+					</div>
+					<div class="row-of-things">
+						<div class="btny-div" id="toggle-button-spam" onclick="toggleButtonSpam()">Enable spam</div>
+						<div class="indicator-div" id="status-spam">off</div>
+					</div>
+					<p>(When spam is enabled, use R3 to toggle on/off)</p>
 
-					<p>(Once enabled, click right stick in game to toggle)</p>
-					<div class="indicator-div" id="status-spam">off</div>
 				</div>
 			</div>
 

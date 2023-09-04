@@ -4,6 +4,7 @@ let autojump_enabled = false;
 let randIntervalId = null;
 let buttonMapStale = true;
 let spamEnabled = 0; // 0, 1, or 2 for disabled, enabled, or enabled and on
+let turboEnabled = false;
 
 /**
  * Build the button mapping table and append it to the "mapping-container" element.
@@ -503,6 +504,19 @@ function toggleButtonSpam() {
 	}
 	const statusElement = document.getElementById("toggle-button-spam");
 	if (spamEnabled > 0) {
+		statusElement.classList.add("indicator-active");
+	} else {
+		statusElement.classList.remove("indicator-active");
+		const spamstat = document.getElementById("status-spam");
+		spamstat.classList.remove("indicator-active");
+		spamstat.innerHTML = "off";
+	}
+}
+
+function toggleTurbo() {
+	turboEnabled = !turboEnabled;
+	const statusElement = document.getElementById("toggle-turbo");
+	if (turboEnabled) {
 		statusElement.classList.add("indicator-active");
 	} else {
 		statusElement.classList.remove("indicator-active");
