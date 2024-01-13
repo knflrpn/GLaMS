@@ -5,6 +5,8 @@ let randIntervalId = null;
 let buttonMapStale = true;
 let spamEnabled = 0; // 0, 1, or 2 for disabled, enabled, or enabled and on
 let turboEnabled = false;
+let ws_ws = null; // sync websocket
+let ws_broadcast, ws_listen = false;
 
 /**
  * Build the button mapping table and append it to the "mapping-container" element.
@@ -272,6 +274,7 @@ function randomizeMap(shuffleLimit = null) {
 			}
 		}
 	}
+
 }
 
 function shuffleArray_forceChange(array) {
@@ -613,3 +616,153 @@ function queueIDPath(idText) {
 
 }
 
+/**
+ * Encode active cells into a comma-separated string.
+ * @returns {string} - A string of cell IDs separated by commas.
+ */
+function encodeActiveCells() {
+    const mappingContainer = document.getElementById("mapping-container");
+    const activeCells = Array.from(mappingContainer.querySelectorAll(".tablecell-active"))
+                             .map(cell => cell.id);
+    return activeCells.join(",");
+}
+
+/**
+ * Set the state of the table cells using an encoded string of active cells.
+ * @param {string} encodedString - A string of cell IDs separated by commas.
+ */
+function decodeActiveCells(encodedString) {
+    // First, reset all cells to inactive state
+    const mappingContainer = document.getElementById("mapping-container");
+    const allCells = Array.from(mappingContainer.querySelectorAll(".mapcell"));
+    allCells.forEach(cell => {
+        cell.classList.remove("tablecell-active");
+        cell.classList.remove("mapcell-active");
+    });
+
+    // Set the cells from the encoded string to active state
+    const activeCellIDs = encodedString.split(",");
+    activeCellIDs.forEach(id => {
+        const cell = document.getElementById(id);
+        if (cell) {
+            cell.classList.add("tablecell-active");
+            cell.classList.add("mapcell-active");
+        }
+    });
+	buttonMapStale = true;
+}
+
+
+function websync_connect() {
+	ws_ws = new WebSocket('wss://fireganon.com/websync/');
+	
+	ws_ws.onopen = function () {
+		const channelname = document.getElementById("sync-channel").value;
+		const joincommand = {
+			"action": "join",
+			"room": channelname
+		}		
+		ws_ws.send(JSON.stringify(joincommand));
+		// issue a pull on connect
+		const pullcommand = {
+			"action": "pull",
+		}		
+		ws_ws.send(JSON.stringify(pullcommand));
+	};
+
+	ws_ws.onmessage = function (event) {
+		let msg = JSON.parse(event.data);  // Convert the received JSON string into an object
+
+		if (msg.type === "status") {
+			if (msg.message === "joined") {
+				document.getElementById("sync-channel").classList.add("indicator-active")
+			}
+			if (msg.message === "left") {
+				document.getElementById("sync-channel").classList.remove("indicator-active")
+			}
+			if (msg.message === "pull" && ws_broadcast) { // I'm the broadcaster and a pull is issued
+				broadcastMapSync();
+			}
+		} else if (msg.type === "message") {
+			if (ws_listen && "map" in msg) { 
+				decodeActiveCells(msg.map);
+			}
+		}
+	};
+
+	ws_ws.onclose = function (event) {
+		document.getElementById("enable-sync-send").classList.remove("indicator-active");
+		document.getElementById("enable-sync-rcv").classList.remove("indicator-active");
+		document.getElementById("sync-channel").classList.remove("indicator-active")
+		document.getElementById("sync-channel").disabled = false;
+		ws_broadcast = false;
+		ws_listen = false;
+	};
+
+}
+
+function onChannelChanged() {
+	if (ws_ws !== null && ws_ws.readyState === ws_ws.OPEN) {
+		ws_ws.send('{"action":"leave"}');
+	}
+}
+
+function broadcastMapSync() {
+	if (ws_broadcast && ws_ws !== null && ws_ws.readyState === ws_ws.OPEN) {
+		const channelname = document.getElementById("sync-channel").value;
+		const message = {
+			"action": "message",
+			"room": channelname,
+			"map": encodeActiveCells(),
+		}		
+		ws_ws.send(JSON.stringify(message));
+	}
+}
+
+function toggleSync(broadcast) {
+	if (broadcast) { // clicked broadcast
+		// need to turn off listening
+		const listenBtn = document.getElementById("enable-sync-rcv");
+		listenBtn.classList.remove("indicator-active");
+		ws_listen = false;
+		if (ws_broadcast) { // already broadcasting; turn off
+			const broadcastBtn = document.getElementById("enable-sync-send");
+			broadcastBtn.classList.remove("indicator-active");
+			const channelBox = document.getElementById("sync-channel");
+			channelBox.disabled = false;
+			ws_broadcast = false;						
+		} else { // not broadcasting; turn on
+			const broadcastBtn = document.getElementById("enable-sync-send");
+			broadcastBtn.classList.add("indicator-active");
+			const channelBox = document.getElementById("sync-channel");
+			channelBox.disabled = true;
+			ws_broadcast = true;
+			broadcastMapSync();
+		}
+	} else { // clicked listen
+		// need to turn off sending
+		const broadcastBtn = document.getElementById("enable-sync-send");
+		broadcastBtn.classList.remove("indicator-active");
+		ws_broadcast = false;
+		if (ws_listen) { // already listening; turn off
+			const listenBtn = document.getElementById("enable-sync-rcv");
+			listenBtn.classList.remove("indicator-active");
+			const channelBox = document.getElementById("sync-channel");
+			channelBox.disabled = false;
+			ws_listen = false;						
+		} else { // not listening; turn on
+			const listenBtn = document.getElementById("enable-sync-rcv");
+			listenBtn.classList.add("indicator-active");
+			const channelBox = document.getElementById("sync-channel");
+			channelBox.disabled = true;
+			ws_listen = true;								
+		}
+	}
+
+	if (!(ws_ws !== null && ws_ws.readyState === ws_ws.OPEN)) {
+		websync_connect();
+	} else {
+		ws_ws.onopen();
+	}
+
+}

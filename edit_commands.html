@@ -44,9 +44,14 @@
 				length = 1;
 			}
 			let probability = parseFloat(document.getElementById('probability').value);
-			if (isNaN(probability) || (probability < 0)) {
+			if (isNaN(probability) || (probability < 0) || (probability > 1)) {
 				probability = 1;
 			}
+			let cooldown = parseInt(document.getElementById('cooldown').value);
+			if (isNaN(cooldown) || (cooldown < 0)) {
+				cooldown = 0;
+			}
+			let combinable = document.getElementById('combinable').checked;
 
 			let rows = document.getElementById('stateRows').children;
 			let sequence = Array.from(rows).map(row => {
@@ -57,11 +62,11 @@
 					ly: parseFloat(inputs[2].value) || 0,
 					rx: parseFloat(inputs[3].value) || 0,
 					ry: parseFloat(inputs[4].value) || 0,
-					frames: parseInt(inputs[5].value) || 1
+					frames: isNaN(parseInt(inputs[5].value)) ? 1 : parseInt(inputs[5].value),
 				};
 			});
 			commandMap[keyword] = sequence;
-			commandParams[keyword] = { length, probability };
+			commandParams[keyword] = { length, probability, combinable, cooldown };
 			// Save commands file
 			setLocalStorageItem("tc_commands_file", JSON.stringify({ commands: commandMap, params: commandParams }));
 			// Repopulate display
@@ -70,10 +75,12 @@
 			loadCommand();
 		}
 
-		function loadCommand(keyword = "", sequence = [{}], params = { length: 1, probability: 1 }) {
-			document.getElementById('keyword').value = keyword;
-			document.getElementById('length').value = params.length;
-			document.getElementById('probability').value = params.probability;
+		function loadCommand(keyword = "", sequence = [{}], params = { length: 1, probability: 1, combinable: true }) {
+			document.getElementById('keyword').value = keyword || "";
+			document.getElementById('length').value = params.length || "1";
+			document.getElementById('probability').value = params.probability || "1";
+			document.getElementById('cooldown').value = 'cooldown' in params ? params.cooldown : "0";
+			document.getElementById('combinable').checked = 'combinable' in params ? params.combinable : true;
 			let stateRows = document.getElementById('stateRows');
 			while (stateRows.firstChild) {
 				stateRows.removeChild(stateRows.firstChild);
@@ -87,7 +94,8 @@
 				inputs[2].value = state.ly || 0;
 				inputs[3].value = state.rx || 0;
 				inputs[4].value = state.ry || 0;
-				inputs[5].value = state.frames || 1;
+				inputs[5].value = (state.frames !== undefined && state.frames !== null) ? state.frames : 1;
+
 			});
 			window.scrollTo(0, 0);
 		}
@@ -217,26 +225,41 @@
 					help-text="The probability that the command will be accepted; 0=never, 1=always.">?</span>
 			</div>
 
+			<div style="width:25rem; display:flex; justify-content:end; margin:0.5rem;">
+				<span>Cooldown:</span>&nbsp;
+				<input type="text" id="cooldown" placeholder="0" value="0">&nbsp;
+				<span class="help-icon"
+					help-text="Time (in seconds) that this command will be disabled after being used.">?</span>
+			</div>
+
+			<div style="width:25rem; display:flex; justify-content:end; margin:0.5rem;">
+				<span>Combinable?</span>&nbsp;
+				<input type="checkbox" id="combinable" checked="true">&nbsp;
+				<span class="help-icon"
+					help-text="Whether or not this command is allowed to combine with other commands.">?</span>
+			</div>
+
 			<br />
 			<div class="command-row">
 				<span>Buttons: <span class="help-icon"
 						help-text="Space-separated list of buttons, such as 'A X'.">?</span></span>
 				<span>LX: <span class="help-icon"
-						help-text="Left stick X value. Decimal number [-1,1], where negative is to the left. 0 is neutral.">?</span>
+						help-text="Left stick X value. Decimal number [-1,1], where negative is to the left. 0 is neutral. 2 makes it random.">?</span>
 				</span>
 				<span>LY: <span class="help-icon"
-						help-text="Left stick Y value. Decimal number [-1,1], where negative is up. 0 is neutral.">?</span>
+						help-text="Left stick Y value. Decimal number [-1,1], where negative is up. 0 is neutral. 2 makes it random.">?</span>
 				</span>
 				<span>RX: <span class="help-icon"
-						help-text="Right stick X value. Decimal number [-1,1], where negative is to the left. 0 is neutral.">?</span>
+						help-text="Right stick X value. Decimal number [-1,1], where negative is to the left. 0 is neutral. 2 makes it random.">?</span>
 				</span>
 				<span>RY: <span class="help-icon"
-						help-text="Right stick Y value. Decimal number [-1,1], where negative is up. 0 is neutral.">?</span>
+						help-text="Right stick Y value. Decimal number [-1,1], where negative is up. 0 is neutral. 2 makes it random.">?</span>
 				</span>
 				<span>Ticks: <span class="help-icon"
 						help-text="Number of ticks (1/30s) that this state should exist when playing this command's sequence. 
 						Note that total command time is controlled by the scheduler; this value controls what happens while the command runs. 
-						Note that the sequence will loop if the end is reached before the command has expired.  This can be avoided with a long blank entry as the final state.">?</span>
+						Note that the sequence will loop if the end is reached before the command has expired.  This can be avoided with a long blank entry as the final state.
+						A negative value will make it a random number of ticks between 0 and the value (as a positive number).">?</span>
 				</span>
 			</div>
 			<div class="command-row" id="stateRowTemplate" style="display: none;">
@@ -291,6 +314,8 @@
 				<option value="">--Choose an option--</option>
 				<option value="MM2_Commands.json">Mario Maker 2</option>
 				<option value="MPSS_Commands.json">Mario Party Super Stars</option>
+				<option value="MM2_LevelBuilding.json">Mario Maker Level Building</option>
+				<option value="Fruit_Commands.json">Suika Game</option>
 				<!-- Add other options here -->
 			</select>
 		</div>

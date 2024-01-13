@@ -53,7 +53,7 @@ function setPlaybackProgressBar(percentage) {
 function playbackMonitor() {
 	if (queuePlaying) {
 		setTimeout(playbackMonitor, 1000);
-		setPlaybackProgressBar(queueProgress);
+		setPlaybackProgressBar(playbackProgress);
 	} else {
 		document.getElementById("run-btn").innerText = "Run";
 		setPlaybackProgressBar(0);

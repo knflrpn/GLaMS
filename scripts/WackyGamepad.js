@@ -333,6 +333,7 @@ class WackyGamepad {
 	setLeftStick(leftX, leftY) {
 		this.modifiedSticks[0] = leftX;
 		this.modifiedSticks[1] = leftY;
+		this.isStale = true;
 	}
 
 	/**
@@ -344,6 +345,7 @@ class WackyGamepad {
 	setRightStick(rightX, rightY) {
 		this.modifiedSticks[2] = rightX;
 		this.modifiedSticks[3] = rightY;
+		this.isStale = true;
 	}
 
 	/**

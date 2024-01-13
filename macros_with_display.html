@@ -17,15 +17,34 @@
 	<link rel="stylesheet" href="./styles/style_main.css?6" />
 
 	<script src="./scripts/serial.js"></script>
-	<script src="./scripts/pages_core.js?1"></script>
-	<script src="./scripts/SwiCC_core.js?1"></script>
-	<script src="./scripts/SwiCC_record.js?2"></script>
-	<script src="./scripts/macro_page_funcs.js?3"></script>
-	<script src="./scripts/WackyGamepad.js?1"></script>
+	<script src="./scripts/pages_core.js?5"></script>
+	<script src="./scripts/SwiCC_core.js?5"></script>
+	<script src="./scripts/SwiCC_record.js?5"></script>
+	<script src="./scripts/macro_page_funcs.js?5"></script>
+	<script src="./scripts/WackyGamepad.js?5"></script>
 	<script>
 		// Global variables
 		let gamepad = new WackyGamepad();
 		let sentConfig = false;
+		let PianoRoll = [];
+
+		function playerPiano() {
+			setTimeout(playerPiano, 1000/60);
+			if (PianoRoll.length > 0) {
+				const decoded = extractRecordingParams(PianoRoll.shift());
+				const btns = unpackSwitchCon([decoded.fButtnH, decoded.fButtnL, decoded.fHAT]);
+				const LX = byteStickToFloat(decoded.sLX);
+				const LY = byteStickToFloat(decoded.sLY);
+				const RX = byteStickToFloat(decoded.sRX);
+				const RY = byteStickToFloat(decoded.sRY);
+				broadcastControllerState(
+					gamepad.realtimeState['buttons'],
+					gamepad.realtimeState['sticks'],
+					btns,
+					[LX, LY, RX, RY]
+				);
+			}
+		}
 
 		function mainLoop() {
 			requestAnimationFrame(mainLoop);
@@ -58,6 +77,14 @@
 				gamepad.isStale = false;
 			}
 
+			broadcastControllerState(
+					gamepad.realtimeState['buttons'],
+					gamepad.realtimeState['sticks'],
+					gamepad.state['buttons'],
+					gamepad.state['sticks']
+				);
+
+
 		}
 
 		document.addEventListener("DOMContentLoaded", function () {
@@ -66,6 +93,7 @@
 			document.getElementById("vsync-delay").value = saved_delay;
 			registerSwiCCIndicator(document.getElementById('status-swicc-0'), 0);
 			mainLoop();
+			playerPiano();
 		});
 
 	</script>
@@ -76,6 +104,11 @@
 	<main class="row-of-things" style="height:95vh; align-items: flex-start;">
 		<div id="control-status" class="stack-of-things" style="height: 100%;">
 			<div id="comms-box" class="content-box">
+				<iframe id="gamepad-iframe" style="height:300px; min-width: 440px;" src="./con_display.html"
+				frameborder="0">
+				<!-- The gamepad display -->
+			</iframe>
+
 				<div class="indicator-div" id="status-gamepad" onClick="incrementGamepadNum()">- Gamepad 0 -<br />Inactive.</div>
 				<div class="indicator-div" id="status-swicc-0" onclick="toggleSwiCC(0)">- SwiCC -<br />Click to connect.
 				</div>

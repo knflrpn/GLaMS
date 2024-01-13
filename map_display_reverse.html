@@ -49,14 +49,15 @@
         }
 
         function inverseOrder(arr) {
-    const result = new Array(arr.length);
+            const result = new Array(arr.length);
+            result.fill(-1);
 
-    for (let i = 0; i < arr.length; i++) {
-        result[arr[i]] = i;
-    }
+            for (let i = 0; i < arr.length; i++) {
+                result[arr[i]] = i;
+            }
 
-    return result;
-}
+            return result;
+        }
         function moveIcon(index, newPosition, yOffset = 0) {
             var iconWidth = 50;  /* Adjust to your icon's width */
             var iconToMove = document.getElementById("bottom-icon-" + index);

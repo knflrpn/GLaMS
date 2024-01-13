@@ -14,15 +14,15 @@
 	<link href="https://fonts.googleapis.com/css2?family=PT+Serif&family=Ubuntu+Mono:wght@700&display=swap"
 		rel="stylesheet">
 
-	<link rel="stylesheet" href="./styles/style_main.css?1" />
+	<link rel="stylesheet" href="./styles/style_main.css?6" />
 	<link rel="stylesheet" href="./styles/style_commands.css?1" />
 
 	<script src="./scripts/serial.js"></script>
 	<script src="./scripts/pages_core.js?6"></script>
 	<script src="./scripts/SwiCC_core.js?6"></script>
 	<script src="./scripts/GLaMS_page_funcs.js?6"></script>
-	<script src="./scripts/WackyGamepad.js?6"></script>
-	<script src="./scripts/MessageManager.js?6"></script>
+	<script src="./scripts/WackyGamepad.js?7"></script>
+	<script src="./scripts/MessageManager.js?7"></script>
 	<script src="./scripts/CommandBot.js?6"></script>
 	<script src="./scripts/tp_page_funcs.js?6"></script>
 
@@ -42,7 +42,8 @@
 		 */
 		function mainLoop() {
 			// Set next update;
-			requestAnimationFrame(mainLoop);
+//			requestAnimationFrame(mainLoop);
+			setTimeout(mainLoop, 1000/60);
 
 			// Get new controller data and update page indicator.
 			updateGamepad();
@@ -107,8 +108,9 @@
 				});
 				gamepad.setLeftStick(messageManager.conState.lx, messageManager.conState.ly);
 				gamepad.setRightStick(messageManager.conState.rx, messageManager.conState.ry);
+			} else if (currentMessage === null) {
+				gamepad.pressButton("");
 			}
-
 
 			// Highlight the active command
 			// First remove all highlights from children of command-list
@@ -206,7 +208,7 @@
 </head>
 
 <body style="height:101vh;">
-	<main class="row-of-things" style="justify-content: center;"> <!-- Main center column -->
+	<main class="row-of-things" style="justify-content: center; align-items: flex-start;"> <!-- Main center column -->
 		<div class="stack-of-things">
 			<div class="content-box stack-of-things">
 				<p>Scroll below input display for settings.</p>

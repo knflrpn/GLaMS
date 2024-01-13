@@ -14,12 +14,12 @@
 	<link href="https://fonts.googleapis.com/css2?family=PT+Serif&family=Ubuntu+Mono:wght@700&display=swap"
 		rel="stylesheet">
 
-	<link rel="stylesheet" href="./styles/style_main.css?4" />
+	<link rel="stylesheet" href="./styles/style_main.css?6" />
 
 	<script src="./scripts/serial.js?6"></script>
 	<script src="./scripts/pages_core.js?6"></script>
 	<script src="./scripts/SwiCC_core.js?6"></script>
-	<script src="./scripts/GLaMS_page_funcs.js?8"></script>
+	<script src="./scripts/GLaMS_page_funcs.js?11"></script>
 	<script src="./scripts/WackyGamepad.js?8"></script>
 	<script>
 		// Global variables
@@ -35,7 +35,6 @@
 
 			// If queuePlaying, update the progress bar and that's it
 			if (queuePlaying) {
-				updateProgressBar(playbackProgress);
 				return;
 			}
 
@@ -43,6 +42,7 @@
 			if (buttonMapStale) {
 				gamepad.setButtonMap(getButtonMap());
 				broadcastMapping();
+				broadcastMapSync();
 				buttonMapStale = false;
 			}
 
@@ -99,8 +99,9 @@
 		}
 
 		function setSpamDelay() {
+			const delays = [60, 30, 15, 8, 4, 2, 1, 0];
 			const slider = document.getElementById('delay-slider');
-			gamepad.spamSlowdown = 4 - slider.value;
+			gamepad.spamSlowdown = delays[slider.value];
 		}
 
 		// Page onLoad
@@ -132,7 +133,7 @@
 </head>
 
 <body>
-	<main class="row-of-things" style="justify-content: center;"> <!-- Main center column -->
+	<main class="row-of-things" style="justify-content: center; align-items: flex-start;"> <!-- Main center column -->
 		<div class="stack-of-things">
 			<div class="content-box stack-of-things">
 				<p>Scroll below input display for settings.</p>
@@ -159,6 +160,15 @@
 				<a href="./map_display_forward.html" target="_blank">Forward button map display</a>
 				<a href="./map_display_reverse.html" target="_blank">Reverse button map display</a>
 			</div>
+			<div class="content-box stack-of-things">
+				Sync mapping table with other people:
+				<div class="row-of-things">
+					Channel:	
+					<input type="text" id="sync-channel" value="bob" onChange="onChannelChanged()">
+					<div class="btny-div" id="enable-sync-send" onclick="toggleSync(true)">Broadcast</div>
+					<div class="btny-div" id="enable-sync-rcv" onclick="toggleSync(false)">Listen</div>
+				</div>
+			</div>
 		</div>
 
 		<div class="stack-of-things">
@@ -174,16 +184,13 @@
 				<div id="randomize-container" class="table-container">
 					<!-- randomization table -->
 				</div>
-				<div class="btny-div" onclick="randomizeMap(18)">Randomize</div>
-			</div>
-			<div class="content-box stack-of-things">
-				<div class="btny-div" id="enable-timed-random" onclick="timedRandomize()">Enable Periodic
-					Randomization</div>
 				<div class="row-of-things">
 					<input type="text" id="rand-num" value="2"> every <input type="text" id="rand-time" value="30">
 					seconds.
 				</div>
-				<div class="btny-div" onclick="singleLimitedRandomize()">Shuffle Now</div>
+				<div class="btny-div" id="enable-timed-random" onclick="timedRandomize()">Enable Periodic
+					Shuffle</div>
+				<div class="btny-div" onclick="singleLimitedRandomize()">Shuffle Once Now</div>
 			</div>
 		</div>
 
@@ -226,10 +233,6 @@
 					<div class="row-of-things">
 						<input type="text" id="level-id">
 						<div class="btny-div" onclick="queueID()">Send</div>
-						<div class="progress-container" style="height:auto; width:40%;">
-							<div id="progress-playback" class="progress-bar"></div>
-							<span id="progress-label-playback" class="progress-label">0%</span>
-						</div>
 					</div>
 				</div>
 			</div>
@@ -243,13 +246,16 @@
 					<div class="row-of-things">
 						<div class="btny-div" id="toggle-turbo" onclick="toggleTurbo()">Enable turbo</div>
 						<div style="line-height:100%; margin-top:auto; margin-bottom:auto;">rate:</div>
-						<input type="range" id="delay-slider" min="0" max="4" step="1" value="4" onchange="setSpamDelay()" list="steplist">
+						<input type="range" id="delay-slider" min="0" max="7" step="1" value="7" style="padding:0;" onchange="setSpamDelay()" list="steplist">
 						<datalist id="steplist">
 							<option>0</option>
 							<option>1</option>
 							<option>2</option>
 							<option>3</option>
 							<option>4</option>
+							<option>5</option>
+							<option>6</option>
+							<option>7</option>
 						</datalist>
 					</div>
 					<div class="row-of-things">

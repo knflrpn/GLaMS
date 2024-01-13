@@ -5,6 +5,7 @@ let swiccDetected = Array(4).fill(false);
 let swiccEnables = Array(4).fill(true);
 const serials = [];
 let SwiCCIndicators = Array(4).fill(null);  // The HTML elements that indicate SwiCC status
+let currentSwiCCQueueFill = 0;
 
 for (let i = 0; i < 4; i++) {
 	const serial = new Serial();
@@ -36,7 +37,8 @@ function onSerialDataReceived(eventSender, newData) {
 		console.log(newData);
 	}
 
-	// A request for queue fill amount will result in newData being in the form "+GQF NNNN" where the queue fill amount is the number in hex.  When that happens, populate queueFillResponses with the response.
+	// A request for queue fill amount will result in newData being in the form "+GQF NNNN" where the queue fill amount is the number in hex.
+	// When that happens, populate queueFillResponses with the response.
 	if (newData.startsWith("+GQF ")) {
 		let response = parseInt(newData.substring(5).trim(), 16);
 		queueFillResponses.push(response);
@@ -55,7 +57,7 @@ function onSerialDataReceived(eventSender, newData) {
 		sendTextToSwiCC("+GR 1\n")
 	}
 
-	// There is still recorded data to get
+	// This is the last recorded data
 	if (newData.startsWith("+GR 0")) {
 		setRecordingProgressBar(100);
 	}
@@ -404,7 +406,7 @@ function initiateQueueTransfer() {
 }
 
 function setPlaybackProgress(percent) {
-	queueProgress = percent;
+	playbackProgress = percent;
 }
 
 /* Checks the returned queue fill amount and sends the next batch if needed. */
@@ -414,6 +416,7 @@ function continueQueueTransfer() {
 	if (queueFillResponses.length > 0) {
 		// Get the latest fill amount
 		while (queueFillResponses.length > 0) response = queueFillResponses.shift();
+		currentSwiCCQueueFill = response;
 		if (response < 60) {
 			// Need to send some more
 			if (commandQueue.length > 0) {
@@ -444,13 +447,35 @@ function continueQueueTransfer() {
 	sendTextToSwiCC("+GQF \n");
 }
 
-/* Sends (at most) the specified number of queue entries to the switch */
+/* Adjusts the PianoRoll to match the SwiCC queue fill */
+function adjustPianoRollLength() {
+    if (typeof PianoRoll !== 'undefined') {
+        while (PianoRoll.length > (currentSwiCCQueueFill+2)) {
+            PianoRoll.shift();
+        }
+        
+        while (PianoRoll.length < (currentSwiCCQueueFill-2)) {
+            const lastElement = PianoRoll[PianoRoll.length - 1];
+            PianoRoll.push(lastElement);
+        }
+    }
+}
+
+/* Sends (at most) the specified number of queue entries to the SwiCC */
 function sendQueueToSwicc(maxNumToSend) {
-	while ((maxNumToSend > 0) && (commandQueue.length > 0)) {
-		const element = commandQueue.shift();
-		sendTextToSwiCC(element);
-		maxNumToSend--;
-	}
+    let iterations = Math.min(maxNumToSend, commandQueue.length);
+	// Check if piano roll functionality is active
+	const playing = typeof PianoRoll !== 'undefined'
+	if (playing) adjustPianoRollLength();
+
+    for(let i = 0; i < iterations; i++) {
+        const element = commandQueue.shift();
+        sendTextToSwiCC(element);
+        // Add to piano roll if that functionality is active
+        if(playing) {
+            PianoRoll.push(element);
+        }
+    }
 }
 
 /* Queues a controller state for frameCount frames */

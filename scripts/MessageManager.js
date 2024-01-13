@@ -13,6 +13,12 @@ class MessageManager {
 		let commandsFile = JSON.parse(getLocalStorageItem("tc_commands_file", '{"commands":{},"params":{}}'));
 		this.commandMap = commandsFile.commands;
 		this.commandParams = commandsFile.params;
+        // Initialize availableTime for all commands
+        const now = Date.now();
+        for (let command in this.commandParams) {
+            this.commandParams[command].availableTime = now;
+        }
+
 		// Initialize keywords and keywordRegex based on the loaded command map
 		this.keywords = Object.keys(this.commandMap);
 		if (this.keywords.length > 0) {
@@ -57,9 +63,36 @@ class MessageManager {
 				commands.push(match[1].toLowerCase());  // The keyword is in the first capture group
 			}
 		}
+
+		// Filter out commands that are on cooldown.
+		commands = commands.filter(command => {
+			let params = this.commandParams[command];
+			
+			// Check if cooldown exists and is greater than zero.
+			if (params?.cooldown > 0) {
+				// Return false (filter out) if current time is less than availableTime.
+				return now >= params.availableTime;
+			}
+			// If no cooldown or it's zero, command is always available.
+			return true;
+		});
+
+		// Filter the commands based on "combinable"
+		let nonCombinableCommands = commands.filter(command => this.commandParams[command]?.combinable === false);
+		let combinableCommands = commands.filter(command => this.commandParams[command]?.combinable !== false);
+
+		// If there's one or more commands with "combinable" set to false, pick one randomly.
+		if (nonCombinableCommands.length > 0) {
+			let randomIndex = Math.floor(Math.random() * nonCombinableCommands.length);
+			commands = [nonCombinableCommands[randomIndex]];
+		} else {
+			// If there's no command with "combinable" set to false, keep all commands.
+			commands = combinableCommands;
+		}
+
 		// Roll the die against the command probability on each command in commands.
 		commands = commands.filter(command => {
-			let probability = this.commandParams[command.toLowerCase()]?.probability || 1;
+			let probability = this.commandParams[command]?.probability || 1;
 			return (probability >= 1) || (Math.random() <= probability);
 		});
 
@@ -216,18 +249,40 @@ class MessageManager {
 			let expandedStates = [];
 
 			for (let state of states) {
-				for (let i = 0; i < state.frames; i++) {
-					expandedStates.push({ ...state, frames: 1 });
+				let nowFrames = state.frames;
+				// negative frames means random up to that number.
+				if (state.frames < 0) {
+					nowFrames = Math.floor(Math.random() * (1-state.frames));
+					console.log(nowFrames);
+				}
+				// Use random stick value if it's > 1
+				const nowLx = state.lx > 1 ? Math.random() * 2 - 1 : state.lx;
+				const nowLy = state.ly > 1 ? Math.random() * 2 - 1 : state.ly;
+				const nowRx = state.rx > 1 ? Math.random() * 2 - 1 : state.rx;
+				const nowRy = state.ry > 1 ? Math.random() * 2 - 1 : state.ry;
+
+				for (let i = 0; i < nowFrames; i++) {
+					expandedStates.push({
+						buttons: state.buttons,
+						frames: 1,
+						lx: nowLx,
+						ly: nowLy,
+						rx: nowRx,
+						ry: nowRy,
+					});
 				}
 			}
 
-			// Repeat states until reaching 60 ticks
-			while (expandedStates.length < 60) {
+			// Repeat states until reaching 120 ticks
+			if (expandedStates.length == 0) {
+				expandedStates = [{buttons: '', lx: 0, ly: 0, rx: 0, ry: 0}];
+			}
+			while (expandedStates.length < 120) {
 				expandedStates = [...expandedStates, ...expandedStates];
 			}
 
-			// Truncate to exactly 60 ticks
-			expandedStates.length = 60;
+			// Truncate to exactly 120 ticks
+			expandedStates.length = 120;
 
 			return expandedStates;
 		};
@@ -254,12 +309,19 @@ class MessageManager {
 		};
 
 		for (let command of commands) {
+			if (this.commandParams[command]?.cooldown > 0) {
+				// Double check that this command is off cooldown
+				if (this.commandParams[command].availableTime > Date.now()) {
+					continue;
+				}
+				this.commandParams[command].availableTime = Date.now() + this.commandParams[command].cooldown * 1000;
+			}
 			let expandedCommand = expandCommand(command);
 
 			if (result.length === 0) {
 				result = expandedCommand;
 			} else {
-				for (let i = 0; i < 60; i++) {
+				for (let i = 0; i < 120; i++) {
 					result[i] = mergeStates(result[i], expandedCommand[i]);
 				}
 			}
