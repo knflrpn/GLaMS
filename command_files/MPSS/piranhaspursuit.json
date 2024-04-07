@@ -1,0 +1,1 @@
+{"groups":{"run":{"min":0,"max":1,"probability":1,"exclusive":false,"cooldown":0,"commands":["mashb"]},"jump":{"min":1,"max":1,"probability":0.1,"exclusive":false,"cooldown":0.5,"commands":["gp"]}}}

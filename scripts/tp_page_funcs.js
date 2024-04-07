@@ -102,7 +102,7 @@ function populateGroups() {
 }
 
 function testMessage(keyword) {
-	messageManager.insertMessage('TestMessage', "Testing command " + keyword + "...");
+	messageManager.insertMessage('TestMessage', "Injected " + keyword + "...");
 }
 
 
@@ -112,6 +112,7 @@ function testMessage(keyword) {
 let commandMap = {};
 let commandParams = {};
 let botParams = { "groups": {} };
+const defaultGroupsFile = { groups: {} };
 
 function loadGroupsFromStorage() {
 	// Check if there is a saved groups file
@@ -126,18 +127,17 @@ function loadGroupsFromStorage() {
 				botParams = groupsFile;
 			} else {
 				// Replace the retrieved object with the default version
-				const defaultgroupsFile = { groups: {} };
-				setLocalStorageItem("tc_bot_file", JSON.stringify(defaultgroupsFile));
-				botParams = defaultgroupsFile;
+				setLocalStorageItem("tc_bot_file", JSON.stringify(defaultGroupsFile));
+				botParams = defaultGroupsFile;
 			}
 		} catch (error) {
 			// An error occurred while parsing the saved groups file
 			console.error("Error parsing saved groups file:", error);
-			resetgroupsFile();
+			resetGroupsFile();
 		}
 	} else {
 		// No saved groups file found, initialize with the default version
-		resetgroupsFile();
+		resetGroupsFile();
 	}
 }
 
@@ -186,3 +186,103 @@ function resetCommandsFile() {
 	location.reload();
 }
 
+
+
+function remote_connect() {
+	remote_ws = new WebSocket('wss://rollsocket.com/socket_chat/');
+	
+	remote_ws.onopen = function () {
+		const channelname = document.getElementById("remote-input").value;
+		setLocalStorageItem('GLaMS-remoteChannel', channelname);
+		const joincommand = {
+			"action": "join",
+			"room": channelname
+		}		
+		remote_ws.send(JSON.stringify(joincommand));
+	};
+
+	remote_ws.onmessage = function (event) {
+		let msg = JSON.parse(event.data);  // Convert the received JSON string into an object
+
+		if (msg.type === "status") {
+			if (msg.message === "joined") {
+				document.getElementById("remote-input").classList.add("indicator-active")
+			}
+			if (msg.message === "left") {
+				document.getElementById("remote-input").classList.remove("indicator-active")
+			}
+		} else if (msg.type === "message") {
+			if ("command" in msg) {
+				console.log(msg.command);
+				handleRemoteCommand(msg.command);
+			}
+		}
+	};
+
+	remote_ws.onclose = function (event) {
+		document.getElementById("remote-input").classList.remove("indicator-active")
+		document.getElementById("remote-input").disabled = false;
+	};
+
+}
+
+function handleRemoteCommand(commandString) {
+	const commandData = JSON.parse(commandString);
+	
+	const command = commandData.command;
+	const parameter = commandData.parameter || null;
+	//console.log(command, parameter);
+
+	if (command === "bot_start") {
+		if(!botEnabled) toggleBot();
+	}
+	if (command === "bot_stop") {
+		if(botEnabled) toggleBot();
+	}
+	if (command === "mpssbot_select") {
+		// Load a server bot
+		if (parameter) {
+			fetch(`./command_files/MPSS/${parameter}.json?2`)
+				.then(response => response.text())
+				.then(content => {
+					setLocalStorageItem("tc_bot_file", content);
+					// Reload bot
+					bot = new CommandBot();
+					botRateChange(document.getElementById("bot-rate").value);
+					populateGroups();
+				});
+		}
+	}
+	if (command === "bot_select") {
+		// Load a server bot
+		if (parameter) {
+			fetch(`./command_files/${parameter}.json?2`)
+				.then(response => response.text())
+				.then(content => {
+					setLocalStorageItem("tc_bot_file", content);
+					// Reload bot
+					bot = new CommandBot();
+					botRateChange(document.getElementById("bot-rate").value);
+					populateGroups();
+				});
+		}
+	}
+	if (command === "chat_start") {
+		if(!chatEnabled) toggleChat();
+	}
+	if (command === "chat_stop") {
+		if(chatEnabled) toggleChat();
+	}
+	if (command === "chat_connect") {
+		if(parameter) {
+			document.getElementById("channel-input").value = parameter;
+			tc_connect(parameter);
+		}
+	}
+	if (command === "chat_inject") {
+		if(parameter) {
+			testMessage(parameter);
+		}
+	}
+
+}

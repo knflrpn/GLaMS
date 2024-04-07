@@ -1,6 +1,10 @@
 class CommandBot {
 	constructor(rate = 5) {
-		this.botParams = JSON.parse(localStorage.getItem("tc_bot_file") || '{"groups":{}}');
+		try {
+			this.botParams = JSON.parse(localStorage.getItem("tc_bot_file") || '{"groups":{}}');
+		} catch {
+			this.botParams = '{"groups":{}}';
+		}
 		this.confirmParams();
 		this.groupCooldowns = {}; // Cooldown tracking
 		this.lastMessageTime = Date.now(); // Cooldown tracking

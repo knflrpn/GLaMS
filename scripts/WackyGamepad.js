@@ -3,6 +3,7 @@
 class WackyGamepad {
 	constructor() {
 		this.isActive = false;
+		this.lastTickTime = Date.now();
 		this.realtimeButtons = Array(18).fill(false);
 		this.realtimeSticks = Array(4).fill(0.0);
 		this.delayedButtons = Array(18).fill(false);
@@ -17,6 +18,11 @@ class WackyGamepad {
 		this.spamDelay = 0;
 		this.spamTimer = 0;
 		this.timeBuffer = [];
+		this.cooldowns = Array(18).fill(0);
+		this.globalCooldown = false;
+		this.localCooldown = false;
+		this.cooldownTime = 1000;
+		this.blockedButtons = Array(18).fill(false);
 		this.delayAmount = 0.0;
 		// Map matrix for button remapping; diagonal starts as true
 		this.mapMatrix = Array.from({ length: 18 }, (_, i) =>
@@ -32,6 +38,11 @@ class WackyGamepad {
 	}
 
 	pollGamepad() {
+		// Track timing.
+		const nowTime = Date.now();
+		const deltaT = nowTime - this.lastTickTime;
+		this.lastTickTime = nowTime;
+
 		// Access the gamepads
 		const gamepads = navigator.getGamepads();
 
@@ -55,14 +66,37 @@ class WackyGamepad {
 			// Check for button toggles
 			let new_buttons = gamepad.buttons.map(button => button.pressed);
 			while (new_buttons.length < 18) {
+				// Fill any missing entries with known value (false)
 				new_buttons.push(false);
 			}
 
 			for (let i = 0; i < new_buttons.length; i++) {
-				if (new_buttons[i] && !this.realtimeButtons[i]) {
-					this.toggledButtons[i] = true;
+				// Update cooldowns
+				this.cooldowns[i] = Math.max(0, this.cooldowns[i]-deltaT);
+				// Check if pressed
+				if (new_buttons[i]) {
+					// Check if *just now* pressed
+					if (!this.realtimeButtons[i]) {
+						// This is a just-pressed button.  If it's on cooldown, don't let it be pressed.
+						if(this.cooldowns[i] > 0) {
+							new_buttons[i] = false;
+							this.blockedButtons[i] = true;
+						} else {
+							this.toggledButtons[i] = true;
+							this.blockedButtons[i] = this.cooldowns[i] > 0;
+							// Put on cooldown
+							if(this.localCooldown) {
+								this.cooldowns[i] = this.cooldownTime;
+								this.blockedButtons[i] = false;
+							} else if(this.globalCooldown) {
+								this.cooldowns.fill(this.cooldownTime);
+							}
+						}
+					} else {
+						this.toggledButtons[i] = false;
+					}
 				} else {
-					this.toggledButtons[i] = false;
+					this.blockedButtons[i] = this.cooldowns[i] > 0;
 				}
 			}
 			this.realtimeButtons = new_buttons;
@@ -109,7 +143,7 @@ class WackyGamepad {
 					this.spamIndex = -1;
 				}
 			} else {
-				this.spamTimer--;
+				this.spamTimer = Math.max(0, this.spamTimer - deltaT);
 			}
 			// Apply spam to the random button
 			if (this.spamIndex >= 0) {
@@ -389,6 +423,7 @@ class WackyGamepad {
 	get realtimeState() {
 		return {
 			buttons: this.realtimeButtons,
+			blocked: this.blockedButtons,
 			sticks: this.realtimeSticks
 		};
 	}

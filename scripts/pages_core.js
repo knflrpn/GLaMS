@@ -37,11 +37,10 @@ function incrementGamepadNum() {
 	}
 }
 
-function broadcastControllerState(inButtons, inSticks, outButtons, outSticks) {
+function broadcastControllerState(buttons, inSticks, outSticks) {
 	let state = {
-		'GLaMS-curCon': inButtons,
+		'GLaMS-buttons': buttons,
 		'GLaMS-curStick': inSticks,
-		'GLaMS-modCon': outButtons,
 		'GLaMS-modStick': outSticks
 	};
 

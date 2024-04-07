@@ -17,10 +17,10 @@
 	<link rel="stylesheet" href="./styles/style_main.css?6" />
 
 	<script src="./scripts/serial.js?6"></script>
-	<script src="./scripts/pages_core.js?6"></script>
-	<script src="./scripts/SwiCC_core.js?6"></script>
-	<script src="./scripts/GLaMS_page_funcs.js?11"></script>
-	<script src="./scripts/WackyGamepad.js?8"></script>
+	<script src="./scripts/pages_core.js?7"></script>
+	<script src="./scripts/SwiCC_core.js?7"></script>
+	<script src="./scripts/GLaMS_page_funcs.js?12"></script>
+	<script src="./scripts/WackyGamepad.js?9"></script>
 	<script>
 		// Global variables
 		let gamepad = new WackyGamepad();
@@ -30,8 +30,8 @@
 		 */
 		function mainLoop() {
 			// Set next update;
-			requestAnimationFrame(mainLoop);
-			// or setTimeout(mainLoop, 16);
+			//requestAnimationFrame(mainLoop);
+			setTimeout(mainLoop, 16.667);
 
 			// If queuePlaying, update the progress bar and that's it
 			if (queuePlaying) {
@@ -83,10 +83,18 @@
 			// Highlight cells
 			highlightOnMap(gamepad.realtimeState['buttons'], gamepad.state['buttons']);
 
+			const realtimeStateButtons = gamepad.realtimeState['buttons'];
+			const stateButtons = gamepad.state['buttons'];
+			const blockedButtons = gamepad.realtimeState['blocked'];
+			const btn_broadcast = realtimeStateButtons.map((button, index) => {
+				const realtimeValue = button ? 1 : 0; // Convert boolean to 1 or 0
+				const stateValue = stateButtons[index] ? 2 : 0; // Convert boolean to 2 or 0
+				const blockedValue = blockedButtons[index] ? 4 : 0; // Convert boolean to 4 or 0
+				return realtimeValue + stateValue + blockedValue; // Sum and return the value
+			});
 			broadcastControllerState(
-					gamepad.realtimeState['buttons'],
+					btn_broadcast,
 					gamepad.realtimeState['sticks'],
-					gamepad.state['buttons'],
 					gamepad.state['sticks']
 				);
 
@@ -99,7 +107,7 @@
 		}
 
 		function setSpamDelay() {
-			const delays = [60, 30, 15, 8, 4, 2, 1, 0];
+			const delays = [499, 249.5, 149.5, 99.5, 66.5, 49.5, 33, 16.5];
 			const slider = document.getElementById('delay-slider');
 			gamepad.spamSlowdown = delays[slider.value];
 		}
@@ -220,10 +228,10 @@
 			<div class="content-box">
 				<p>Delay (milliseconds):</p>
 				<div class="row-of-things">
-					<div class="btny-div" id="delay-up" onclick="addDelay(-16.66666666666666666)">-16.6 (1 frame)
+					<div class="btny-div" id="delay-up" onclick="addDelay(-16.66666666666666667)">-16.6 (1 frame)
 					</div>
 					<input type="text" id="delay-num" value="0" onChange="addDelay(0)">
-					<div class="btny-div" id="delay-down" onclick="addDelay(16.6666666666666666)">+16.6 (1 frame)
+					<div class="btny-div" id="delay-down" onclick="addDelay(16.6666666666666667)">+16.6 (1 frame)
 					</div>
 				</div>
 			</div>
@@ -241,7 +249,7 @@
 				<div class="stack-of-things">
 					Select buttons for turbo or spam:
 					<div id="auto-container" class="table-container">
-						<!-- randomization table -->
+						<!-- turbo/spam table -->
 					</div>
 					<div class="row-of-things">
 						<div class="btny-div" id="toggle-turbo" onclick="toggleTurbo()">Enable turbo</div>
@@ -263,7 +271,19 @@
 						<div class="indicator-div" id="status-spam">off</div>
 					</div>
 					<p>(When spam is enabled, use R3 to toggle on/off)</p>
+				</div>
+			</div>
 
+			<div class="content-box">
+				<div class="stack-of-things">
+					<p>Button cooldown</p>
+					<div class="row-of-things">
+						<div class="btny-div" id="local-cooldown" onclick="toggleCooldown('local')">Per-button</div>
+						<div class="btny-div" id="global-cooldown" onclick="toggleCooldown('global')">Global</div>
+					</div>
+					<div class="row-of-things">
+						<input type="text" id="cooldown-num" value="1000" onChange="toggleCooldown('none')">Time (ms)
+					</div>
 				</div>
 			</div>
 

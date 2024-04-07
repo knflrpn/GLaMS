@@ -1,0 +1,1 @@
+{"groups":{"lonly":{"min":1,"max":1,"probability":0.8,"exclusive":true,"cooldown":0.7,"commands":["left"]},"ronly":{"min":1,"max":1,"probability":0.8,"exclusive":true,"cooldown":0.7,"commands":["right"]}}}

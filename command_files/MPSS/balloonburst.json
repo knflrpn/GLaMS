@@ -1,0 +1,1 @@
+{"groups":{"zlonly":{"min":1,"max":1,"probability":0.5,"exclusive":true,"cooldown":0.5,"commands":["zl","zl"]},"zronly":{"min":1,"max":1,"probability":0.5,"exclusive":true,"cooldown":0.5,"commands":["zr","zr"]}}}

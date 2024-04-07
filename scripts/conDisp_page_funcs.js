@@ -25,6 +25,7 @@ let gamepad_connected = true;
 // User-preferred colors for highlighting buttons
 let out_btn_highlight = "rgba(0,128,0,1)";
 let in_btn_highlight = "rgba(0,128,0,1)";
+let blocked_btn_highlight = "rgba(255,0,0,1)";
 
 
 function changeColors(event) {
@@ -43,6 +44,10 @@ function changeColors(event) {
 	newvalue = document.getElementById("active-out-col-sel").value;
 	out_btn_highlight = newvalue
 	setLocalStorageItem("active-out-col-sel" + "-color", newvalue);
+
+	newvalue = document.getElementById("blocked-col-sel").value;
+	blocked_btn_highlight = newvalue
+	setLocalStorageItem("blocked-col-sel" + "-color", newvalue);
 
 	newvalue = document.getElementById("stroke-col-sel").value;
 	document.getElementById("SwiCC-disp").setAttribute("stroke", newvalue);
@@ -63,14 +68,15 @@ function changeColors(event) {
  * @param {boolean[]} outBtns - An array of boolean values indicating whether each output button should be highlighted.
  * @param {number[]} stickPos - An array of four values representing the position of the two sticks on the gamepad.
  */
-function updateConDisplay(inBtns, outBtns, inStickPos, outStickPos) {
+function updateConDisplay(buttons, inStickPos, outStickPos) {
 	// Do not update the display if a gamepad is not connected
 	if (!gamepad_connected) { return; }
 
 	// Update the display for each input button and its corresponding output button
-	for (let i = 0; i < Math.min(conDispMap.length, inBtns.length); i++) {
+	for (let i = 0; i < Math.min(conDispMap.length, buttons.length); i++) {
+		// 'buttons' %1 is output, %2 is inputs, %4 is blocked
 		// Update the stroke color and width for the output button
-		if (outBtns[i]) {
+		if (buttons[i] & 1) {
 			document.getElementById(conDispMap[i]).setAttribute("stroke", out_btn_highlight);
 			document.getElementById(conDispMap[i]).setAttribute("stroke-width", "8");
 		} else {
@@ -78,10 +84,15 @@ function updateConDisplay(inBtns, outBtns, inStickPos, outStickPos) {
 			document.getElementById(conDispMap[i]).setAttribute("stroke-width", "3");
 		}
 		// Update the fill color for the input button
-		if (inBtns[i]) {
+		if (buttons[i] & 2) {
 			document.getElementById(conDispMap[i]).setAttribute("fill", in_btn_highlight);
 		} else {
 			document.getElementById(conDispMap[i]).setAttribute("fill", "rgba(255,255,255,0)");
+		}
+		// Update the color for blocked buttons
+		if (buttons[i] & 4) {
+			document.getElementById(conDispMap[i]).setAttribute("stroke", blocked_btn_highlight);
+			document.getElementById(conDispMap[i]).setAttribute("fill", blocked_btn_highlight);
 		}
 	}
 

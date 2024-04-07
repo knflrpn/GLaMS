@@ -1,0 +1,1 @@
+{"groups":{"move":{"min":1,"max":1,"probability":1,"exclusive":false,"cooldown":0,"commands":["up"]},"a20":{"min":1,"max":1,"probability":0.4,"exclusive":false,"cooldown":0.2,"commands":["a"]}}}

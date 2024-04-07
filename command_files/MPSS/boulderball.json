@@ -1,0 +1,1 @@
+{"groups":{"up":{"min":1,"max":1,"probability":1,"exclusive":false,"cooldown":0,"commands":["up"]},"lr":{"min":1,"max":1,"probability":0.3,"exclusive":false,"cooldown":0,"commands":["right","left"]},"push":{"min":1,"max":1,"probability":0.5,"exclusive":false,"cooldown":0,"commands":["tapa"]}}}

@@ -371,7 +371,7 @@ function highlightOnMap(ins, outs) {
 }
 
 /**
- * Toggles the auto jump setting
+ * Toggles the auto button spam setting
  */
 function toggleButtonSpam() {
 	const statusElement = document.getElementById("status-buttonspam");
@@ -390,6 +390,32 @@ function addDelay(addAmount = 0) {
 	}
 	delayInput.value = Math.round(delayAmount * 100) / 100;
 	gamepad.setDelay(delayAmount);
+}
+
+
+function toggleCooldown(style) {
+	const statusLocal = document.getElementById("local-cooldown");
+	const statusGlobal = document.getElementById("global-cooldown");
+	if (style === "local") {
+		statusLocal.classList.toggle("indicator-active");
+		statusGlobal.classList.remove("indicator-active");
+	} else if (style === "global") {
+		statusGlobal.classList.toggle("indicator-active");
+		statusLocal.classList.remove("indicator-active");
+	}
+	gamepad.localCooldown = statusLocal.classList.contains("indicator-active");
+	gamepad.globalCooldown = statusGlobal.classList.contains("indicator-active");
+
+	const timeinput = document.getElementById("cooldown-num");
+	let cooldownAmount = parseFloat(timeinput.value);
+	if (isNaN(cooldownAmount)) { cooldownAmount = 0; }
+	if (cooldownAmount <= 0) {
+		cooldownAmount = 0;
+	} else {
+		if (cooldownAmount > 10000) cooldownAmount = 10000;
+	}
+	timeinput.value = Math.round(cooldownAmount);
+	gamepad.cooldownTime = cooldownAmount;
 }
 
 
@@ -654,7 +680,7 @@ function decodeActiveCells(encodedString) {
 
 
 function websync_connect() {
-	ws_ws = new WebSocket('wss://fireganon.com/websync/');
+	ws_ws = new WebSocket('wss://rollsocket.com/socket_chat/');
 	
 	ws_ws.onopen = function () {
 		const channelname = document.getElementById("sync-channel").value;

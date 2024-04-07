@@ -24,7 +24,7 @@
 	<script src="./scripts/WackyGamepad.js?7"></script>
 	<script src="./scripts/MessageManager.js?7"></script>
 	<script src="./scripts/CommandBot.js?6"></script>
-	<script src="./scripts/tp_page_funcs.js?6"></script>
+	<script src="./scripts/tp_page_funcs.js?7"></script>
 
 	<script>
 		let tickToggle = false;
@@ -33,6 +33,7 @@
 		let bot = new CommandBot();
 
 		let tc_ws = null;
+		let remote_ws = null;
 
 		let chatEnabled = false;
 		let botEnabled = false;
@@ -42,8 +43,8 @@
 		 */
 		function mainLoop() {
 			// Set next update;
-//			requestAnimationFrame(mainLoop);
-			setTimeout(mainLoop, 1000/60);
+			//			requestAnimationFrame(mainLoop);
+			setTimeout(mainLoop, 1000 / 60);
 
 			// Get new controller data and update page indicator.
 			updateGamepad();
@@ -138,12 +139,15 @@
 			}
 
 			// Communicate with display pages
+			const realtimeStateButtons = gamepad.state['buttons'];
+			const btn_broadcast = realtimeStateButtons.map((button, index) => {
+				return button ? 1 : 0; // Convert boolean to 1 or 0
+			});
 			broadcastControllerState(
-				gamepad.realtimeState['buttons'],
-				gamepad.realtimeState['sticks'],
-				gamepad.state['buttons'],
-				gamepad.state['sticks']
-			);
+					btn_broadcast,
+					gamepad.realtimeState['sticks'],
+					gamepad.state['sticks']
+				);
 
 		}
 
@@ -176,7 +180,7 @@
 				}
 			}
 		}
-		
+
 		function toggleBot() {
 			botEnabled = !botEnabled;
 			const indicator = document.getElementById('bot-enable');
@@ -188,16 +192,19 @@
 				}
 			}
 		}
-		
-		function botRateChange(rate=5) {
+
+		function botRateChange(rate = 5) {
 			bot.rate = rate;
 		}
 
 		// Page onLoad
 		document.addEventListener("DOMContentLoaded", function () {
 			registerSwiCCIndicator(document.getElementById('status-swicc-0'), 0);
+			// Populate boxes with stored values
 			const tc_channel = document.getElementById("channel-input");
 			tc_channel.value = getLocalStorageItem('GLaMS-tcChannel', "");
+			const remote_channel = document.getElementById("remote-input");
+			remote_channel.value = getLocalStorageItem('GLaMS-remoteChannel', "");
 			populateCommands();
 			populateGroups();
 			// Start the loop
@@ -224,21 +231,27 @@
 				</div>
 			</div>
 			<div class="content-box stack-of-things">
-				<p>Chat controls</p>
+				Chat controls
 				<div class="row-of-things">
 					<input type="text" id="channel-input" placeholder="Channel Name" />
 					<button class="btny-div" id="tc-connect"
 						onclick="tc_connect(document.getElementById('channel-input').value)">Connect</button>
-						<div class="btny-div" id="chat-enable" onclick="toggleChat()">Toggle Chat Control</div>
-					</div>
-				<p>Bot controls</p>
+					<div class="btny-div" id="chat-enable" onclick="toggleChat()">Toggle Chat Control</div>
+				</div>
+				Bot controls
 				<div class="row-of-things">
 					<div class="btny-div" id="bot-enable" onclick="toggleBot()">Toggle Bot Control</div>
 					<span style="line-height: 2rem;">Rate:</span>
-					<input type="number" id="bot-rate" value="5" min="0.1" max="20" step="0.5" onchange="botRateChange(this.value)" />
+					<input type="number" id="bot-rate" value="5" min="0.1" max="20" step="0.5"
+						onchange="botRateChange(this.value)" />
 					<span style="line-height: 2rem;">/s</span>
 				</div>
-
+				Remote control
+				<div class="row-of-things">
+					<input type="text" id="remote-input" placeholder="Socket Name" />
+					<button class="btny-div" id="remote-connect"
+						onclick="remote_connect(document.getElementById('remote-input').value)">Connect</button>
+				</div>
 			</div>
 		</div>
 		<div class="stack-of-things">

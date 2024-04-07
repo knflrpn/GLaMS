@@ -9,8 +9,8 @@
 	<meta http-equiv="Expires" content="0">
 	<title>GLaMS Display</title>
 	<link rel="stylesheet" href="./styles/style_main.css?4" />
-	<script src="./scripts/pages_core.js?4"></script>
-	<script src="./scripts/conDisp_page_funcs.js?4"></script>
+	<script src="./scripts/pages_core.js?5"></script>
+	<script src="./scripts/conDisp_page_funcs.js?5"></script>
 	<script>
 
 		document.addEventListener("DOMContentLoaded", function () {
@@ -35,6 +35,11 @@
 			if (activeOutColSelColor) {
 				activeOutColSel.value = activeOutColSelColor;
 			}
+			const blockedColSel = document.getElementById("blocked-col-sel");
+			const blockedColSelColor = getLocalStorageItem("blocked-col-sel-color");
+			if (blockedColSelColor) {
+				blockedColSel.value = blockedColSelColor;
+			}
 			const strokeColSel = document.getElementById("stroke-col-sel");
 			const strokeColSelColor = getLocalStorageItem("stroke-col-sel-color");
 			if (strokeColSelColor) {
@@ -52,31 +57,23 @@
 			document.getElementById("box-col-sel").addEventListener("input", changeColors, false);
 			document.getElementById("active-in-col-sel").addEventListener("input", changeColors, false);
 			document.getElementById("active-out-col-sel").addEventListener("input", changeColors, false);
+			document.getElementById("blocked-col-sel").addEventListener("input", changeColors, false);
 			document.getElementById("stroke-col-sel").addEventListener("input", changeColors, false);
 			document.getElementById("accent-col-sel").addEventListener("input", changeColors, false);
 			// Update colors once at load
 			changeColors();
 			// Update controller once at load
-			updateConDisplay([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], [0,0,0,0], [0,0,0,0]);
+			updateConDisplay([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], [0,0,0,0], [0,0,0,0]);
 
 			// Start the main loop
 			window.addEventListener('message', function (event) {
 				if (typeof (event.data) === 'object') {
 					// event.data is an object, update the state
-					let curCon = event.data['GLaMS-curCon'];
-					let modCon = event.data['GLaMS-modCon'];
+					let buttons = event.data['GLaMS-buttons'];
 					let curStick = event.data['GLaMS-curStick'];
 					let modStick = event.data['GLaMS-modStick'];
-					// Now you can use curCon, modCon, curStick, modStick as you wish
-					const disp_in = document.getElementById("in_disp_en").checked;
-					const disp_out = document.getElementById("out_disp_en").checked;
-					if (disp_in && disp_out) {
-						updateConDisplay(curCon, modCon, curStick, modStick);
-					} else if (disp_in) {
-						updateConDisplay(curCon, curCon, curStick, curStick);
-					} else if (disp_out) {
-						updateConDisplay(modCon, modCon, modStick, modStick);
-					}
+					// Now you can use buttons, curStick, modStick as you wish
+					updateConDisplay(buttons, curStick, modStick);
 				}
 			}, false);
 		});
@@ -184,6 +181,7 @@
 				</svg>
 			</div>
 			<br />
+		<!-- 
 			<div class="content-box stack-of-things">
 				<div class="row-of-things">
 					<label for="in_disp_en">Display Input:</label>
@@ -194,6 +192,7 @@
 					<input type="checkbox" id="out_disp_en" name="out_disp_en" checked="1">
 				</div>
 			</div>
+		-->
 			<div class="content-box stack-of-things">
 				<label for="bg-col-sel">Page background color</label>
 				<input type="color" id="bg-col-sel" name="bg-col-sel" value="#001d32">
@@ -203,6 +202,8 @@
 				<input type="color" id="active-in-col-sel" name="active-in-col-sel" value="#008000">
 				<label for="active-out-col-sel">Active output button color</label>
 				<input type="color" id="active-out-col-sel" name="active-out-col-sel" value="#008000">
+				<label for="blocked-col-sel">Cooldown button color</label>
+				<input type="color" id="blocked-col-sel" name="blocked-col-sel" value="#800000">
 				<label for="stroke-col-sel">Stroke color</label>
 				<input type="color" id="stroke-col-sel" name="stroke-col-sel" value="#000000">
 				<label for="accent-col-sel">Accent color</label>

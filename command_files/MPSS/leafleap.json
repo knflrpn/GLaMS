@@ -1,0 +1,1 @@
+{"groups":{"left":{"min":2,"max":2,"probability":0.2,"exclusive":false,"cooldown":0,"commands":["left","tapa"]},"right":{"min":2,"max":2,"probability":0.2,"exclusive":false,"cooldown":0,"commands":["right","tapa"]}}}
